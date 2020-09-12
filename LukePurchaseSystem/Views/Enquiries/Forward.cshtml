@@ -1,0 +1,86 @@
+﻿@model LukeApps.ApprovalProcess.DecisionVM
+@section CustomStyles {
+    @Styles.Render("~/Content/bdp")
+    @Styles.Render("~/Content/bootstrap-dropdown")
+}
+@{
+    ViewBag.Title = "Forward";
+}
+
+<h2>Forward to below Authorised Signatory</h2>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Expense Claim</h4>
+        <p><b>@Model.Display</b></p>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ID)
+        @Html.HiddenFor(model => model.Display)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Approvers, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.ListBoxFor(model => model.Approvers, (MultiSelectList)ViewBag.ApproveList, htmlAttributes: new { @class = "form-control chosen-select" })
+                @Html.ValidationMessageFor(model => model.Approver, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Comments, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Forward" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index", new { id = Model.ID })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap-dp")
+    @Scripts.Render("~/bundles/bootstrap-dropdown")
+    <script>
+        $(".chosen-select").chosen({
+            search_contains: true,
+        })
+
+        $('.dp').datepicker({
+            format: "yyyy-mm-dd",
+            endDate: "+0d",
+            todayBtn: "linked",
+            orientation: "bottom auto",
+            daysOfWeekDisabled: "5,6"
+        });
+
+        $(function () {
+
+            $('input:submit').click(function () {
+                var $button = this;
+                var oldValue = $button.value;
+                setTimeout(function () {
+                    $button.disabled = true;
+                    $button.value = 'Forwarding...';
+                    setTimeout(function () {
+                        $button.disabled = false;
+                        $button.value = oldValue;
+                    }, 1500);
+                }, 0);
+            });
+
+        });
+    </script>
+}

@@ -1,0 +1,7 @@
+﻿@model IEnumerable<LukeApps.TrackingExtended.IEntity>
+
+
+    @foreach (var item in Model)
+    {
+        Html.RenderPartial(item.GetPartialViewName(), item);
+    }

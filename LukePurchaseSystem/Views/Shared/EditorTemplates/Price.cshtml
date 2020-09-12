@@ -1,0 +1,7 @@
+﻿@model LukeApps.CurrencyRates.Price
+
+@Html.EnumDropDownListFor(model => model.CurrencyCode, htmlAttributes: new { @class = "form-control chosen-select" })
+@Html.HiddenFor(model => model.CurrencyCode)
+@Html.EditorFor(model => model.Value, new { htmlAttributes = new { @class = "form-control input", @placeholder = "Amount" } })
+@Html.ValidationMessageFor(model => model.CurrencyCode, "", new { @class = "text-danger" })
+@Html.ValidationMessageFor(model => model.Value, "", new { @class = "text-danger" })

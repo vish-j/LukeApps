@@ -1,0 +1,10 @@
+﻿[
+  {
+    "outputFile": "Scripts/Helpers/collectionItems.js",
+    "inputFile": "Scripts/Helpers/collectionItems.es6"
+  },
+  {
+    "outputFile": "Scripts/FileUploader/fileUploadControl.js",
+    "inputFile": "Scripts/FileUploader/fileUploadControl.es6"
+  }
+]

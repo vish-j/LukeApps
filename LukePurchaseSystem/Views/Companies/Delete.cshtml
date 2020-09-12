@@ -1,0 +1,145 @@
+﻿@model LukeApps.GeneralPurchase.Models.Company
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index", new { id = Model. })
+        </div>
+    }
+
+<div>
+    <h4>Company</h4>
+	<hr />
+
+    <div class="list-group">
+
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.CompanyID)</b> </div>
+                <div class="col-sm-1"><b>:</b></div>
+                <div class="col-sm-3">@Html.DisplayFor(model => model.CompanyID)</div>
+            </div>       
+        </div>  
+
+
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.CompanyName)</b> </div>
+                <div class="col-sm-1"><b>:</b></div>
+                <div class="col-sm-3">@Html.DisplayFor(model => model.CompanyName)</div>
+            </div>       
+        </div>  
+
+
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.CompanyRegistration)</b> </div>
+                <div class="col-sm-1"><b>:</b></div>
+                <div class="col-sm-3">@Html.DisplayFor(model => model.CompanyRegistration)</div>
+            </div>       
+        </div>  
+
+
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.CommodityDescription)</b> </div>
+                <div class="col-sm-1"><b>:</b></div>
+                <div class="col-sm-3">@Html.DisplayFor(model => model.CommodityDescription)</div>
+            </div>       
+        </div>  
+
+
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.WebSite)</b> </div>
+                <div class="col-sm-1"><b>:</b></div>
+                <div class="col-sm-3">@Html.DisplayFor(model => model.WebSite)</div>
+            </div>       
+        </div>  
+
+
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.Address)</b> </div>
+                <div class="col-sm-1"><b>:</b></div>
+                <div class="col-sm-3">@Html.DisplayFor(model => model.Address)</div>
+            </div>       
+        </div>  
+
+
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.Comments)</b> </div>
+                <div class="col-sm-1"><b>:</b></div>
+                <div class="col-sm-3">@Html.DisplayFor(model => model.Comments)</div>
+            </div>       
+        </div>  
+
+
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.BlockStartDate)</b> </div>
+                <div class="col-sm-1"><b>:</b></div>
+                <div class="col-sm-3">@Html.DisplayFor(model => model.BlockStartDate)</div>
+            </div>       
+        </div>  
+
+
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.BlockEndDate)</b> </div>
+                <div class="col-sm-1"><b>:</b></div>
+                <div class="col-sm-3">@Html.DisplayFor(model => model.BlockEndDate)</div>
+            </div>       
+        </div>  
+
+
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.BlockBlacklistReason)</b> </div>
+                <div class="col-sm-1"><b>:</b></div>
+                <div class="col-sm-3">@Html.DisplayFor(model => model.BlockBlacklistReason)</div>
+            </div>       
+        </div>  
+
+
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.DepartmentNumber)</b> </div>
+                <div class="col-sm-1"><b>:</b></div>
+                <div class="col-sm-3">@Html.DisplayFor(model => model.DepartmentNumber)</div>
+            </div>       
+        </div>  
+
+
+        <div class="list-group-item">
+		    <div class="row">
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.AuditDetail.CreatedEntryUser)</b></div>
+                <div class="col-sm-1"><b>:</b></div>
+                <div class="col-sm-3">@Model.AuditDetail.CreatedEntryUserDisplayName, on @Model.AuditDetail.CreatedDate.ToString("dd/MM/yyyy")</div>
+            </div>  
+        </div>
+
+        @if (Model.AuditDetail.LastModifiedEntryUserID != null)
+        {
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.AuditDetail.LastModifiedEntryUser)</b></div>
+                    <div class="col-sm-1"><b>:</b></div>
+                    <div class="col-sm-3">@Model.AuditDetail.LastModifiedEntryUserDisplayName, on @(Model.AuditDetail.LastModifiedDate?.ToString("dd/MM/yyyy"))</div>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>

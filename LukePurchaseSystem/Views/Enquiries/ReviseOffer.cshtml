@@ -1,0 +1,339 @@
+﻿@model LukeApps.GeneralPurchase.ViewModel.ReviseOfferVM
+@section CustomStyles {
+    @Styles.Render("~/Content/bdp")
+    @Styles.Render("~/Content/bootstrap-dropdown")
+}
+@{
+    ViewBag.Title = "Revise Offer";
+}
+
+<h2>Revise</h2>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Offer</h4>
+        @Html.HiddenFor(model => model.PreviousOfferID)
+        @Html.HiddenFor(model => model.EnquiryID)
+
+        <hr />
+        <div class="col-md-12">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingTwo">
+                    <h4 class="panel-title">
+                        <a id="basicCollapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                            Basic Section
+                            <span class="glyphicon glyphicon-chevron-up"></span>
+                        </a>
+                    </h4>
+                    <p>List of essential fields needed to register an offer</p>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+                    <div class="panel-body">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                    @Html.HiddenFor(model => model.CompanyID)
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.VendorResponse, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EnumDropDownListFor(model => model.VendorResponse, htmlAttributes: new { @class = "form-control chosen-select" })
+                                    @Html.ValidationMessageFor(model => model.VendorResponse, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("file", "Quotation", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <input name="Quotation" type="file" class="form-control" />
+                                </div>
+                            </div>
+
+                            <div id="SGPhasesGroup">
+                                <hr />
+                                <legend>Services / Goods (Scope Items)<br />@Html.ValidationMessageFor(model => model.ServicesGoods, "", new { @class = "text-danger" })</legend>
+
+                                <div id="new-SGPhase" class="set">
+                                    @foreach (var serviceArticle in Model.ServicesGoods)
+                                    {
+                                        Html.RenderPartial("_serviceArticle", serviceArticle);
+                                    }
+                                </div>
+                                <div>
+                                    <br />
+                                    <a id="addSGphase" name="addSGphase" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-plus"></span> Add a Article/Service</a>
+                                    <br />
+                                </div>
+                                <br />
+                                <hr />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.AgreedPaymentTerms, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-9">
+                                    @Html.LabelFor(model => model.AgreedPaymentTerms.Term, htmlAttributes: new { @class = "editor-label" })<br />
+                                    @Html.EditorFor(model => model.AgreedPaymentTerms.Term, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.AgreedPaymentTerms.Term, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.BidReceivedDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.BidReceivedDate, new { htmlAttributes = new { @class = "form-control dp" } })
+                                    @Html.ValidationMessageFor(model => model.BidReceivedDate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.GoodsBriefDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.GoodsBriefDescription, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.GoodsBriefDescription, "", new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model.TotalOfferValue)
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ReferenceNumber, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.ReferenceNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ReferenceNumber, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ExpiryDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.ExpiryDate, new { htmlAttributes = new { @class = "form-control dpF" } })
+                                    @Html.ValidationMessageFor(model => model.ExpiryDate, "", new { @class = "text-danger" })<br />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-2">
+                                    <input class="form-control " data-val-regex="Please Enter a Number of Days" data-val-regex-pattern="^[0-9]*$" id="NumberDays" name="NumberDays" type="text" value="">
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.Label("Validity (Days)")
+                                    @Html.ValidationMessage("NumberDays", new { @class = "text-danger" })<br />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.IsTermsConditionsAgreed, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-9">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.IsTermsConditionsAgreed, "NullableBooleanPending")
+                                        @Html.ValidationMessageFor(model => model.IsTermsConditionsAgreed, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.DeviationsInTermsAndConditions, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.DeviationsInTermsAndConditions, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.DeviationsInTermsAndConditions, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.IsCommerciallyAcceptable, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.IsCommerciallyAcceptable, "NullableBooleanPending")
+                                    @Html.ValidationMessageFor(model => model.IsCommerciallyAcceptable, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.IsTechnicallyAcceptable, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.IsTechnicallyAcceptable, "NullableBooleanPending")
+                                    @Html.ValidationMessageFor(model => model.IsTechnicallyAcceptable, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.TechnicalComments, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.TechnicalComments, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.TechnicalComments, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.DeliveryDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.DeliveryDate, new { htmlAttributes = new { @class = "form-control dpF" } })
+                                    @Html.ValidationMessageFor(model => model.DeliveryDate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.DeliveryTerms, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.DeliveryTerms, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.DeliveryTerms, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-12">
+                    <input type="submit" value="Create" class="btn btn-lg btn-primary" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index", new { id = Model.EnquiryID })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap-dp")
+    @Scripts.Render("~/bundles/bootstrap-dropdown")
+    @Scripts.Render("~/bundles/moment")
+    <script>
+
+        $(document).ready(function () {
+            $(".chosen-select").chosen({
+                search_contains: true,
+            });
+
+            var dp = dpDefaults;
+            dp.daysOfWeekDisabled = null;
+            $('.dp').datepicker(dp);
+
+            dp.endDate = null;
+            $('.dpF').datepicker(dp);
+            $('#NumberDays').val(moment($('#ExpiryDate').datepicker('getDate')).diff(moment($('#BidReceivedDate').datepicker('getDate')), 'days'));
+
+            $('#NumberDays').on('input', function () {
+                updateExpiryDate($(this));
+            });
+
+            function updateExpiryDate(control) {
+                var i = control.val();
+                if (i > 0) {
+                    console.log(moment($('#BidReceivedDate').datepicker('getDate')).add(i, 'days').format('YYYY-MM-DD'));
+                    $('#ExpiryDate').datepicker('update', moment($('#BidReceivedDate').datepicker('getDate')).add(i, 'days').format('YYYY-MM-DD'));
+                }
+            }
+
+            $('#BidReceivedDate').datepicker()
+                .on('changeDate', function (e) {
+                    updateExpiryDate($('#NumberDays'));
+                });
+        });
+
+        $(function () {
+
+            $('input:submit').click(function () {
+                var $button = this;
+                var oldValue = $button.value;
+                setTimeout(function () {
+                    $button.disabled = true;
+                    $button.value = 'Creating...';
+                    setTimeout(function () {
+                        $button.disabled = false;
+                        $button.value = oldValue;
+                    }, 500);
+                }, 0);
+            });
+
+        });
+
+        $('#SGPhasesGroup').on('click', '.deleteRow', function () {
+            $(this).closest('.contentRow').remove();
+            return false;
+        });
+
+        $('#addSGphase').on('click', function () {
+            $.ajax({
+                async: true,
+                cache: false,
+                url: '@Url.Action("AddNewServiceArticle", new { id = 0, cur = Model.CurrencyTraded })'
+            }).done(function (partialView) {
+                $('#new-SGPhase').append(partialView);
+                $.validator.unobtrusive.parseDynamicContent('#new-SGPhase');
+                asterisk();
+
+                //var dp = dpDefaults;
+                //dp.daysOfWeekDisabled = null;
+                //$('.dp').datepicker(dp);
+
+                //dp.endDate = null;
+                //$('.dpF').datepicker(dp);
+
+                $(".chosen-select").chosen({
+                    search_contains: true,
+                });
+            });
+        });
+
+        //function to initialize
+        $('.LumpSumCheck').each(function () {
+            action(this);
+        });
+
+        $('#SGPhasesGroup').on('change', '.LumpSumCheck', function () {
+            action(this);
+        });
+
+        function action(ctx) {
+            var value = $(ctx).prop('checked');
+            var closestContentRow = $(ctx).closest('.contentRow');
+            var unit = closestContentRow.find('.LumpSumUnit');
+            var quantity = closestContentRow.find('.LumpSumQ');
+            var unitLabel = closestContentRow.find('.LumpSumUnitLabel');
+            var quantityLabel = closestContentRow.find('.LumpSumQLabel');
+            var unitVer = closestContentRow.find('.LumpSumUnitVer');
+            var quantityVer = closestContentRow.find('.LumpSumQVer');
+            var unitPriceLabel = closestContentRow.find('.LumpSumUPLabel');
+            if (value) {
+                unit.val('LumpSum');
+                quantity.val('1');
+                unit.addClass('hide');
+                quantity.addClass('hide');
+                unitLabel.addClass('hide');
+                quantityLabel.addClass('hide');
+                unitVer.addClass('hide');
+                quantityVer.addClass('hide');
+                unitPriceLabel.text('LumpSum Price')
+            } else {
+
+                if (unit.val() == 'LumpSum') {
+                    unit.val('');
+                    quantity.val('');
+                }
+
+                unit.removeClass('hide');
+                quantity.removeClass('hide');
+                unitLabel.removeClass('hide');
+                quantityLabel.removeClass('hide');
+                unitVer.removeClass('hide');
+                quantityVer.removeClass('hide');
+                unitPriceLabel.text('Unit Price')
+            }
+        }
+    </script>
+}

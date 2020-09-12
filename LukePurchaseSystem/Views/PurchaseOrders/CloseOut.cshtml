@@ -1,0 +1,155 @@
+﻿@model BApps.Areas.ManagementReference.Models.Agreement
+@section CustomStyles {
+    @Styles.Render("~/Content/bdp")
+    @Styles.Render("~/Content/bootstrap-dropdown")
+}
+@{
+    ViewBag.Title = "Close Out";
+}
+
+<h2>Confirm Agreement Creation</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Type of Agreement:  @Html.DisplayFor(model => model.Offer.Enquiry.AgreementType)</h4>
+    <h2>Offer by @Html.DisplayFor(model => model.Company.CompanyName) in Enquiry @Html.DisplayFor(model => model.Offer.EnquiryID)</h2>
+    <hr />
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.AgreementID)
+
+    <div class="form-group">
+        <label class="control-label col-md-2">Agreement Value</label>
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.CommitedValue)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.IsCancelled, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.IsCancelled)
+                @Html.ValidationMessageFor(model => model.IsCancelled, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group" id="CancelReasonBox">
+        @Html.LabelFor(model => model.CancelReason, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.CancelReason, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CancelReason, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ExecutionCompleted, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.ExecutionCompleted)
+                @Html.ValidationMessageFor(model => model.ExecutionCompleted, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.PerformanceEvaluationRatingsCurrentAgreement, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.LabelFor(model => model.PerformanceEvaluationRatingsCurrentAgreement.CommencePerformance, htmlAttributes: new { @class = "editor-label" })
+            @Html.EditorFor(model => model.PerformanceEvaluationRatingsCurrentAgreement.CommencePerformance, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PerformanceEvaluationRatingsCurrentAgreement.CommencePerformance, "", new { @class = "text-danger" })
+            @Html.LabelFor(model => model.PerformanceEvaluationRatingsCurrentAgreement.EnsureContinuity, htmlAttributes: new { @class = "editor-label" })
+            @Html.EditorFor(model => model.PerformanceEvaluationRatingsCurrentAgreement.EnsureContinuity, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PerformanceEvaluationRatingsCurrentAgreement.EnsureContinuity, "", new { @class = "text-danger" })
+            @Html.LabelFor(model => model.PerformanceEvaluationRatingsCurrentAgreement.SafetyPerformance, htmlAttributes: new { @class = "editor-label" })
+            @Html.EditorFor(model => model.PerformanceEvaluationRatingsCurrentAgreement.SafetyPerformance, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PerformanceEvaluationRatingsCurrentAgreement.SafetyPerformance, "", new { @class = "text-danger" })
+            @Html.LabelFor(model => model.PerformanceEvaluationRatingsCurrentAgreement.CommunicationsCooperation, htmlAttributes: new { @class = "editor-label" })
+            @Html.EditorFor(model => model.PerformanceEvaluationRatingsCurrentAgreement.CommunicationsCooperation, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PerformanceEvaluationRatingsCurrentAgreement.CommunicationsCooperation, "", new { @class = "text-danger" })
+            @Html.LabelFor(model => model.PerformanceEvaluationRatingsCurrentAgreement.DeliveryTiming, htmlAttributes: new { @class = "editor-label" })
+            @Html.EditorFor(model => model.PerformanceEvaluationRatingsCurrentAgreement.DeliveryTiming, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PerformanceEvaluationRatingsCurrentAgreement.DeliveryTiming, "", new { @class = "text-danger" })
+            @Html.LabelFor(model => model.PerformanceEvaluationRatingsCurrentAgreement.ServicesAccuracy, htmlAttributes: new { @class = "editor-label" })
+            @Html.EditorFor(model => model.PerformanceEvaluationRatingsCurrentAgreement.ServicesAccuracy, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PerformanceEvaluationRatingsCurrentAgreement.ServicesAccuracy, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.CertificationReleaseApproved, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.CertificationReleaseApproved, "NullableBooleanPending")
+                @Html.ValidationMessageFor(model => model.CertificationReleaseApproved, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.AgreementClosed, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.AgreementClosed, "NullableBooleanPending")
+                @Html.ValidationMessageFor(model => model.AgreementClosed, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Close Agreement" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index", new { id = Model.AgreementID })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+        function checkCancelCheckBox() {
+            console.log('Checking IsCancelled CheckBox..');
+            console.log($('#IsCancelled').is(":checked"));
+            if ($('#IsCancelled').is(":checked")) {
+                $('.notToCancel').fadeOut();
+                $('#CancelReasonBox').fadeIn();
+            }
+            else {
+                $('.notToCancel').fadeIn();
+                $('#CancelReasonBox').fadeOut();
+            }
+        }
+
+        $(function () {
+            checkCancelCheckBox();           
+
+            $('#IsCancelled').change(function () {
+                checkCancelCheckBox();
+            });
+            $('input:submit').click(function () {
+                var $button = this;
+                var oldValue = $button.value;
+                setTimeout(function () {
+                    $button.disabled = true;
+                    $button.value = 'Closing...';
+                    setTimeout(function () {
+                        $button.disabled = false;
+                        $button.value = oldValue;
+                    }, 500);
+                }, 0);
+            });
+
+        });
+    </script>
+}

@@ -1,0 +1,252 @@
+﻿@model IEnumerable<LukeApps.CurrencyRates.Models.Currency>
+@section CustomStyles {
+    @Styles.Render("~/Content/dt-basic")
+
+}
+@{
+    ViewBag.Title = "Currencies";
+}
+
+<h2>Currencies</h2>
+
+<table id="dtTable" class="table table-striped table-bordered" width="100%">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CurrencyID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CurrencyCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CurrencyRateEuro)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuditDetail.CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuditDetail.CreatedEntryUser)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuditDetail.LastModifiedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuditDetail.LastModifiedEntryUser)
+            </th>
+        </tr>
+    </thead>
+
+    <tfoot>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CurrencyID)
+            </th>
+            <th>
+                @Styles.Render("~/Content/dt-basic")
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CurrencyCode);
+
+
+#line default
+#line hidden
+
+#line 6 "C:\Users\vishv\source\repos\LukeApps\LukePurchaseSystem\Views\Currencies\Index.cshtml"
+                __o = Html.DisplayNameFor(model => model.CurrencyRateDefault);
+
+
+#line default
+#line hidden
+
+#line 7 "C:\Users\vishv\source\repos\LukeApps\LukePurchaseSystem\Views\Currencies\Index.cshtml"
+                __o = Html.DisplayNameFor(model => model.AuditDetail.CreatedDate);
+
+
+#line default
+#line hidden
+
+#line 8 "C:\Users\vishv\source\repos\LukeApps\LukePurchaseSystem\Views\Currencies\Index.cshtml"
+                __o = Html.DisplayNameFor(model => model.AuditDetail.CreatedEntryUser);
+
+
+#line default
+#line hidden
+
+#line 9 "C:\Users\vishv\source\repos\LukeApps\LukePurchaseSystem\Views\Currencies\Index.cshtml"
+                __o = Html.DisplayNameFor(model => model.AuditDetail.LastModifiedDate);
+
+
+#line default
+#line hidden
+
+#line 10 "C:\Users\vishv\source\repos\LukeApps\LukePurchaseSystem\Views\Currencies\Index.cshtml"
+                __o = Html.DisplayNameFor(model => model.AuditDetail.LastModifiedEntryUser);
+
+
+#line default
+#line hidden
+
+#line 11 "C:\Users\vishv\source\repos\LukeApps\LukePurchaseSystem\Views\Currencies\Index.cshtml"
+                __o = Html.DisplayNameFor(model => model.CurrencyID);
+
+
+#line default
+#line hidden
+
+#line 12 "C:\Users\vishv\source\repos\LukeApps\LukePurchaseSystem\Views\Currencies\Index.cshtml"
+                __o = Html.DisplayNameFor(model => model.CurrencyCode);
+
+
+#line default
+#line hidden
+
+#line 13 "C:\Users\vishv\source\repos\LukeApps\LukePurchaseSystem\Views\Currencies\Index.cshtml"
+                __o = Html.DisplayNameFor(model => model.CurrencyRateDefault)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuditDetail.CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuditDetail.CreatedEntryUser)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuditDetail.LastModifiedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuditDetail.LastModifiedEntryUser)
+            </th>
+        </tr>
+    </tfoot>
+</table>
+
+<div>
+    <a href="/ManagementReference" class="btn btn-default">Back to Dashboard</a>
+</div>
+
+<div id="viewModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Summary</h4>
+            </div>
+            <div class="modal-body">
+                <div id="viewContainer" style="min-height:200px">
+                    <div id="spinner">
+                        <span>Loading Details</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/datatables")
+
+    @if (@ViewBag.ModalID != null)
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                showmodal(@ViewBag.ModalID)
+            });
+        </script>
+    }
+
+    @if (@ViewBag.ErrorMessage != null)
+    {
+        <script type="text/javascript">
+            $.notify('"' + @ViewBag.ErrorMessage + '"', { type: 'warning' });
+        </script>
+    }
+
+    <script type="text/javascript">
+
+        var rootURL = '@Url.Action("/")';
+        var spinnerVisible = false;
+
+        function pad(str, max) {
+            str = str.toString();
+            return str.length < max ? pad("0" + str, max) : str;
+        }
+
+        $.extend($.fn.dataTable.defaults, {
+            "rowCallback": function (row, data, index) {
+                $('td:eq(0)', row).html('<a class="btn btn-primary btn-sm" onClick="showmodal(\'' + data.CurrencyCodeID + '\')" data-toggle="tooltip" data-placement="bottom" title="View" data-animation="true"><span class="glyphicon glyphicon-eye-open"></span>  <b>' + pad(data.CurrencyID, 3) + '</b></a>');
+            }
+        });
+
+        function showmodal(id) {
+            var urlProject = rootURL + 'Details';
+            var urlValue = urlProject + "?id=" + id;
+
+            console.log(urlValue);
+            showProgress();
+            $.ajax({
+                async: true,
+                type: "GET",
+                cache: false,
+                url: urlValue,
+            }).done(function (data, textStatus, jqXHR) {
+                console.log('success');
+                $('#viewContainer').html(data);
+                $('#viewModal').modal('show');
+            }).fail(function () {
+                $.notify('ID ' + id + 'does not exist', { type: 'warning' });
+            });
+        };
+
+        //Define Table
+        var table = $('#dtTable').DataTable({
+            scrollY: 350,
+            scrollX: true,
+            deferRender: true,
+            scroller: true,
+            "ajax": rootURL + 'getJSON',
+            "columns": [
+                    { "data": "CurrencyID" },
+                    { "data": "CurrencyCode" },
+                    { "data": "CurrencyRateEuro" },
+                    { "data": "AuditDetail_CreatedDate" },
+                    { "data": "AuditDetail_CreatedEntryUser" },
+                    { "data": "AuditDetail_LastModifiedDate" },
+                    { "data": "AuditDetail_LastModifiedEntryUser" },
+            ],
+            lengthChange: false,
+            "processing": true,
+            columnDefs: [
+                {
+                    "targets": [-1],
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    "targets": [-2],
+                    "visible": false
+                },
+            ],
+            select: {
+                style: 'single'
+            },
+            order: [0, 'desc'],
+        });
+
+        $('#dtTable_wrapper').on('draw.dt', function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+        function showProgress() {
+            if (!spinnerVisible) {
+                $("div#spinner").fadeIn();
+                spinnerVisible = true;
+            }
+            setTimeout(function () {
+                $("#spinner span").fadeOut(function () {
+                    $(this).text("Please Wait")
+                }).fadeIn();
+            }, 3000);
+        };
+    </script>
+
+    @Scripts.Render("~/bundles/dt-button")
+}

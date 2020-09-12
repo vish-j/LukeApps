@@ -1,0 +1,21 @@
+﻿@model LukeApps.Common.Models.AuditEvent
+
+<div class="shadowOnHover">
+    <time>@Model.LocalDate</time>
+    <p><span class="timelineType">@Model.Type (@Model.RecordID) |</span> <span class="timelineUser">@Model.Name </span></p>
+
+    @foreach (var detail in Model.Details)
+    {
+        <p>
+            <b>@detail.Key : </b>
+            @if (detail.Key.Contains("Key"))
+            {
+                <span class="possiblefiles">@detail.Value</span>
+            }
+            else
+            {
+                @detail.Value
+            }
+        </p>
+    }
+</div>

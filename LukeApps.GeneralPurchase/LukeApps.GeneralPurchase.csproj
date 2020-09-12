@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8151311E-C4A2-4292-B30D-97243C955D9E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LukeApps.GeneralPurchase</RootNamespace>
+    <AssemblyName>LukeApps.GeneralPurchase</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PhilApprovalFlow, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PhilApprovalFlow.1.0.8-beta\lib\netstandard2.0\PhilApprovalFlow.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.4.7.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Classes\Address.cs" />
+    <Compile Include="Classes\PaymentTerms.cs" />
+    <Compile Include="Enums\CompanyStatus.cs" />
+    <Compile Include="Enums\Country.cs" />
+    <Compile Include="Enums\PaymentStatus.cs" />
+    <Compile Include="Enums\PurchaseCategory.cs" />
+    <Compile Include="Enums\StatusBidSummary.cs" />
+    <Compile Include="Enums\VendorResponse.cs" />
+    <Compile Include="Models\Budget.cs" />
+    <Compile Include="Models\EnquiryTransition.cs" />
+    <Compile Include="Models\ExpenseClaimTransition.cs" />
+    <Compile Include="Models\InvoiceItem.cs" />
+    <Compile Include="Models\InvoiceTransition.cs" />
+    <Compile Include="Enums\PaymentMethod.cs" />
+    <Compile Include="Models\PurchaseOrderTransition.cs" />
+    <Compile Include="Models\BankAccount.cs" />
+    <Compile Include="Models\Company.cs" />
+    <Compile Include="Models\CompanyFocalPoint.cs" />
+    <Compile Include="Models\ExpenseClaim.cs" />
+    <Compile Include="Models\ExpenseClaimItem.cs" />
+    <Compile Include="Models\Invoice.cs" />
+    <Compile Include="Models\PurchaseOrder.cs" />
+    <Compile Include="Models\Enquiry.cs" />
+    <Compile Include="Models\Offer.cs" />
+    <Compile Include="Models\ScopeItem.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Models\PurchaseOrderItem.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LukeApps.AccountingDocumentor\LukeApps.AccountingDocumentor.csproj">
+      <Project>{4c3761df-4843-49fa-b405-573fa2a8f3ae}</Project>
+      <Name>LukeApps.AccountingDocumentor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LukeApps.ApprovalProcess\LukeApps.ApprovalProcess.csproj">
+      <Project>{68b118f5-6fc4-4d1f-a37e-5909609ec314}</Project>
+      <Name>LukeApps.ApprovalProcess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LukeApps.Common\LukeApps.Common.csproj">
+      <Project>{2A7DE86F-2FE9-4975-BBC0-DECD1F33BD15}</Project>
+      <Name>LukeApps.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LukeApps.CurrencyRates\LukeApps.CurrencyRates.csproj">
+      <Project>{40BBDFB4-C7DE-42B7-B55D-6628DE3D84A2}</Project>
+      <Name>LukeApps.CurrencyRates</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LukeApps.EmployeeData\LukeApps.EmployeeData.csproj">
+      <Project>{17F1D166-B41A-411D-9E3A-F370EF12CC9F}</Project>
+      <Name>LukeApps.EmployeeData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LukeApps.FileHandling\LukeApps.FileHandling.csproj">
+      <Project>{8E39FA11-F623-4523-939E-0084F5D051F9}</Project>
+      <Name>LukeApps.FileHandling</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LukeApps.TrackingExtended\LukeApps.TrackingExtended.csproj">
+      <Project>{FABF8841-798F-4F4F-868A-5A6DBF4787A7}</Project>
+      <Name>LukeApps.TrackingExtended</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

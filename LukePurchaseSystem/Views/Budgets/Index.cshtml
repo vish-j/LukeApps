@@ -1,0 +1,143 @@
+﻿@model IEnumerable<LukeApps.GeneralPurchase.Models.Budget>
+@section CustomStyles {
+    @Styles.Render("~/Content/dt-basic")
+
+}
+@{
+    ViewBag.Title = "Budgets";
+}
+
+<h2>Budgets</h2>
+
+<table id="dtTable" class="table table-striped table-bordered" width="100%">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BudgetID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BudgetName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BudgetAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuditDetail.CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuditDetail.CreatedEntryUser)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuditDetail.LastModifiedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuditDetail.LastModifiedEntryUser)
+            </th>
+        </tr>
+    </thead>
+
+    <tfoot>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BudgetID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BudgetName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BudgetAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuditDetail.CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuditDetail.CreatedEntryUser)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuditDetail.LastModifiedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuditDetail.LastModifiedEntryUser)
+            </th>
+        </tr>
+    </tfoot>
+</table>
+
+<div id="viewModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Summary</h4>
+            </div>
+            <div class="modal-body">
+                <div id="viewContainer" style="min-height:200px">
+                    <div id="spinner">
+                        <span>Loading Details</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/indexHelper")
+    @Scripts.Render("~/bundles/auditTrail")
+
+    @if (@ViewBag.ModalID != null)
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                showmodal(@ViewBag.ModalID)
+            });
+        </script>
+    }
+
+    @if (@ViewBag.ErrorMessage != null)
+    {
+        <script type="text/javascript">
+            $.notify('@ViewBag.ErrorMessage', { type: 'warning' });
+        </script>
+    }
+
+    <script type="text/javascript">
+		var auditTrailURL = '@Url.Action("Trail", "Audit", null)';
+        var rootURL = '@Url.Action("/")';
+        IndexConfig.dtConfig.ajax = rootURL + 'GetJSON';
+        IndexConfig.dtConfig.columns = [
+				{ "data": "BudgetID" },
+				{ "data": "BudgetName" },
+				{ "data": "BudgetAmount" },
+				{ "data": "AuditDetail_CreatedDate" },
+                { "data": "AuditDetail_CreatedEntryUser" },
+                { "data": "AuditDetail_LastModifiedDate" },
+                { "data": "AuditDetail_LastModifiedEntryUser" },
+        ];
+
+		IndexConfig.dtConfig.rowCallback = function (row, data, index) {
+                 $('td:eq(0)', row).html('<a class="btn btn-primary btn-sm" onClick="showmodal(' + data.BudgetID + ')" data-toggle="tooltip" data-placement="bottom" title="View" data-animation="true"><span class="glyphicon glyphicon-eye-open"></span>  <b>' + pad(data.BudgetID, 3) + '</b></a>');
+            }
+
+        //Define Table
+        var table = $('#dtTable').DataTable(IndexConfig.dtConfig);
+
+        $('#dtTable_wrapper').on('draw.dt', function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+
+    @Scripts.Render("~/bundles/dt-button")
+
+    <script type="text/javascript">
+
+        table.button().add(1, {
+            action: function (e, dt, button, config) {
+                window.location.href = rootURL + 'Create';
+            },
+            text: 'Create',
+            className: 'btn-primary'
+        });
+    </script>
+}

@@ -1,0 +1,190 @@
+﻿@model IEnumerable<LukeApps.GeneralPurchase.Models.Invoice>
+@section CustomStyles {
+    @Styles.Render("~/Content/dt-basic")
+    <style>
+        .modal-body {
+            max-width: 100%;
+            max-height: 900px;
+            overflow-y: auto;
+        }
+
+        .modal-dialog {
+            width: 90% !important;
+        }
+
+        .Approved {
+            background: rgb(216, 255, 234) !IMPORTANT;
+        }
+
+            .Approved.selected {
+                background: rgb(107, 204, 152) !IMPORTANT;
+            }
+
+        .Reject {
+            background: rgb(255, 216, 216) !IMPORTANT;
+        }
+
+            .Reject.selected {
+                background: rgb(204, 107, 107) !IMPORTANT;
+            }
+    </style>
+}
+@{
+    ViewBag.Title = "Invoices";
+}
+
+<h2>Invoices</h2>
+
+<table id="dtTable" class="table table-striped table-bordered" width="100%">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.InvoiceID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BudgetID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OriginatorID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReviewerID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApproverID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Documents)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuditDetail.CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuditDetail.CreatedEntryUser)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuditDetail.LastModifiedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuditDetail.LastModifiedEntryUser)
+            </th>
+        </tr>
+    </thead>
+
+    <tfoot>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.InvoiceID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BudgetID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OriginatorID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReviewerID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApproverID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Documents)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuditDetail.CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuditDetail.CreatedEntryUser)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuditDetail.LastModifiedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuditDetail.LastModifiedEntryUser)
+            </th>
+        </tr>
+    </tfoot>
+</table>
+
+<div id="viewModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Summary</h4>
+            </div>
+            <div class="modal-body">
+                <div id="viewContainer" style="min-height:200px">
+                    <div id="spinner">
+                        <span>Loading Details</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/indexHelper")
+    @Scripts.Render("~/bundles/auditTrail")
+
+    @if (@ViewBag.ModalID != null)
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                showmodal(@ViewBag.ModalID)
+            });
+        </script>
+    }
+
+    @if (@ViewBag.ErrorMessage != null)
+    {
+        <script type="text/javascript">
+            $.notify('@ViewBag.ErrorMessage', { type: 'warning' });
+        </script>
+    }
+
+    <script type="text/javascript">
+		var auditTrailURL = '@Url.Action("Trail", "Audit", null)';
+        var rootURL = '@Url.Action("/")';
+        IndexConfig.dtConfig.ajax = rootURL + 'GetJSON';
+        IndexConfig.dtConfig.columns = [
+				{ "data": "InvoiceID" },
+				{ "data": "BudgetID" },
+				{ "data": "OriginatorID" },
+				{ "data": "ReviewerID" },
+				{ "data": "ApproverID" },
+				{ "data": "Documents" },
+				{ "data": "AuditDetail_CreatedDate" },
+                { "data": "AuditDetail_CreatedEntryUser" },
+                { "data": "AuditDetail_LastModifiedDate" },
+                { "data": "AuditDetail_LastModifiedEntryUser" },
+        ];
+
+		IndexConfig.dtConfig.rowCallback = function (row, data, index) {
+                 $('td:eq(0)', row).html('<a class="btn btn-primary btn-sm" onClick="showmodal(' + data.InvoiceID + ')" data-toggle="tooltip" data-placement="bottom" title="View" data-animation="true"><span class="glyphicon glyphicon-eye-open"></span>  <b>' + pad(data.InvoiceID, 3) + '</b></a>');
+            }
+
+        //Define Table
+        var table = $('#dtTable').DataTable(IndexConfig.dtConfig);
+
+        $('#dtTable_wrapper').on('draw.dt', function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+
+    @Scripts.Render("~/bundles/dt-button")
+
+    <script type="text/javascript">
+
+        table.button().add(1, {
+            action: function (e, dt, button, config) {
+                window.location.href = rootURL + 'Create';
+            },
+            text: 'Create',
+            className: 'btn-primary'
+        });
+    </script>
+}

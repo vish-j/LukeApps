@@ -1,0 +1,226 @@
+﻿@model LukeApps.GeneralPurchase.ViewModel.EnquireNewVendorVM
+@section CustomStyles {
+    @Styles.Render("~/Content/bdp")
+    @Styles.Render("~/Content/bootstrap-dropdown")
+}
+@{
+    ViewBag.Title = "Add Offer";
+}
+
+<h2>Enquire New Vendor</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Email will be sent to the selected vendor</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.EnquiryID)
+    @Html.HiddenFor(model => model.VendorResponse)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.CompanyID, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.CompanyID, (SelectList)ViewBag.Companies, htmlAttributes: new { @class = "form-control chosen-select offerCompany" })
+            @Html.ValidationMessageFor(model => model.CompanyID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <hr />
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Enquire" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div class="col-md-12">
+    <div>
+        @Html.ActionLink("Back to List", "Index", new { id = Model.EnquiryID })
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap-dp")
+    @Scripts.Render("~/bundles/bootstrap-dropdown")
+    @Scripts.Render("~/bundles/moment")
+
+    <script>
+        $(document).ready(function () {
+            $(".chosen-select").chosen({
+                search_contains: true,
+            });
+
+            var dp = dpDefaults;
+            dp.daysOfWeekDisabled = null;
+            $('.dp').datepicker(dp);
+
+            dp.endDate = null;
+            $('.dpF').datepicker(dp);
+
+            updateNumberDays();
+            $('#NumberDays').on('input', function () {
+                updateExpiryDate($(this));
+            });
+
+            function updateExpiryDate(control) {
+                var i = control.val();
+                if (i > 0) {
+                    console.log(moment($('#BidReceivedDate').datepicker('getDate')).add(i, 'days').format('YYYY-MM-DD'));
+                    $('#ExpiryDate').datepicker('update', moment($('#BidReceivedDate').datepicker('getDate')).add(i, 'days').format('YYYY-MM-DD'));
+                }
+            }
+
+            $('#BidReceivedDate').datepicker()
+                .on('changeDate', function (e) {
+                    updateExpiryDate($('#NumberDays'));
+                });
+
+            $('#ExpiryDate').datepicker()
+                .on('changeDate', function (e) {
+                    updateNumberDays();
+                });
+            function updateNumberDays() {
+                var num = moment($('#ExpiryDate').val()).diff($('#BidReceivedDate').val(), 'days');
+                if (!isNaN(parseFloat(num)) && isFinite(num)) {
+                    $('#NumberDays').val(num);
+                }
+                else {
+                    $('#NumberDays').val('');
+                }
+            }
+
+            $('input:submit').click(function () {
+                var $button = this;
+                var oldValue = $button.value;
+                setTimeout(function () {
+                    $button.disabled = true;
+                    $button.value = 'Creating...';
+                    setTimeout(function () {
+                        $button.disabled = false;
+                        $button.value = oldValue;
+                    }, 500);
+                }, 0);
+            });
+
+        });
+
+        $('#SGPhasesGroup').on('click', '.deleteRow', function () {
+            $(this).closest('.contentRow').remove();
+            return false;
+        });
+
+        $('#MPhasesGroup').on('click', '.deleteRow', function () {
+            $(this).closest('.contentRow').remove();
+            return false;
+        });
+
+        $('#addSGphase').on('click', function () {
+            $.ajax({
+                async: true,
+                cache: false,
+                url: '@Url.Action("AddNewServiceArticle", new { id = 0, cur = 0 })'
+            }).done(function (partialView) {
+                $('#new-SGPhase').append(partialView);
+                $.validator.unobtrusive.parseDynamicContent('#new-SGPhase');
+                asterisk();
+
+                //var dp = dpDefaults;
+                //dp.daysOfWeekDisabled = null;
+                //$('.dp').datepicker(dp);
+
+                //dp.endDate = null;
+                //$('.dpF').datepicker(dp);
+
+                $(".chosen-select").chosen({
+                    search_contains: true,
+                });
+            });
+        });
+
+        $('#addMphase').on('click', function () {
+            $.ajax({
+                async: true,
+                cache: false,
+                url: '@Url.Action("AddNewMilestone", new { id = 0 })'
+            }).done(function (partialView) {
+                $('#new-MPhase').append(partialView);
+                $.validator.unobtrusive.parseDynamicContent('#new-MPhase');
+                asterisk();
+            });
+        });
+
+        //function to initialize
+        $('.LumpSumCheck').each(function () {
+            action(this);
+        });
+
+        $('#SGPhasesGroup').on('change', '.LumpSumCheck', function () {
+            action(this);
+        });
+
+        function action(ctx) {
+            var value = $(ctx).prop('checked');
+            var closestContentRow = $(ctx).closest('.contentRow');
+            var unit = closestContentRow.find('.LumpSumUnit');
+            var quantity = closestContentRow.find('.LumpSumQ');
+            var unitLabel = closestContentRow.find('.LumpSumUnitLabel');
+            var quantityLabel = closestContentRow.find('.LumpSumQLabel');
+            var unitVer = closestContentRow.find('.LumpSumUnitVer');
+            var quantityVer = closestContentRow.find('.LumpSumQVer');
+            var unitPriceLabel = closestContentRow.find('.LumpSumUPLabel');
+            if (value) {
+                unit.val('LumpSum');
+                quantity.val('1');
+                unit.addClass('hide');
+                quantity.addClass('hide');
+                unitLabel.addClass('hide');
+                quantityLabel.addClass('hide');
+                unitVer.addClass('hide');
+                quantityVer.addClass('hide');
+                unitPriceLabel.text('LumpSum Price')
+            }
+            else {
+                if (unit.val() === 'LumpSum') {
+                    unit.val('');
+                    quantity.val('');
+                }
+                unit.removeClass('hide');
+                quantity.removeClass('hide');
+                unitLabel.removeClass('hide');
+                quantityLabel.removeClass('hide');
+                unitVer.removeClass('hide');
+                quantityVer.removeClass('hide');
+                unitPriceLabel.text('Unit Price')
+            }
+        }
+
+        $('#basicCollapse').click(function () {
+            $(this).find('span').toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
+        });
+
+        $('#extensiveCollapse').click(function () {
+            $(this).find('span').toggleClass("glyphicon-remove").toggleClass("glyphicon-ok");
+        });
+
+        $('#extensiveCollapse').click(function (e) {
+            if ($('#collapseOne').hasClass('in')) {
+                if (confirm('The fields will be cleared. Are you sure?')) {
+                    $('#collapseOne').find('input, select, textarea').val('');
+                    $('#collapseOne > .chosen-select').val('').trigger('chosen:updated');
+                    $.each($('.contentRow'), function () {
+                        console.log(this);
+                        $(this).find('.deleteRow').click();
+                    });
+                } else {
+                    e.preventDefault(); // to stop the page jump to the anchor target.
+                    e.stopPropagation();
+                }
+            }
+        });
+    </script>
+}

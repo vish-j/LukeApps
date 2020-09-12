@@ -1,0 +1,23 @@
+﻿@using LukeApps.EmployeeData;
+@model Employee
+
+@if (Model != null)
+{
+    <div class="display-label">Employee Number</div>
+    <div class="display-field">@(Model.Username)</div>
+    <div class="display-label">Name</div>
+    <div class="display-field">@(Model.Summary)</div>
+    if (Model.UserStatus != UserStatus.Active)
+    {
+        <div class="display-label">Status</div>
+        <div class="display-field">@(Model.UserStatus.GetDisplay())</div>
+    }
+    <div class="display-label">Job Title</div>
+    <div class="display-field">@(Model.JobTitle)</div>
+    <div class="display-label">Department Number</div>
+    <div class="display-field">@(Model.DepartmentNumber)</div>
+}
+else
+{
+    <text>-</text>
+}

@@ -1,0 +1,13 @@
+﻿@using LukeApps.CurrencyRates;
+@using LukeApps.Common.Helpers;
+
+@model Price
+@if (Model != null)
+{
+    @Model.CurrencyCode.GetDisplay() @Model.Value
+}
+else
+{
+    <text>-</text>
+}
+

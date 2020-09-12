@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{68B118F5-6FC4-4D1F-A37E-5909609EC314}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LukeApps.ApprovalProcess</RootNamespace>
+    <AssemblyName>LukeApps.ApprovalProcess</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PhilApprovalFlow, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PhilApprovalFlow.1.0.8-beta\lib\netstandard2.0\PhilApprovalFlow.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApprovalExtensions.cs" />
+    <Compile Include="Attributes\DocumentPAFPathAttribute.cs" />
+    <Compile Include="Classes\Transition.cs" />
+    <Compile Include="Interfaces\IPAFMatrix.cs" />
+    <Compile Include="Interfaces\ITransition.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\DecisionVM.cs" />
+    <Compile Include="ViewModels\RequestVM.cs" />
+    <Compile Include="ViewModels\ReviewerVM.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LukeApps.AlertHandling\LukeApps.AlertHandling.csproj">
+      <Project>{bf7455dc-f767-46fe-9261-2a2f191e67e1}</Project>
+      <Name>LukeApps.AlertHandling</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LukeApps.Authorization\LukeApps.Authorization.csproj">
+      <Project>{5bf71fb3-78b6-4a52-8a8b-90d6d4ced78e}</Project>
+      <Name>LukeApps.Authorization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LukeApps.Common\LukeApps.Common.csproj">
+      <Project>{2a7de86f-2fe9-4975-bbc0-decd1f33bd15}</Project>
+      <Name>LukeApps.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LukeApps.EmailHandling\LukeApps.EmailHandling.csproj">
+      <Project>{18d250e8-f370-4a7f-8283-82e26a0e5f51}</Project>
+      <Name>LukeApps.EmailHandling</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LukeApps.FileHandling\LukeApps.FileHandling.csproj">
+      <Project>{8e39fa11-f623-4523-939e-0084f5d051f9}</Project>
+      <Name>LukeApps.FileHandling</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LukeApps.EmployeeData\LukeApps.EmployeeData.csproj">
+      <Project>{17f1d166-b41a-411d-9e3a-f370ef12cc9f}</Project>
+      <Name>NSCPurchaseSystem.NSCData.DAL</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

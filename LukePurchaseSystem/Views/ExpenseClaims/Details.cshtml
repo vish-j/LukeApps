@@ -1,0 +1,117 @@
+﻿@model LukeApps.GeneralPurchase.Models.ExpenseClaim
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+
+<div>
+    <h4>ExpenseClaim</h4>
+	<hr />
+	<p>   
+		@Html.ActionLink("Edit", "Edit", new { id = Model.GetID() }, new { @class = "btn btn-sm btn-default" }) <text>|</text>
+		@Html.ActionLink("Delete", "Delete", new { id = Model.GetID() }, new { @class = "btn btn-sm btn-default" }) <text>|</text>
+	</p>
+	<p class="pull-right text-right">
+        <a class="btn btn-sm btn-default" onclick="gotoAuditTrail()">Audit Trail</a>
+    </p>
+    <hr />
+    <div class="list-group">
+
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.ExpenseClaimID)</b> </div>
+                <div class="col-sm-1"><b>:</b></div>
+                <div class="col-sm-3">@Html.DisplayFor(model => model.ExpenseClaimID)</div>
+            </div>       
+        </div>  
+
+
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.RequestDate)</b> </div>
+                <div class="col-sm-1"><b>:</b></div>
+                <div class="col-sm-3">@Html.DisplayFor(model => model.RequestDate)</div>
+            </div>       
+        </div>  
+
+
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.BankAccountNumber)</b> </div>
+                <div class="col-sm-1"><b>:</b></div>
+                <div class="col-sm-3">@Html.DisplayFor(model => model.BankAccountNumber)</div>
+            </div>       
+        </div>  
+
+
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.OriginatorID)</b> </div>
+                <div class="col-sm-1"><b>:</b></div>
+                <div class="col-sm-3">@Html.DisplayFor(model => model.OriginatorID)</div>
+            </div>       
+        </div>  
+
+
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.ReviewerID)</b> </div>
+                <div class="col-sm-1"><b>:</b></div>
+                <div class="col-sm-3">@Html.DisplayFor(model => model.ReviewerID)</div>
+            </div>       
+        </div>  
+
+
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.ApproverID)</b> </div>
+                <div class="col-sm-1"><b>:</b></div>
+                <div class="col-sm-3">@Html.DisplayFor(model => model.ApproverID)</div>
+            </div>       
+        </div>  
+
+
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.PaymentMethod)</b> </div>
+                <div class="col-sm-1"><b>:</b></div>
+                <div class="col-sm-3">@Html.DisplayFor(model => model.PaymentMethod)</div>
+            </div>       
+        </div>  
+
+
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.SupportingDocuments)</b> </div>
+                <div class="col-sm-1"><b>:</b></div>
+                <div class="col-sm-3">@Html.DisplayFor(model => model.SupportingDocuments)</div>
+            </div>       
+        </div>  
+
+
+        <div class="list-group-item">
+		    <div class="row">
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.AuditDetail.CreatedEntryUser)</b></div>
+                <div class="col-sm-1"><b>:</b></div>
+                <div class="col-sm-3">@Model.AuditDetail.CreatedEntryUserDisplayName, on @Model.AuditDetail.CreatedDate.ToString("dd/MM/yyyy")</div>
+            </div>  
+        </div>
+
+        @if (Model.AuditDetail.LastModifiedEntryUserID != null)
+        {
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.AuditDetail.LastModifiedEntryUser)</b></div>
+                    <div class="col-sm-1"><b>:</b></div>
+                    <div class="col-sm-3">@Model.AuditDetail.LastModifiedEntryUserDisplayName, on @(Model.AuditDetail.LastModifiedDate?.ToString("dd/MM/yyyy"))</div>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
+
+

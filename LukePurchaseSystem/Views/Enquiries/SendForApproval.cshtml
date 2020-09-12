@@ -1,0 +1,155 @@
+﻿@model LukeApps.GeneralPurchase.Models.Enquiry
+
+@{
+    ViewBag.Title = "Send Enquiry for Approval";
+}
+
+<h2>Request Approval</h2>
+
+<h3>Are you sure you want to Send For this for Approval?</h3>
+<div>
+    <h4>Enquiry</h4>
+    <hr />
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Request" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index", new { id = Model.EnquiryID })
+        </div>
+    }
+
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnquiryNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnquiryNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProjectNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProposalNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProposalNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SubjectOfEnquiry)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SubjectOfEnquiry)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AgreementType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AgreementType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsSingleSourceJustiﬁcationSignedAvailable)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsSingleSourceJustiﬁcationSignedAvailable)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReceiptofRequestforpurchaseDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReceiptofRequestforpurchaseDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestOriginatorPurchase)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RequestOriginatorPurchase.Summary)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DedicatedRepresentative)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DedicatedRepresentative.Summary)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IssueEnquiryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IssueEnquiryDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClosingEnquiryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClosingEnquiryDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ExtensionEnquiryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExtensionEnquiryDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StatusBidSummary)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StatusBidSummary)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AuditDetail.CreatedEntryUser)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AuditDetail.CreatedEntryUser)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AuditDetail.LastModifiedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AuditDetail.LastModifiedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AuditDetail.LastModifiedEntryUser)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AuditDetail.LastModifiedEntryUser)
+        </dd>
+    </dl>
+</div>

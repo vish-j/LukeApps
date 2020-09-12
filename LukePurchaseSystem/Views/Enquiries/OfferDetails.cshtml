@@ -1,0 +1,182 @@
+﻿@model LukeApps.GeneralPurchase.ViewModel.OfferDisplayVM
+
+@{
+    ViewBag.Title = "Details";
+    string bttnName = (Model.VendorResponse == VendorResponse.Responded.GetDisplay() ? "Quotation" : "Supporting Documents");
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Offer</h4>
+    @if (!Model.IsBidSummaryApproved && !Model.IsOfferAccepted)
+    {
+        <p>
+            @Html.ActionLink("Edit", "EditOffer", new { id = Model.OfferID }, new { @class = "btn btn-sm btn-default" })
+            <text>|</text> @Html.ActionLink("Delete", "RevOfferDelete", new { id = Model.OfferID }, new { @class = "btn btn-sm btn-danger" })
+        </p>
+    }
+    @if (Model.QuotationKey != null)
+    {
+        @Html.Raw(@"<p><a href=" + Url.Action("DownloadQuotation", new { id = Model.OfferID }) + @" class=""btn btn-xs btn-primary"">Download " + bttnName + "</a></p>")
+    }
+
+    <hr />
+    <ul class="list-group">
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.AgreementNumber) :</b> @Model.AgreementNumber
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.Revision) :</b> @Model.Revision
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.RegistrationNumber) :</b> @Model.RegistrationNumber
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.CompanyName) :</b> @Model.CompanyName
+        </li>
+
+        @if (Model.GoodsBriefDescription != null)
+        {
+            <li class="list-group-item">
+                <b>@Html.DisplayNameFor(model => model.GoodsBriefDescription) :</b> @Model.GoodsBriefDescription
+            </li>
+        }
+
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.EnquiryNumber) :</b> @Model.EnquiryNumber
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.ProjectNumber) :</b> @Model.ProjectNumber
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.OfferNumber) :</b> @Model.OfferNumber
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.VendorResponse) :</b> @Model.VendorResponse
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.ReferenceNumber) :</b> @Model.ReferenceNumber
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.BidReceivedDate) :</b> @Model.BidReceivedDate
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.TotalPriceQuoted) :</b> @Model.TotalPriceQuoted
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.ExpiryDate) :</b> @Model.ExpiryDate
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.InitialPaymentTerms) :</b> @Model.InitialPaymentTerms
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.IsTermsConditionsAgreed) :</b> @Model.IsTermsConditionsAgreed
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.DeviationsInTermsAndConditions) :</b> @Model.DeviationsInTermsAndConditions
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.IsPaymentTermsAgreed) :</b> @Model.IsPaymentTermsAgreed
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.AgreedPaymentTerms) :</b> @Model.AgreedPaymentTerms
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.Milestones) :</b> @Model.Milestones
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.ScheduleExecution) :</b> @Model.ScheduleExecution
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.DeliveryDate) :</b> @Model.DeliveryDate
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.DeliveryTerms) :</b> @Model.DeliveryTerms
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.IsTechnicallyAcceptable) :</b> @Model.IsTechnicallyAcceptable
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.TechnicalComments) :</b> @Model.TechnicalComments
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.IsCommerciallyAcceptable) :</b> @Model.IsCommerciallyAcceptable
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.CreatedDate) :</b> @Model.CreatedDate
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.CreatedEntryUser) :</b> @Model.CreatedEntryUser
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.LastModifiedDate) :</b> @Model.LastModifiedDate
+        </li>
+        <li class="list-group-item">
+            <b>@Html.DisplayNameFor(model => model.LastModifiedEntryUser) :</b> @Model.LastModifiedEntryUser
+        </li>
+    </ul>
+
+    <hr />
+    @if (!(Model.MainScopeItems == null || Model.MainScopeItems.Count == 0))
+    {
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-heading">
+                <h5>
+                    Main Scope Items
+                </h5>
+            </li>
+
+            @foreach (var item in Model.MainScopeItems)
+            {
+                <li class="list-group-item">
+                    @item
+                </li>
+            }
+        </ul>
+        <hr />
+    }
+
+    @if (!(Model.AdditionalScopeItems == null || Model.AdditionalScopeItems.Count == 0))
+    {
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-heading">
+                <h5>
+                    Additional Scope Items
+                </h5>
+            </li>
+
+            @foreach (var item in Model.AdditionalScopeItems)
+            {
+                <li class="list-group-item">
+                    @item
+                </li>
+            }
+        </ul>
+        <hr />
+    }
+
+    @if (!(Model.OptionalScopeItems == null || Model.OptionalScopeItems.Count == 0))
+    {
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-heading">
+                <h5>
+                    Optional Scope Items
+                </h5>
+            </li>
+
+            @foreach (var item in Model.OptionalScopeItems)
+            {
+                <li class="list-group-item">
+                    @item
+                </li>
+            }
+        </ul>
+    }
+
+    @*<p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.OfferID }, new { @class = "btn btn-sm btn-default" }) <text>|</text>
+        @Html.ActionLink("Delete", "Delete", new { id = Model.OfferID }, new { @class = "btn btn-sm btn-default" }) <text>|</text>
+        <button class="btn btn-sm btn-default" onclick="javascript:downloadPDF()">Download PDF</button>
+    *@
+</div>

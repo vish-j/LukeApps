@@ -1,0 +1,148 @@
+﻿@model LukeApps.GeneralPurchase.Models.Invoice
+@section CustomStyles {
+    @Styles.Render("~/Content/bdp")
+    @Styles.Render("~/Content/bootstrap-dropdown")
+    @Styles.Render("~/Content/File-Upload")
+}
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Invoice</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+
+            @Html.LabelFor(model => model.BudgetID, htmlAttributes: new { @class = "control-label col-md-2" })
+
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.BudgetID, null, "-Select One-", htmlAttributes: new { @class = "form-control chosen-select" })
+                @Html.ValidationMessageFor(model => model.BudgetID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            @Html.LabelFor(model => model.OriginatorID, htmlAttributes: new { @class = "control-label col-md-2" })
+
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.OriginatorID, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.OriginatorID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            @Html.LabelFor(model => model.ReviewerID, htmlAttributes: new { @class = "control-label col-md-2" })
+
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ReviewerID, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ReviewerID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            @Html.LabelFor(model => model.ApproverID, htmlAttributes: new { @class = "control-label col-md-2" })
+
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ApproverID, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ApproverID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            @Html.LabelFor(model => model.Documents, htmlAttributes: new { @class = "control-label col-md-2" })
+
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Documents, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Documents, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <hr />
+        <div class="form-group collectionControl">
+            <h4>@Html.LabelFor(model => model.InvoiceItems, htmlAttributes: new { @class = "control-label col-md-2" })</h4>
+            <div class="collectionGroup col-md-10">
+                @Html.EditorFor(model => model.InvoiceItems, "CollectionTemplate")
+            </div>
+            <div class="col-md-2">
+                @Html.ValidationMessageFor(model => model.InvoiceItems, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-10">
+                <br />
+                <a class="btn btn-sm btn-default addCollectionItem" data-ajax-url="@Url.Action("AddNewPurchaseOrderItem", new { id = Model.InvoiceID })">
+                    <span class="glyphicon glyphicon-plus"></span> Add an item
+                </a>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap-dp")
+    @Scripts.Render("~/bundles/bootstrap-dropdown")
+    @Scripts.Render("~/bundles/collectionItems")
+    @Scripts.Render("~/bundles/File-Upload")
+    <script>
+        $(".chosen-select").chosen({
+            search_contains: true,
+        })
+
+        $('.dp').datepicker({
+            format: "yyyy-mm-dd",
+            endDate: "+0d",
+            todayBtn: "linked",
+            orientation: "bottom auto",
+            daysOfWeekDisabled: "5,6"
+        });
+
+
+        var coll = new CollectionHandler(function (collectionGroup) {
+            $.validator.unobtrusive.parseDynamicContent(collectionGroup);
+            asterisk();
+            $(".chosen-select").chosen({
+                search_contains: true,
+            });
+        });
+
+        $(function () {
+
+            $('#Documents').InitFileUploader();
+
+            $('input:submit').click(function () {
+                var $button = this;
+                var oldValue = $button.value;
+                setTimeout(function () {
+                    $button.disabled = true;
+                    $button.value = 'Creating...';
+                    setTimeout(function () {
+                        $button.disabled = false;
+                        $button.value = oldValue;
+                    }, 500);
+                }, 0);
+            });
+
+        });
+    </script>
+}

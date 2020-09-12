@@ -1,0 +1,250 @@
+﻿@model IEnumerable<LukeApps.GeneralPurchase.ViewModel.PurchaseOrderVM>
+@section CustomStyles {
+    @Styles.Render("~/Content/dt-basic")    
+    @Styles.Render("~/Content/bdpr")
+
+    <style type="text/css">
+        .modal-body {
+            max-width: 100%;
+            max-height: 900px;
+            overflow-y: auto;
+        }
+
+        .modal-dialog {
+            width: 90% !important;
+        }
+
+        .ExecutionCompleted {
+            background: rgb(216, 255, 234) !IMPORTANT;
+        }
+
+            .ExecutionCompleted.selected {
+                background: rgb(107, 204, 152) !IMPORTANT;
+            }
+    </style>
+
+}
+@{
+    ViewBag.Title = "Commitments";
+}
+
+<h2>Commitments and Payment Report</h2>
+
+<div class="row">
+    <div class="col-md-3">
+        <h4>Agreement Type</h4>
+        <div>
+            @Html.DropDownList("AgreementType", ViewBag.AgreementType as SelectList, new { @class = "form-control"})
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div>
+            <h4>Date Range <i class="glyphicon glyphicon-calendar fa fa-calendar"></i></h4>
+            <input type="text" id="reportrange" class="form-control">
+        </div>
+    </div>
+    <div class="col-md-3">
+        <h4>Commitment Origin</h4>
+        <div>
+            @Html.DropDownList("CommitmentOrigin", null, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="col-md-3">
+        <h4>&nbsp;</h4>
+        <button class="btn btn-info" onclick="javascript: reloadTable();">Run</button>
+    </div>
+</div>
+<br />
+<div class="row">
+    <table id="dtTable" class="table table-striped table-bordered" width="100%">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CompanyName)
+                </th>
+                <th>
+                    Purchase Orders
+                </th>
+                <th>
+                    Contracts
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.InvoiceReceivedDisplay)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.InvoiceApprovedDisplay)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.InvoicePaidDisplay)
+                </th>
+                <th>
+                    Currency
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalCommittedValue)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.InvoiceTotalAmountDisplay)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.InvoicePaidTotalAmountDisplay)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Balance)
+                </th>
+            </tr>
+        </thead>
+
+        <tfoot>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CompanyName)
+                </th>
+                <th>
+                    Purchase Orders
+                </th>
+                <th>
+                    Contracts
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.InvoiceReceivedDisplay)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.InvoiceApprovedDisplay)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.InvoicePaidDisplay)
+                </th>
+                <th>
+                    Currency
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalCommittedValue)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.InvoiceTotalAmountDisplay)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.InvoicePaidTotalAmountDisplay)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Balance)
+                </th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<div>
+    <a href="/ManagementReference" class="btn btn-default">Back to Dashboard</a>
+</div>
+
+<div id="viewModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Summary</h4>
+            </div>
+            <div class="modal-body">
+                <div id="viewContainer" style="min-height:200px">
+                    <div id="spinner">
+                        <span>Loading Details</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/datatables")
+   
+    @Scripts.Render("~/bundles/indexHelper")
+    @Scripts.Render("~/bundles/bootstrap-dpr")
+    @Scripts.Render("~/bundles/scrollpanel")
+    @if (ViewBag.ModalID != null)
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                showmodal(@ViewBag.ModalID)
+            });
+        </script>
+    }
+
+    @if (@ViewBag.ErrorMessage != null)
+    {
+        <script type="text/javascript">
+            $.notify('@ViewBag.ErrorMessage', { type: 'warning' });
+        </script>
+    }
+
+    <script type="text/javascript">
+        //console.log(document.getElementById("agreementType"))
+
+        var rootURL = '@Url.Action("/")';
+
+        //$('#reportrange').on('apply.daterangepicker', function () {
+        //    table.ajax.reload();
+        //});
+
+        var startDate = moment().subtract(13, 'days');
+        var endDate = moment();
+
+        function cb(start, end) {
+            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            console.log("Set range value");
+        }
+
+        $('#reportrange').daterangepicker({
+            "alwaysShowCalendars": true,
+            "linkedCalendars": false,
+            startDate: startDate,
+            endDate: endDate,
+            showDropdowns: true,
+            "opens": "left",
+            ranges: {
+                'Today': [moment(), moment()],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 14 Days': [moment().subtract(13, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+                'Next 3 Months': [moment(), moment().add(3, 'month')],
+            },
+            "locale": {
+                "format": "YYYY-MM-DD",
+                "separator": " : "
+            }
+        }, cb); console.log("Initialize date range picker");
+
+        cb(startDate, endDate);
+
+        IndexConfig.dtConfig.ajax = rootURL + '/getcommitmentreport?range=' + $('#reportrange').val() + '&agreementType=' + $('#AgreementType').val() + '&commitmentOrigin=' + $('#CommitmentOrigin').val();
+        IndexConfig.dtConfig.columns = [
+                    { "data": "CompanyName" },
+                    { "data": "PurchaseOrders" },
+                    { "data": "Contracts" },
+                    { "data": "InvoiceReceivedTotal" },
+                    { "data": "InvoiceApprovedTotal" },
+                    { "data": "InvoicePaidTotal" },
+                    { "data": "CurrencyTraded" },
+                    { "data": "TotalValue" },
+                    { "data": "InvoiceTotalAmount" },
+                    { "data": "InvoiceTotalAmountPaid" },
+                    { "data": "TotalBalance" },
+        ];
+        IndexConfig.dtConfig.columnDefs = null;
+        function reloadTable() {
+            table.ajax.url(rootURL + '/getcommitmentreport?range=' + $('#reportrange').val() + '&agreementType=' + $('#AgreementType').val() + '&commitmentOrigin=' + $('#CommitmentOrigin').val()).load();
+        }
+
+        //Define Table
+        var table = $('#dtTable').DataTable(IndexConfig.dtConfig);
+
+        ////
+    </script>
+
+    @Scripts.Render("~/bundles/dt-button")
+}

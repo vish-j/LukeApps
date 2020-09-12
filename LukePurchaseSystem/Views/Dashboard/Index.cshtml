@@ -1,0 +1,234 @@
+﻿@model LukeApps.GeneralPurchase.ViewModel.DashboardVM
+@section CustomStyles {
+    @Styles.Render("~/Content/mrcss")
+
+    <style>
+        div#Alerts {
+            overflow: auto;
+            height: 440px;
+        }
+
+        div#ExpiringAgreements {
+            overflow: auto;
+            height: 300px;
+        }
+
+        div#ExpiringInvoices {
+            overflow: auto;
+            height: 300px;
+        }
+
+        #Alerts .well {
+            min-height: 410px;
+        }
+    </style>
+
+    <style>
+        .sideMRmenu {
+            height: 1238px !important;
+        }
+    </style>
+
+}
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<h2>Dashboard</h2>
+
+<div class="row">
+    <div class="col-lg-3 sideMRmenu">
+        <div class="row">
+            &nbsp;
+        </div>
+        <div class="row">
+            <h4>Vendor Management</h4>
+            <ul class="nav nav-pills nav-stacked">
+                <li role="presentation">@Html.ActionLink("Vendors", "Index", "Companies")</li>
+            </ul>
+            <br />
+        </div>
+        <div class="row">
+            <h4>Procurement Process</h4>
+            <ul class="nav nav-pills nav-stacked">
+                <li role="presentation">Enquires@*@Html.ActionLink("Enquiries / Offers", "Index", "Enquiries")*@</li>
+                <li role="presentation">@Html.ActionLink("Purchase Orders", "Index", "PurchaseOrders")</li>           
+            </ul>
+            <br />
+        </div>
+        <div class="row">
+            <h4>Finance Process</h4>
+            <ul class="nav nav-pills nav-stacked">
+                <li role="presentation">@Html.ActionLink("Expense Claims", "Index", "ExpenseClaims")</li>
+                <li role="presentation">@Html.ActionLink("Invoices", "Index", "Invoices")</li>
+                <li role="separator" class="divider"></li>
+                <li role="presentation">@Html.ActionLink("Currencies", "Index", "Currencies")</li>
+                <li role="presentation">@Html.ActionLink("Budgets", "Index", "Budgets")</li>
+            </ul>
+            <br />
+        </div>
+        <div class="row">
+            <h4>Reports</h4>
+            <ul class="nav nav-pills nav-stacked">
+                <li role="presentation">@Html.ActionLink("Commitments Report", "Commitments", "Reports")</li>
+            </ul>
+            <br />
+        </div>
+    </div>
+    <div class="col-lg-9">
+        <h4>Alerts</h4>
+        <div id="Alerts">
+            <div class="well">
+                <b>MR System</b>
+                <ul class="list-group" id="MRAlerts">
+                    @foreach (var item in Model.MRAlerts)
+                    {
+                        <li id="@item.Key" class="list-group-item"><b>@item.TimeStamp</b> | <a href="@item.URL">@item.Message</a> | <b>@item.Severity</b> | <button onclick="javascript:dismissAlert('@item.Key')" class="btn btn-default btn-xs">Dismiss</button> </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <br /><br />
+
+            <h4>Expiring Purchase Orders ( #@Model.TotalExpiringPurchaseOrders )</h4>
+            <div id="ExpiringAgreements">
+                <div class="well">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Purchase Order Number
+                                </th>
+                                <th>
+                                    Company Name
+                                </th>
+                                <th>
+                                    Commited Value
+                                </th>
+                                <th>
+                                    Days Left To Expire
+                                </th>
+                                <th>
+                                    Agreement Expiry Date
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody style="background-color:white">
+
+                            @foreach (var a in Model.ExpiringPurchaseOrders)
+                            {
+                                <tr>
+                                    <td>
+                                        <a href="@Url.Action("Index", "PurchaseOrders", new { id = a.PurchaseOrderID })">@a.PurchaseOrderNumber</a>
+                                    </td>
+                                    <td>
+                                        @a.Company.CompanyName
+                                    </td>
+                                    <td>
+                                        @a.Total.ToString()
+                                    </td>
+                                    <td>
+                                        0@*@a.DaysLeftToExpire*@
+                                    </td>
+                                    <td>
+                                        @(a.PurchaseOrderExpiryDate?.ToString("dd/MM/yyyy"))
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        
+        <br /><br />
+
+            <h4>Expiring Invoices ( #@Model.TotalExpiringInvoices )</h4>
+            <div id="ExpiringInvoices">
+                <div class="well">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Invoice Number
+                                </th>
+                                <th>
+                                    Payment Status
+                                </th>
+                                <th>
+                                    Company Name
+                                </th>
+                                <th>
+                                    Amount
+                                </th>
+                                <th>
+                                    Invoice Due
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody style="background-color:white">
+
+                            @*@foreach (var i in Model.ExpiringInvoices)
+                            {
+                                <tr>
+                                    <td>
+                                        <a href="@Url.Action("Index", "Invoices", new { id = i.InvoiceID })">@i.InvoiceNumber</a>
+                                    </td>
+                                    <td>
+                                        @i.PaymentStatus.GetDisplay()
+                                    </td>
+                                    <td>
+                                        @i.CompanyName
+                                    </td>
+                                    <td>
+                                        @i.Amount.ToString()
+                                    </td>
+                                    <td>
+                                        @i.InvoiceDue
+                                    </td>
+                                </tr>
+                            }*@
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+@section Scripts{
+
+    <script type="text/javascript">
+        var rootURL = '@Url.Action("/")';
+        var urlValue = rootURL + 'DismissAlert';
+
+        function dismissAlert(key) {
+
+            $.ajax({
+                async: true,
+                type: "POST",
+                cache: false,
+                url: urlValue,
+                data: { key: key },
+            }).done(function (data, textStatus, jqXHR) {
+                $.notify('Alert Dismissed', { type: 'success' });
+            }).fail(function () {
+                $.notify('Error', { type: 'warning' });
+            }).always(function (data, textStatus, jqXHR) {
+                deleteList(key);
+            });
+
+        }
+
+        function deleteList(key) {
+            var listElement = $('#' + key);
+            var listGroup = listElement.closest("ul");
+            listElement.slideUp("normal", function () {
+                $(this).remove();
+                if (listGroup.children().length === 0) {
+                    $('<li class="list-group-item" style="display:none">No Alerts</li>').appendTo(listGroup).slideDown("slow");
+                }
+            });
+        }
+    </script>
+
+}

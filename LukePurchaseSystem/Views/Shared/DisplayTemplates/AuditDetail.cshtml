@@ -1,0 +1,11 @@
+﻿@using LukeApps.TrackingExtended;
+@model AuditDetail
+
+<div class="display-label"><b>Created</b></div>
+<div class="display-field">@Model.CreatedEntryUser.Summary, on @Model.CreatedDate.ToString("dd/MM/yyyy")</div>
+
+@if (Model.LastModifiedEntryUserID != null)
+{
+    <div class="display-label"><b>Last Modified</b></div>
+    <div class="display-field">@(Model.LastModifiedEntryUser.Summary), on @(Model.LastModifiedDate?.ToString("dd/MM/yyyy"))</div>
+}

@@ -1,0 +1,68 @@
+﻿@using LukeApps.Common.Helpers;
+@model IEnumerable <LukeApps.ApprovalProcess.Interfaces.ITransition>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>SNo.</th>
+            <th>Reviewer</th>
+            <th>Status</th>
+            <th>Acknowledgement Date</th>
+            <th>Comments</th>
+            <th>Sent By / Comments</th>
+            <th>Sent Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            string trClass;
+
+            switch (item.ApproverDecision)
+            {
+                case PhilApprovalFlow.Enum.DecisionType.AwaitingDecision:
+                    trClass = "";
+                    break;
+                case PhilApprovalFlow.Enum.DecisionType.Approved:
+                    trClass = "success";
+                    break;
+                case PhilApprovalFlow.Enum.DecisionType.Rejected:
+                    trClass = "danger";
+                    break;
+                case PhilApprovalFlow.Enum.DecisionType.Invalidated:
+                    trClass = "disabled";
+                    break;
+                default:
+                    trClass = "";
+                    break;
+            }
+
+            <tr class="@trClass">
+                <td>
+                    @item.Order
+                    @if ((bool?)ViewBag.CanInvalidate == true && item.ApproverDecision != PhilApprovalFlow.Enum.DecisionType.Invalidated)
+                    {
+                        <a class="btn btn-danger btn-xs" href="@Url.Action("Invalidate", new { id = item.GetParentID(), username = item.Approver?.Username })">Invalidate <span class="glyphicon glyphicon-remove"></span></a>
+                    }
+                </td>
+                <td>@{var name = item.Approver?.Summary;} @name</td>
+                <td>@item.ApproverDecision.GetDisplay()</td>
+                <td>
+                    @{
+                        string ad = item.AcknowledgementDate?.ToString("dd/MM/yyyy hh:mm:ss tt");
+                    }
+                    @ad
+                </td>
+                <td>@item.ApproverComments</td>
+                <td>
+                    @(item.RequestedBy?.Summary)
+                    @if (item.RequesterComments != null)
+                    {<b>_</b><br />@item.RequesterComments}
+                </td>
+
+                <td>@item.RequestedDate.ToString("dd/MM/yyyy hh:mm:ss tt")</td>
+                <td></td>
+            </tr>
+        }
+    </tbody>
+</table>

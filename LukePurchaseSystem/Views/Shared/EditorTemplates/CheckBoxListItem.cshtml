@@ -1,0 +1,6 @@
+﻿@model LukeApps.Common.Models.CheckBoxListItem
+
+@Html.HiddenFor(x => x.ID)
+@Html.CheckBoxFor(x => x.IsChecked, htmlAttributes: new { @class = "checkboxlist" })
+@Html.LabelFor(x => x.IsChecked, Model.Display)
+<br /> 

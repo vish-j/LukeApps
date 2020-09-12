@@ -1,0 +1,60 @@
+﻿@model LukeApps.GeneralPurchase.ViewModel.CurrencyDetailsVM
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+
+<div>
+    <h4>Currency</h4>
+	<hr />
+	<p>   
+		@Html.ActionLink("Update", "Update", new { curr = Model.CurrencyCode }, new { @class = "btn btn-sm btn-default" })		
+	</p>
+
+    <hr />
+    <ul class="list-group">
+        <li class="list-group-item list-group-item-info">
+            <div class="row">
+                <div class="col-md-2">
+                    &nbsp;
+                </div>
+                <div class="col-md-4">
+                    <b>@Html.DisplayNameFor(model => model.EntryDate) : </b>
+                </div>
+                <div class="col-md-3">
+                    <b>@Html.DisplayNameFor(model => model.CurrencyCode) : </b>
+                </div>
+                <div class="col-md-3">
+                    <b>@Html.DisplayNameFor(model => model.CurrencyRateEuro) : </b>
+                </div>
+            </div>
+        </li>
+        @foreach (var c in Model.CurrencyDelta)
+            {
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-md-2">
+                        @Html.ActionLink("Edit", "Edit", new { id = c.CurrencyID })
+                    </div>
+                    <div class="col-md-4">
+                        @c.AuditDetail.CreatedDate.ToString("dd/MM/yyyy")
+                    </div>
+                    <div class="col-md-3">
+                        @c.CurrencyCode.GetDisplay()
+                    </div>
+                    <div class="col-md-3">
+                        @c.CurrencyRateEuro.ToString("n")
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+
+
+
+</div>
+
+
