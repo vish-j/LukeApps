@@ -216,6 +216,57 @@ namespace LukePurchaseSystem.Controllers
         #region #ApprovalProccess
 
         [HttpGet]
+        public async Task<ActionResult> Forward(long? id)
+        {
+            if (modelID.check(id))
+            {
+                return RedirectToAction("Index", new { ErrorMessage = "ID Missing" });
+            }
+            Invoice invoice = await repo.FindByAsync(i => i.InvoiceID == id, nameof(Invoice.Transitions));
+            if (invoice == null)
+            {
+                return RedirectToAction("Index", new { ErrorMessage = "Bad ID" });
+            }
+
+            ViewBag.ApproveList = new MultiSelectList(EmployeeProvider.GetEmployeeProvider().Users, nameof(Employee.Username), "displayName");
+            return View(new RequestVM()
+            {
+                ID = invoice.InvoiceID,
+                Display = invoice.InvoiceNumber,
+            });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Forward(RequestVM request)
+        {
+            if (ModelState.IsValid)
+            {
+                Invoice invoice = await repo.FindByAsync(i => i.InvoiceID == request.ID, nameof(Invoice.Transitions));
+                var employeeProvider = EmployeeProvider.GetEmployeeProvider();
+                var approval = invoice.GetApprovalFlow()
+                 .SetUserName(User.GetUserData());
+
+                foreach (var approver in request.Approvers)
+                {
+                    approval.RequestApproval(employeeProvider.GetUserData(approver), request.Comments)
+                        .LoadNotification(employeeProvider.GetUserData(approver), new List<Employee> { invoice.Originator });
+                }
+
+                repo.Edit(invoice);
+                await repo.SaveChangesAsync();
+
+                approval.FireNotifications();
+
+                return RedirectToAction("Index", new { id = invoice.InvoiceID });
+            }
+
+            ViewBag.ApproveList = new MultiSelectList(EmployeeProvider.GetEmployeeProvider().Users, nameof(Employee.Username), "displayName", request.Approvers);
+            return View(request);
+        }
+
+
+        [HttpGet]
         public async Task<ActionResult> Approve(long? id)
         {
             if (modelID.check(id))

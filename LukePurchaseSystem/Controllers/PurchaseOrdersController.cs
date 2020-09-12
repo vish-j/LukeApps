@@ -229,6 +229,56 @@ namespace LukePurchaseSystem.Controllers
         #region #ApprovalProccess
 
         [HttpGet]
+        public async Task<ActionResult> Forward(long? id)
+        {
+            if (modelID.check(id))
+            {
+                return RedirectToAction("Index", new { ErrorMessage = "ID Missing" });
+            }
+            PurchaseOrder purchaseOrder = await repo.FindByAsync(e => e.PurchaseOrderID == id, nameof(PurchaseOrder.Transitions));
+            if (purchaseOrder == null)
+            {
+                return RedirectToAction("Index", new { ErrorMessage = "Bad ID" });
+            }
+
+            ViewBag.ApproveList = new MultiSelectList(EmployeeProvider.GetEmployeeProvider().Users, nameof(Employee.Username), "displayName");
+            return View(new RequestVM()
+            {
+                ID = purchaseOrder.PurchaseOrderID,
+                Display = purchaseOrder.PurchaseOrderNumber,
+            });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Forward(RequestVM request)
+        {
+            if (ModelState.IsValid)
+            {
+                PurchaseOrder purchaseOrder = await repo.FindByAsync(e => e.PurchaseOrderID == request.ID, nameof(PurchaseOrder.Transitions));
+                var employeeProvider = EmployeeProvider.GetEmployeeProvider();
+                var approval = purchaseOrder.GetApprovalFlow()
+                 .SetUserName(User.GetUserData());
+
+                foreach (var approver in request.Approvers)
+                {
+                    approval.RequestApproval(employeeProvider.GetUserData(approver), request.Comments)
+                        .LoadNotification(employeeProvider.GetUserData(approver), new List<Employee> { purchaseOrder.Originator });
+                }
+
+                repo.Edit(purchaseOrder);
+                await repo.SaveChangesAsync();
+
+                approval.FireNotifications();
+
+                return RedirectToAction("Index", new { id = purchaseOrder.PurchaseOrderID });
+            }
+
+            ViewBag.ApproveList = new MultiSelectList(EmployeeProvider.GetEmployeeProvider().Users, nameof(Employee.Username), "displayName", request.Approvers);
+            return View(request);
+        }
+
+        [HttpGet]
         public async Task<ActionResult> Approve(long? id)
         {
             if (modelID.check(id))
