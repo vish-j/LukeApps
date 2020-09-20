@@ -12,6 +12,7 @@ namespace LukeApps.GeneralPurchase.Models
     {
         public Company()
         {
+            Address = new Address();
             CompanyFocalPoints = new HashSet<CompanyFocalPoint>();
             PurchaseOrders = new HashSet<PurchaseOrder>();
             BankAccounts = new HashSet<BankAccount>();
@@ -25,6 +26,7 @@ namespace LukeApps.GeneralPurchase.Models
         [Display(Name = "Company Number")]
         public string CompanyNumber => CompanyID.ToString("000000");
 
+        [Required]
         [Display(Name = "Company Name")]
         public string CompanyName { get; set; }
 
@@ -52,9 +54,6 @@ namespace LukeApps.GeneralPurchase.Models
         [DataType(DataType.MultilineText)]
         public string BlockBlacklistReason { get; set; }
 
-        [Display(Name = "Department Number")]
-        public string DepartmentNumber { get; set; }
-
         [Display(Name = "Company Status")]
         public CompanyStatus CompanyStatus
         {
@@ -76,10 +75,15 @@ namespace LukeApps.GeneralPurchase.Models
         }
 
         public virtual ICollection<PurchaseOrder> PurchaseOrders { get; set; }
+
+        [Display(Name = "Bank Accounts")]
         public virtual ICollection<BankAccount> BankAccounts { get; set; }
         public virtual ICollection<Offer> Offers { get; set; }
 
         public CompanyFocalPoint DefaultFocalPoint => CompanyFocalPoints.First(c => c.IsDefault);
+
+
+        [Display(Name = "Company Focal Points")]
         public virtual ICollection<CompanyFocalPoint> CompanyFocalPoints { get; set; }
         public AuditDetail AuditDetail { get; set; } = new AuditDetail();
         public bool IsDeleted { get; set; }

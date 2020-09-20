@@ -129,6 +129,33 @@ namespace LukePurchaseSystem.Controllers
             return RedirectToAction("VerifyPhoneNumber", new { PhoneNumber = model.Number });
         }
 
+        // GET: /Manage/AddPhoneNumber
+        public ActionResult AddESignature()
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            return View(new AddESignatureViewModel() { ESignature = user.ESignature });
+        }
+
+        //
+        // POST: /Manage/AddPhoneNumber
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AddESignature(AddESignatureViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            user.ESignature = model.ESignature;
+
+            await UserManager.UpdateAsync(user);
+
+            return RedirectToAction("Index", "Dashboard", null);
+        }
+
+
         //
         // POST: /Manage/EnableTwoFactorAuthentication
         [HttpPost]

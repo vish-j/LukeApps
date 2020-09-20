@@ -40,28 +40,31 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ExpenseClaimID)
+                @Html.DisplayNameFor(model => model.ExpenseClaimNumber)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.RequestDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BankAccountNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OriginatorID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReviewerID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApproverID)
+                @Html.DisplayNameFor(model => model.Budget)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PaymentMethod)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SupportingDocuments)
+                @Html.DisplayNameFor(model => model.Originator)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Reviewer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Approver)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                Status
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AuditDetail.CreatedDate)
@@ -81,28 +84,31 @@
     <tfoot>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ExpenseClaimID)
+                @Html.DisplayNameFor(model => model.ExpenseClaimNumber)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.RequestDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BankAccountNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OriginatorID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReviewerID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApproverID)
+                @Html.DisplayNameFor(model => model.Budget)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PaymentMethod)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SupportingDocuments)
+                @Html.DisplayNameFor(model => model.Originator)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Reviewer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Approver)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                Status
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AuditDetail.CreatedDate)
@@ -143,6 +149,8 @@
     @Scripts.Render("~/bundles/datatables")
     @Scripts.Render("~/bundles/indexHelper")
     @Scripts.Render("~/bundles/auditTrail")
+    @Scripts.Render("~/bundles/pdfmake")
+    @Scripts.Render("~/bundles/expenseClaimPDF")
 
     @if (@ViewBag.ModalID != null)
     {
@@ -167,12 +175,13 @@
         IndexConfig.dtConfig.columns = [
 				{ "data": "ExpenseClaimID" },
 				{ "data": "RequestDate" },
-				{ "data": "BankAccountNumber" },
+                { "data": "Budget" },
+                { "data": "PaymentMethod" },
 				{ "data": "OriginatorID" },
 				{ "data": "ReviewerID" },
-				{ "data": "ApproverID" },
-				{ "data": "PaymentMethod" },
-				{ "data": "SupportingDocuments" },
+                { "data": "ApproverID" },
+                { "data": "Total" },
+				{ "data": "Status" },
 				{ "data": "AuditDetail_CreatedDate" },
                 { "data": "AuditDetail_CreatedEntryUser" },
                 { "data": "AuditDetail_LastModifiedDate" },

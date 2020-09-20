@@ -3,6 +3,7 @@ using LukeApps.Authorization.Attributes;
 using LukeApps.Authorization.RoleMap;
 using LukeApps.Common.Helpers;
 using LukeApps.EmployeeData;
+using LukeApps.FileHandling;
 using LukeApps.GeneralPurchase.DAL;
 using LukeApps.GeneralPurchase.Models;
 using LukeApps.GenericRepository;
@@ -41,17 +42,19 @@ namespace LukePurchaseSystem.Controllers
         [AuthorizeRoles(Role.Dev)]
         public async Task<JsonResult> GetJSON()
         {
-            var expenseClaims = await repo.GetAll().ToListAsync();
+            var expenseClaims = await repo.GetAll(nameof(ExpenseClaim.Transitions), nameof(ExpenseClaim.ExpenseClaimItems)).ToListAsync();
             var detailCollection = expenseClaims.Select(e => new
             {
                 ExpenseClaimID = e.ExpenseClaimID,
+                ExpenseClaimNumber = e.ExpenseClaimNumber,
                 RequestDate = e.RequestDate.ToShortDateISO(),
-                BankAccountNumber = e.BankAccountNumber,
+                Budget = e.Budget.BudgetName,
                 OriginatorID = e.Originator.Summary,
                 ReviewerID = e.Reviewer.Summary,
                 ApproverID = e.Approver.Summary,
-                PaymentMethod = e.PaymentMethod,
-                SupportingDocuments = e.SupportingDocuments.IsAnyFilePresent,
+                PaymentMethod = e.PaymentMethod.GetDisplay(),
+                Status = e.Transitions.Any() ? "Started" : "Not Started",
+                Total = e.Total.ToString(),
                 AuditDetail_CreatedDate = e.AuditDetail.CreatedDate.ToShortDateISO(),
                 AuditDetail_CreatedEntryUser = e.AuditDetail.CreatedEntryUserDisplayName,
                 AuditDetail_LastModifiedDate = e.AuditDetail.LastModifiedDate?.ToShortDateISO(),
@@ -67,6 +70,32 @@ namespace LukePurchaseSystem.Controllers
             JsonRequestBehavior.AllowGet);
         }
 
+
+        [AuthorizeRoles(Role.Dev)]
+        public async Task<JsonResult> GetExpenseClaim(long? id)
+        {
+            ExpenseClaim expenseClaim = await repo.FindByAsync(p => p.ExpenseClaimID == id, nameof(ExpenseClaim.ExpenseClaimItems), nameof(ExpenseClaim.Transitions));
+            return Json(new {
+                expenseClaim.ExpenseClaimNumber,
+                RequestDate = expenseClaim.RequestDate.ToShortDateLocal(),
+                expenseClaim.BankAccountNumber,
+                PaymentMethod = expenseClaim.PaymentMethod.GetDisplay(),
+                Originator = expenseClaim.Originator.Summary,
+                OriginatorJobTitle = expenseClaim.Originator.JobTitle,
+                Approver = expenseClaim.Approver.Summary,
+                ApproverJobTitle = expenseClaim.Approver.JobTitle,
+                OriginatorES = expenseClaim.Transitions.Any(t => t.ApproverID == expenseClaim.OriginatorID && t.ApproverDecision == PhilApprovalFlow.Enum.DecisionType.Approved) ? expenseClaim.Originator.ElectronicSignature : null,
+                ApproverES = expenseClaim.Transitions.Any(t => t.ApproverID == expenseClaim.ApproverID && t.ApproverDecision == PhilApprovalFlow.Enum.DecisionType.Approved) ? expenseClaim.Originator.ElectronicSignature : null,
+                LineItems = expenseClaim.ExpenseClaimItems.Select(e => new { 
+                 e.Quantity,
+                 e.Description,
+                    UnitPrice = e.UnitPrice.ToString(),
+                    TotalPrice = e.TotalPrice.ToString()
+                })
+            },
+            JsonRequestBehavior.AllowGet);
+        }
+
         // GET: ExpenseClaims/Details/5
         [HttpGet]
         [AuthorizeRoles(Role.Dev)]
@@ -76,7 +105,7 @@ namespace LukePurchaseSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ExpenseClaim expenseClaim = await repo.FindByAsync(e => e.ExpenseClaimID == id);
+            ExpenseClaim expenseClaim = await repo.FindByAsync(e => e.ExpenseClaimID == id, nameof(ExpenseClaim.Transitions));
 
             if (expenseClaim == null)
             {
@@ -103,15 +132,23 @@ namespace LukePurchaseSystem.Controllers
             return AddNewChild(new ExpenseClaimItem(), r => r.ExpenseClaimID, id);
         }
 
+        private void viewBagBudgetID() => ViewBag.BudgetID = new SelectList(repo.Context.Budgets, "BudgetID", "BudgetName");
+
+        public void viewBagApproveList() =>
+            ViewBag.Employees = new SelectList(EmployeeProvider.GetEmployeeProvider().Users, nameof(Employee.Username), "displayName");
+
         // GET: ExpenseClaims/Create
         [HttpGet]
         [AuthorizeRoles(Role.Dev)]
         public ActionResult Create()
         {
+            viewBagApproveList();
+            viewBagBudgetID();
             return View(new ExpenseClaim()
             {
+                OriginatorID = User.Identity.Name,
                 ExpenseClaimItems = new List<ExpenseClaimItem> {
-                new ExpenseClaimItem()
+                    new ExpenseClaimItem()
                 }
             });
         }
@@ -125,11 +162,20 @@ namespace LukePurchaseSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                Employee currentemployee = User.GetUserData();
+
+                var approval = expense.GetApprovalFlow().SetUserName(currentemployee.Username);
+
+                ProcessApprovals(expense, currentemployee.Username, approval);
+
                 repo.Add(expense);
                 await repo.SaveChangesAsync();
+
+                approval.FireNotifications();
                 return RedirectToAction("Index", new { id = expense.ExpenseClaimID });
             }
-
+            viewBagApproveList();
+            viewBagBudgetID();
             return View(expense);
         }
 
@@ -147,6 +193,8 @@ namespace LukePurchaseSystem.Controllers
             {
                 return RedirectToAction("Index", new { ErrorMessage = "Bad ID" });
             }
+            viewBagApproveList();
+            viewBagBudgetID();
             return View(expenseClaim);
         }
 
@@ -174,7 +222,8 @@ namespace LukePurchaseSystem.Controllers
                 await repo.SaveChangesAsync();
                 return RedirectToAction("Index", new { id = preExpenseClaim.ExpenseClaimID });
             }
-
+            viewBagApproveList();
+            viewBagBudgetID();
             return View(expense);
         }
 
@@ -207,6 +256,22 @@ namespace LukePurchaseSystem.Controllers
             await repo.SaveChangesAsync();
 
             return RedirectToAction("Index");
+        }
+
+        public async Task<FileResult> DownloadZipped(long? id)
+        {
+            if (modelID.check(id))
+            {
+                return File(Filer.InvalidDefaultFile.FileContent, System.Net.Mime.MediaTypeNames.Application.Octet, Filer.InvalidDefaultFile.FileName);
+            }
+            ExpenseClaim expenseClaim = await repo.FindByAsync(e => e.ExpenseClaimID == id);
+            if (expenseClaim == null)
+            {
+                return File(Filer.InvalidDefaultFile.FileContent, System.Net.Mime.MediaTypeNames.Application.Octet, Filer.InvalidDefaultFile.FileName);
+            }
+
+            var file = expenseClaim.SupportingDocuments.GetZippedFiles(isUnZippedIfOneKey: true);
+            return File(file.FileContent, System.Net.Mime.MediaTypeNames.Application.Octet, file.FileName);
         }
 
         #region #ApprovalProccess
@@ -291,7 +356,7 @@ namespace LukePurchaseSystem.Controllers
             var approval = expenseClaim.GetApprovalFlow()
                 .SetUserName(currentemployee);
 
-            ProcessApprovals(decision, expenseClaim, currentemployee.Username, approval);
+            ProcessApprovals(expenseClaim, currentemployee.Username, approval, decision.Comments);
 
             repo.Edit(expenseClaim);
             await repo.SaveChangesAsync();

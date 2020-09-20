@@ -6,6 +6,7 @@ using LukeApps.GeneralPurchase.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace LukeApps.GeneralPurchase.ViewModel
@@ -44,7 +45,7 @@ namespace LukeApps.GeneralPurchase.ViewModel
             DeliveryTerms = offer.DeliveryTerms;
             Quotation = offer.Quotation;
             IsNew = offer.IsNew;
-
+            ScopeItems = offer.ScopeItems.ToList();
             TotalOfferValue = offer.Total;
         }
 

@@ -1,9 +1,11 @@
-﻿using LukeApps.ApprovalProcess.Interfaces;
+﻿using LukeApps.ApprovalProcess;
+using LukeApps.ApprovalProcess.Interfaces;
 using LukeApps.EmployeeData;
 using LukeApps.FileHandling;
 using LukeApps.GeneralPurchase.Enums;
 using LukeApps.TrackingExtended;
 using PhilApprovalFlow;
+using PhilApprovalFlow.Attributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,6 +14,8 @@ using System.Linq;
 
 namespace LukeApps.GeneralPurchase.Models
 {
+    [DocumentPAFPath("Enquiries")]
+    [PAFMetadata(Key = "app", Value = "Enquiry")]
     public class Enquiry : IApprovalFlow<EnquiryTransition>, IEntity, IAuditDetail, IPAFMatrix
     {
         public Enquiry()
@@ -24,7 +28,6 @@ namespace LukeApps.GeneralPurchase.Models
 
         [Key]
         public long EnquiryID { get; set; }
-
 
         [Display(Name = "Enquiry Number")]
         public string EnquiryNumber => EnquiryID.ToString("000000");
@@ -46,26 +49,30 @@ namespace LukeApps.GeneralPurchase.Models
         public long BudgetID { get; set; }
         public virtual Budget Budget { get; set; }
 
+        [Required]
         public string OriginatorID { get; set; }
 
         public Employee Originator => EmployeeProvider.GetEmployeeProvider().GetUserData(OriginatorID);
 
         public string TechnicalEvaluatorID { get; set; }
 
-        [Display(Name = "Techinical Evaluator")]
+        [Display(Name = "Technical Evaluator")]
         public Employee TechnicalEvaluator => EmployeeProvider.GetEmployeeProvider().GetUserData(TechnicalEvaluatorID);
 
         public string ReviewerID { get; set; }
 
         public Employee Reviewer => EmployeeProvider.GetEmployeeProvider().GetUserData(ReviewerID);
 
+        [Required]
         public string ApproverID { get; set; }
 
         public Employee Approver => EmployeeProvider.GetEmployeeProvider().GetUserData(ApproverID);
 
         public long? RecommendedOfferID { get; set; }
 
-        public Offer RecommededOffer => RecommendedOfferID == null || Offers == null ? null : Offers.FirstOrDefault(o => o.OfferID == RecommendedOfferID);
+        [Display(Name = "Recommended Offer")]
+
+        public Offer RecommendedOffer => RecommendedOfferID == null || Offers == null ? null : Offers.FirstOrDefault(o => o.OfferID == RecommendedOfferID);
 
         [Display(Name = "Recommendation Reason")]
         public string RecommendationReason { get; set; }
@@ -111,7 +118,7 @@ namespace LukeApps.GeneralPurchase.Models
 
         public bool IsAllOffersAccepted => Offers.Any(o => o.PurchaseOrder != null && !o.PurchaseOrder.IsPurchaseOrderCancelled);
 
-        public bool IsOfferAwarded => RecommededOffer != null && (RecommededOffer.PurchaseOrder != null && RecommededOffer.PurchaseOrder.IsPurchaseOrderCancelled);
+        public bool IsOfferAwarded => RecommendedOffer != null && (RecommendedOffer.PurchaseOrder != null && RecommendedOffer.PurchaseOrder.IsPurchaseOrderCancelled);
 
         public bool IsOfferAddable => Transitions.IsApproved();
 

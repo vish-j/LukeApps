@@ -8,6 +8,7 @@ using LukeApps.GeneralPurchase.Models;
 using LukeApps.GeneralPurchase.ViewModel;
 using LukeApps.GenericRepository;
 using PhilApprovalFlow;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -70,6 +71,14 @@ namespace LukePurchaseSystem.Controllers
             JsonRequestBehavior.AllowGet);
         }
 
+        [AuthorizeRoles(Role.Dev)]
+        public async Task<JsonResult> GetPurchaseOrder(long? id)
+        {
+            PurchaseOrder purchaseOrder = await repo.FindByAsync(p => p.PurchaseOrderID == id);
+            return Json(purchaseOrder,
+            JsonRequestBehavior.AllowGet);
+        }
+
         // GET: PurchaseOrders/Details/5
         [HttpGet]
         [AuthorizeRoles(Role.Dev)]
@@ -108,12 +117,16 @@ namespace LukePurchaseSystem.Controllers
 
         private void viewBagBudgetID() => ViewBag.BudgetID = new SelectList(repo.Context.Budgets, "BudgetID", "BudgetName");
 
+        public void viewBagApproveList() =>
+            ViewBag.Employees = new SelectList(EmployeeProvider.GetEmployeeProvider().Users, nameof(Employee.Username), "displayName");
+
         // GET: PurchaseOrders/Create
         [HttpGet]
         [AuthorizeRoles(Role.Dev)]
         public ActionResult Create()
         {
             viewBagBudgetID();
+            viewBagApproveList();
             return View(new PurchaseOrder()
             {
                 PurchaseOrderItems = new List<PurchaseOrderItem> {
@@ -137,7 +150,7 @@ namespace LukePurchaseSystem.Controllers
             }
 
             viewBagBudgetID();
-
+            viewBagApproveList();
             return View(po);
         }
 
@@ -156,6 +169,7 @@ namespace LukePurchaseSystem.Controllers
                 return RedirectToAction("Index", new { ErrorMessage = "Bad ID" });
             }
             viewBagBudgetID();
+            viewBagApproveList();
             return View(purchaseOrder);
         }
 
@@ -174,7 +188,10 @@ namespace LukePurchaseSystem.Controllers
                 prePurchaseOrder.ReviewerID = po.ReviewerID;
                 prePurchaseOrder.ApproverID = po.ApproverID;
                 prePurchaseOrder.ApprovedDocuments = po.ApprovedDocuments;
-                prePurchaseOrder.IsPurchaseOrderCancelled = po.IsPurchaseOrderCancelled;
+                if (prePurchaseOrder.IsPurchaseOrderCancelled)
+                {
+                    prePurchaseOrder.CancelDate = DateTime.Now;
+                }
                 prePurchaseOrder.PurchaseOrderExpiryDate = po.PurchaseOrderExpiryDate;
 
                 repo.Edit(prePurchaseOrder);
@@ -183,7 +200,7 @@ namespace LukePurchaseSystem.Controllers
                 return RedirectToAction("Index", new { id = prePurchaseOrder.PurchaseOrderID });
             }
             viewBagBudgetID();
-
+            viewBagApproveList();
             return View(po);
         }
 
@@ -308,7 +325,7 @@ namespace LukePurchaseSystem.Controllers
             var approval = purchaseOrder.GetApprovalFlow()
                 .SetUserName(currentemployee);
 
-            ProcessApprovals(decision, purchaseOrder, currentemployee.Username, approval);
+            ProcessApprovals(purchaseOrder, currentemployee.Username, approval);
 
             repo.Edit(purchaseOrder);
             await repo.SaveChangesAsync();

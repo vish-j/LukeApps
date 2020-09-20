@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace LukePurchaseSystem
 {
@@ -19,18 +18,39 @@ namespace LukePurchaseSystem
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
+            bundles.Add(new ScriptBundle("~/bundles/ESignature").Include(
+                      "~/Scripts/SignaturePad/signature_pad.umd.js",
+                      "~/Scripts/SignaturePad/app.js"
+                      ));
+
+            bundles.Add(new StyleBundle("~/Content/ESignature").Include(
+                      "~/Content/SignaturePad/signature-pad.css"
+                      ));
+
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js"));
+                        "~/Scripts/bootstrap.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css"
+                      ));
 
             bundles.Add(new ScriptBundle("~/bundles/auditTrail").Include(
                "~/Scripts/Helpers/auditTrail.js"
                ));
+
             bundles.Add(new ScriptBundle("~/bundles/collectionItems").Include(
                 "~/Scripts/Helpers/collectionItems.js"
+                ));
+
+            bundles.Add(new ScriptBundle("~/bundles/lumpsum").Include(
+                "~/Scripts/Helpers/lumpsum.js"
+                ));
+
+
+            bundles.Add(new ScriptBundle("~/bundles/moment").Include(
+                "~/Scripts/moment.js",
+                "~/Scripts/momentConfig/config.js"
                 ));
 
             bundles.Add(new Bundle("~/bundles/datatables")
@@ -41,7 +61,7 @@ namespace LukePurchaseSystem
                     "~/Scripts/datatables/Buttons/dataTables.buttons-{version}.js",
                     "~/Scripts/datatables/Buttons/buttons.bootstrap-{version}.js",
                     "~/Scripts/datatables/Buttons/buttons.colVis-{version}.js",
-                    "~/Scripts/datatables/Buttons/buttons.html5-modded-{version}.js", 
+                    "~/Scripts/datatables/Buttons/buttons.html5-modded-{version}.js",
                     "~/Scripts/datatables/Buttons/buttons.print-{version}.js",
                     "~/Scripts/datatables/RowGroup/dataTables.rowGroup-{version}.js",
                     "~/Scripts/datatables/RowGroup/rowGroup.bootstrap-{version}.js",
@@ -104,14 +124,29 @@ namespace LukePurchaseSystem
                 "~/Scripts/FileUploader/fileUploadControl.js"
                 ));
 
-
             bundles.Add(new StyleBundle("~/Content/File-Upload").Include(
                 "~/Content/FileUploader/fileUploadControl.css"
                 ));
 
-
             bundles.Add(new ScriptBundle("~/bundles/purchaseOrderPDF").Include(
                 "~/Scripts/pdfDefinitions/purchaseOrder.js"
+                ));
+
+            bundles.Add(new ScriptBundle("~/bundles/expenseClaimPDF").Include(
+                "~/Scripts/pdfDefinitions/expenseClaim.js"
+                ));
+
+            bundles.Add(new ScriptBundle("~/bundles/timeline").Include(
+                "~/Scripts/timeline/timeline.js"
+                ));
+
+            bundles.Add(new StyleBundle("~/Content/timeline").Include(
+                "~/Content/timelineCss/timeline.css"
+                ));
+
+            bundles.Add(new ScriptBundle("~/bundles/pdfmake").Include(
+                "~/Scripts/pdfmake/pdfmake.js",
+                "~/Scripts/pdfmake/vfs_fonts.js"
                 ));
         }
     }

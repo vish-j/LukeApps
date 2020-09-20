@@ -1,6 +1,5 @@
 ﻿using LukeApps.AlertHandling;
 using LukeApps.ApprovalProcess.Interfaces;
-using LukeApps.Authorization;
 using LukeApps.EmailHandling;
 using LukeApps.EmployeeData;
 using PhilApprovalFlow;
@@ -42,6 +41,11 @@ namespace LukeApps.ApprovalProcess
         public static ICanAction SetApp(this ICanAction approvalFlow, string app)
         {
             return approvalFlow.SetMetadata("app", app);
+        }
+
+        public static string GetStatus(this IEnumerable<ITransition> transitions)
+        {
+            return transitions.IsApproved() ? "Approved" : transitions.Any(t => t.ApproverDecision == DecisionType.Rejected) ? "Rejected" : string.Join("\n", transitions.Select(t => $"{t.ApproverDecision.GetDisplay()} by {EmployeeProvider.GetEmployeeProvider().GetDisplayName(t.ApproverID)}."));
         }
 
         public static ICanAction LoadNotification(this ICanAction approvalFlow, Employee approver, IEnumerable<Employee> employeesCarbonCopy = null)
@@ -170,8 +174,8 @@ namespace LukeApps.ApprovalProcess
                         }
                     }
 
-                    using (var email = new EmailHandler(mailList))
-                        email.Send();
+                    //using (var email = new EmailHandler(mailList))
+                    //    email.Send();
 
                     approvalFlow.ClearNotifications();
                 }

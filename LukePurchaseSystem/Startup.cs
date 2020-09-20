@@ -22,7 +22,7 @@ namespace LukePurchaseSystem
             ApplicationDbContext context = new ApplicationDbContext();
 
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
-            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
 
             // In Startup, creating first Admin Role and creating a default Admin User
             if (!roleManager.RoleExists("Admin"))
@@ -44,12 +44,56 @@ namespace LukePurchaseSystem
 
                 string userPWD = "A@Z200711";
 
-                var chkUser = UserManager.Create(user, userPWD);
+                var chkUser = userManager.Create(user, userPWD);
 
                 //Add default User to Role Admin
                 if (chkUser.Succeeded)
                 {
-                    var result1 = UserManager.AddToRole(user.Id, "Admin");
+                    var result1 = userManager.AddToRole(user.Id, "Admin");
+                }
+            }
+
+            if (userManager.FindById("sully") == null)
+            {
+                var user = new ApplicationUser();
+                user.UserName = "sully";
+                user.Email = "sully@gmail.com";
+                user.FirstName = "Suleiman";
+                user.LastName = "Al Habsi";
+                user.JobTitle = "COO";
+                user.Initials = "SAH";
+                user.PhoneNumber = "90000000";
+
+                string userPWD = "A@Z200711";
+
+                var chkUser = userManager.Create(user, userPWD);
+
+                //Add default User to Role Admin
+                if (chkUser.Succeeded)
+                {
+                    var result1 = userManager.AddToRole(user.Id, "Manager");
+                }
+            }
+
+            if (userManager.FindById("naseer") == null)
+            {
+                var user = new ApplicationUser();
+                user.UserName = "naseer";
+                user.Email = "naseer@gmail.com";
+                user.FirstName = "Naseer";
+                user.LastName = "Al Habsi";
+                user.JobTitle = "CEO";
+                user.Initials = "NAH";
+                user.PhoneNumber = "90000000";
+
+                string userPWD = "A@Z200711";
+
+                var chkUser = userManager.Create(user, userPWD);
+
+                //Add default User to Role Admin
+                if (chkUser.Succeeded)
+                {
+                    var result1 = userManager.AddToRole(user.Id, "Manager");
                 }
             }
 

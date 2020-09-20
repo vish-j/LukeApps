@@ -48,10 +48,6 @@ namespace LukePurchaseSystem.Controllers
                 WebSite = c.WebSite,
                 Address = c.Address,
                 Comments = c.Comments,
-                BlockStartDate = c.BlockStartDate?.ToShortDateISO(),
-                BlockEndDate = c.BlockEndDate?.ToShortDateISO(),
-                BlockBlacklistReason = c.BlockBlacklistReason,
-                DepartmentNumber = c.DepartmentNumber,
                 AuditDetail_CreatedDate = c.AuditDetail.CreatedDate.ToShortDateISO(),
                 AuditDetail_CreatedEntryUser = c.AuditDetail.CreatedEntryUserDisplayName,
                 AuditDetail_LastModifiedDate = c.AuditDetail.LastModifiedDate?.ToShortDateISO(),
@@ -152,7 +148,7 @@ namespace LukePurchaseSystem.Controllers
                 preCompany.BlockStartDate = cpy.BlockStartDate;
                 preCompany.BlockEndDate = cpy.BlockEndDate;
                 preCompany.BlockBlacklistReason = cpy.BlockBlacklistReason;
-                preCompany.DepartmentNumber = cpy.DepartmentNumber;
+
                 repo.Edit(preCompany);
                 await repo.SaveChangesAsync();
                 return RedirectToAction("Index", new { id = preCompany.CompanyID });

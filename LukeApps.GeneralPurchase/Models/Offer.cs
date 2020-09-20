@@ -59,6 +59,8 @@ namespace LukeApps.GeneralPurchase.Models
         [Display(Name = "Agreed Payment Terms")]
         public PaymentTerms AgreedPaymentTerms { get; set; } = new PaymentTerms();
 
+
+        [Display(Name = "Scope Items")]
         public virtual ICollection<ScopeItem> ScopeItems { get; set; }
 
         public virtual Offer PreviousOffer { get; set; }

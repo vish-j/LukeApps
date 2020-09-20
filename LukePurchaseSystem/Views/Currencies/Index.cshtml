@@ -19,7 +19,7 @@
                 @Html.DisplayNameFor(model => model.CurrencyCode)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CurrencyRateEuro)
+                @Html.DisplayNameFor(model => model.CurrencyRateDefault)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AuditDetail.CreatedDate)
@@ -42,66 +42,10 @@
                 @Html.DisplayNameFor(model => model.CurrencyID)
             </th>
             <th>
-                @Styles.Render("~/Content/dt-basic")
+                @Html.DisplayNameFor(model => model.CurrencyCode)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CurrencyCode);
-
-
-#line default
-#line hidden
-
-#line 6 "C:\Users\vishv\source\repos\LukeApps\LukePurchaseSystem\Views\Currencies\Index.cshtml"
-                __o = Html.DisplayNameFor(model => model.CurrencyRateDefault);
-
-
-#line default
-#line hidden
-
-#line 7 "C:\Users\vishv\source\repos\LukeApps\LukePurchaseSystem\Views\Currencies\Index.cshtml"
-                __o = Html.DisplayNameFor(model => model.AuditDetail.CreatedDate);
-
-
-#line default
-#line hidden
-
-#line 8 "C:\Users\vishv\source\repos\LukeApps\LukePurchaseSystem\Views\Currencies\Index.cshtml"
-                __o = Html.DisplayNameFor(model => model.AuditDetail.CreatedEntryUser);
-
-
-#line default
-#line hidden
-
-#line 9 "C:\Users\vishv\source\repos\LukeApps\LukePurchaseSystem\Views\Currencies\Index.cshtml"
-                __o = Html.DisplayNameFor(model => model.AuditDetail.LastModifiedDate);
-
-
-#line default
-#line hidden
-
-#line 10 "C:\Users\vishv\source\repos\LukeApps\LukePurchaseSystem\Views\Currencies\Index.cshtml"
-                __o = Html.DisplayNameFor(model => model.AuditDetail.LastModifiedEntryUser);
-
-
-#line default
-#line hidden
-
-#line 11 "C:\Users\vishv\source\repos\LukeApps\LukePurchaseSystem\Views\Currencies\Index.cshtml"
-                __o = Html.DisplayNameFor(model => model.CurrencyID);
-
-
-#line default
-#line hidden
-
-#line 12 "C:\Users\vishv\source\repos\LukeApps\LukePurchaseSystem\Views\Currencies\Index.cshtml"
-                __o = Html.DisplayNameFor(model => model.CurrencyCode);
-
-
-#line default
-#line hidden
-
-#line 13 "C:\Users\vishv\source\repos\LukeApps\LukePurchaseSystem\Views\Currencies\Index.cshtml"
-                __o = Html.DisplayNameFor(model => model.CurrencyRateDefault)
+                @Html.DisplayNameFor(model => model.CurrencyRateDefault)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AuditDetail.CreatedDate)
@@ -114,13 +58,13 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AuditDetail.LastModifiedEntryUser)
-            </th>
+            </th>        
         </tr>
     </tfoot>
 </table>
 
 <div>
-    <a href="/ManagementReference" class="btn btn-default">Back to Dashboard</a>
+    <a href="/" class="btn btn-default">Back to Dashboard</a>
 </div>
 
 <div id="viewModal" class="modal fade" tabindex="-1" role="dialog">

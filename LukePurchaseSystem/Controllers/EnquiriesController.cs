@@ -115,10 +115,15 @@ namespace LukePurchaseSystem.Controllers
         [AuthorizeRoles(Role.Dev)]
         public ActionResult AddNewScopeItem(long id)
         {
-            return AddNewChild(new ScopeItem(), r => r.ScopeItemID, id);
+            return AddNewChild(new ScopeItem(), r => r.OfferID, id);
         }
 
+        public void viewBagApproveList() =>
+            ViewBag.Employees = new SelectList(EmployeeProvider.GetEmployeeProvider().Users, nameof(Employee.Username), "displayName");
+
         private void viewBagBudgetID() => ViewBag.BudgetID = new SelectList(repo.Context.Budgets, "BudgetID", "BudgetName");
+
+        private void viewBagCompanies() => ViewBag.Companies = new SelectList(repo.Context.Companies, "CompanyID", "CompanyName");
 
         // GET: Enquiries/Create
         [HttpGet]
@@ -126,7 +131,9 @@ namespace LukePurchaseSystem.Controllers
         public ActionResult Create()
         {
             viewBagBudgetID();
-            return View(new Enquiry());
+            viewBagApproveList();
+            viewBagCompanies();
+            return View(new Enquiry() { OriginatorID = User.Identity.Name });
         }
 
         // POST: Enquiries/Create
@@ -169,8 +176,9 @@ namespace LukePurchaseSystem.Controllers
                 return RedirectToAction("Index", new { id = eq.EnquiryID });
             }
 
+            viewBagApproveList();
             viewBagBudgetID();
-
+            viewBagCompanies();
             return View(eq);
         }
 
@@ -189,6 +197,8 @@ namespace LukePurchaseSystem.Controllers
                 return RedirectToAction("Index", new { ErrorMessage = "Bad ID" });
             }
             viewBagBudgetID();
+            viewBagApproveList();
+            viewBagCompanies();
             return View(enquiry);
         }
 
@@ -217,7 +227,8 @@ namespace LukePurchaseSystem.Controllers
                 return RedirectToAction("Index", new { id = preEnquiry.EnquiryID });
             }
             viewBagBudgetID();
-
+            viewBagApproveList();
+            viewBagCompanies();
             return View(eq);
         }
 
@@ -383,7 +394,7 @@ namespace LukePurchaseSystem.Controllers
             if (!offer.IsNew)
                 viewBagLatestid(offer);
 
-            return View(offer);
+            return View(new OfferVM(offer));
         }
 
         private long getLatestid(Offer offer) =>
@@ -394,7 +405,7 @@ namespace LukePurchaseSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EditOffer(Offer ofr)
+        public async Task<ActionResult> EditOffer(OfferVM ofr)
         {
             if (ModelState.IsValid)
             {
@@ -416,7 +427,7 @@ namespace LukePurchaseSystem.Controllers
 
                 repo.Context.Entry(preOffer).State = EntityState.Modified;
 
-                repo.UpdateChildCollection(p => p.ScopeItems, preOffer, ofr);
+                repo.UpdateChildCollection(p => p.ScopeItems, preOffer, new Offer { ScopeItems = ofr.ScopeItems });
 
                 await repo.SaveChangesAsync();
 
@@ -456,7 +467,7 @@ namespace LukePurchaseSystem.Controllers
                 }
             }
 
-            if (checkValidity(enquiry, enquiry.RecommededOffer))
+            if (checkValidity(enquiry, enquiry.RecommendedOffer))
                 return View(new DecisionVM()
                 {
                     ID = enquiry.EnquiryID,
@@ -1042,7 +1053,7 @@ namespace LukePurchaseSystem.Controllers
             var approval = enquiry.GetApprovalFlow()
                 .SetUserName(currentemployee);
 
-            ProcessApprovals(decision, enquiry, currentemployee.Username, approval);
+            ProcessApprovals(enquiry, currentemployee.Username, approval, decision.Comments);
 
             repo.Edit(enquiry);
             await repo.SaveChangesAsync();

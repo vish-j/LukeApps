@@ -8,6 +8,7 @@ namespace LukeApps.GeneralPurchase.Models
     {
         public BankAccount()
         {
+            Address = new Address();
             AuditDetail = new AuditDetail();
         }
 

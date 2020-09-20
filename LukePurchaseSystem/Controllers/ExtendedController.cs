@@ -1,5 +1,4 @@
 ﻿using HtmlHelpers.BeginCollectionItem;
-using LukeApps.ApprovalProcess;
 using LukeApps.ApprovalProcess.Interfaces;
 using LukeApps.TrackingExtended;
 using PhilApprovalFlow;
@@ -48,20 +47,33 @@ namespace LukePurchaseSystem.Controllers
             );
         }
 
-        protected static void ProcessApprovals(DecisionVM decision, IPAFMatrix entity, string username, ICanAction approval)
+        protected static void ProcessApprovals(IPAFMatrix entity, string username, ICanAction approval, string comments = null)
         {
-            approval.Approve(decision.Comments)
-                .LoadNotification(username, new string[] { entity.OriginatorID });
-
             if (username == entity.OriginatorID)
             {
-                approval.RequestApproval(entity.ReviewerID).LoadNotification(username, new string[] { entity.OriginatorID });
+                approval.RequestApproval(entity.OriginatorID);
+                if (entity.ReviewerID != null)
+                {
+                    approval.RequestApproval(entity.ReviewerID).LoadNotification(username, new string[] { entity.OriginatorID });
+                }
+                else
+                {
+                    approval.RequestApproval(entity.ApproverID).LoadNotification(username, new string[] { entity.OriginatorID });
+                }
             }
-
-            if (username == entity.ReviewerID)
+            else if (username == entity.ReviewerID)
             {
                 approval.RequestApproval(entity.ApproverID).LoadNotification(username, new string[] { entity.OriginatorID });
             }
+            else
+            {
+                approval.RequestApproval(entity.OriginatorID);
+            }
+
+            approval.Approve(comments)
+                .LoadNotification(username, new string[] { entity.OriginatorID });
+
+
         }
     }
 }

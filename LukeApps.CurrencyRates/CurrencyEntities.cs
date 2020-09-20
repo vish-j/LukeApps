@@ -16,6 +16,7 @@ namespace LukeApps.CurrencyRates.DAL
         public CurrencyEntities()
             : base("", "name=CurrencyEntities")
         {
+            Database.SetInitializer(new CurrencyInitializer());
         }
 
         public virtual DbSet<Currency> Currencies { get; set; }

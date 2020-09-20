@@ -2,6 +2,7 @@
 @section CustomStyles {
     @Styles.Render("~/Content/bdp")
     @Styles.Render("~/Content/bootstrap-dropdown")
+    @Styles.Render("~/Content/File-Upload")
 }
 @{
     ViewBag.Title = "Edit Offer";
@@ -63,30 +64,30 @@
                             </div>
 
                             <div class="form-group">
-                                @Html.Label("file", "Quotation", htmlAttributes: new { @class = "control-label col-md-2" })
+                                @Html.LabelFor(model => model.Quotation, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.Quotation, "MultiFileControl", new { htmlAttributes = new { @data_upload_url = Url.Action("UploadFile", "Dashboard", null), @data_download_url = Url.Action("DownloadFile", "Dashboard", null) } })
+                                    @Html.ValidationMessageFor(model => model.Quotation, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <hr />
+                            <div class="form-group collectionControl">
+                                <h4>@Html.LabelFor(model => model.ScopeItems, htmlAttributes: new { @class = "control-label col-md-2" })</h4>
+                                <div class="collectionGroup col-md-10">
+                                    @Html.EditorFor(model => model.ScopeItems, "CollectionTemplate")
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.ValidationMessageFor(model => model.ScopeItems, "", new { @class = "text-danger" })
+                                </div>
                                 <div class="col-md-10">
-                                    <input name="Quotation" type="file" class="form-control" />
+                                    <br />
+                                    <a class="btn btn-sm btn-default addCollectionItem" data-ajax-url="@Url.Action("AddNewScopeItem", new { id = Model.OfferID })">
+                                        <span class="glyphicon glyphicon-plus"></span> Add an item
+                                    </a>
                                 </div>
                             </div>
 
-                            <div id="SGPhasesGroup">
-                                <hr />
-                                <legend>Services / Goods (Scope Items)<br />@Html.ValidationMessageFor(model => model.ScopeItems, "", new { @class = "text-danger" })</legend>
-
-                                <div id="new-SGPhase" class="set">
-                                    @foreach (var serviceArticle in Model.ScopeItems)
-                                    {
-                                        Html.RenderPartial("_serviceArticle", serviceArticle);
-                                    }
-                                </div>
-                                <div>
-                                    <br />
-                                    <a id="addSGphase" name="addSGphase" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-plus"></span> Add a Article/Service</a>
-                                    <br />
-                                </div>
-                                <br />
-                                <hr />
-                            </div>
                         </div>
                         <div class="col-md-6">
 
@@ -217,6 +218,7 @@ else
     @Scripts.Render("~/bundles/bootstrap-dropdown")
     @Scripts.Render("~/bundles/moment")
     @Scripts.Render("~/bundles/collectionItems")
+    @Scripts.Render("~/bundles/File-Upload")
     <script>
 
         $(document).ready(function () {
@@ -293,93 +295,6 @@ else
 
         });
 
-        $('#SGPhasesGroup').on('click', '.deleteRow', function () {
-            $(this).closest('.contentRow').remove();
-            return false;
-        });
-
-        $('#addSGphase').on('click', function () {
-            $.ajax({
-                async: true,
-                cache: false,
-                url: '@Url.Action("AddNewServiceArticle", new { id = Model.OfferID })'
-            }).done(function (partialView) {
-                $('#new-SGPhase').append(partialView);
-                $.validator.unobtrusive.parseDynamicContent('#new-SGPhase');
-                asterisk();
-
-                $(".chosen-select").chosen({
-                    search_contains: true,
-                });
-            });
-        });
-
-        //function to initialize
-        $('.LumpSumCheck').each(function () {
-            action(this);
-        });
-
-        $('#SGPhasesGroup').on('change', '.LumpSumCheck', function () {
-            action(this);
-        });
-
-        function action(ctx) {
-            var value = $(ctx).prop('checked');
-            var closestContentRow = $(ctx).closest('.contentRow');
-            var unit = closestContentRow.find('.LumpSumUnit');
-            var quantity = closestContentRow.find('.LumpSumQ');
-            var unitLabel = closestContentRow.find('.LumpSumUnitLabel');
-            var quantityLabel = closestContentRow.find('.LumpSumQLabel');
-            var unitVer = closestContentRow.find('.LumpSumUnitVer');
-            var quantityVer = closestContentRow.find('.LumpSumQVer');
-            var unitPriceLabel = closestContentRow.find('.LumpSumUPLabel');
-            if (value) {
-                unit.val('LumpSum');
-                quantity.val('1');
-                unit.addClass('hide');
-                quantity.addClass('hide');
-                unitLabel.addClass('hide');
-                quantityLabel.addClass('hide');
-                unitVer.addClass('hide');
-                quantityVer.addClass('hide');
-                unitPriceLabel.text('LumpSum Price')
-            }
-            else {
-                if (unit.val() == 'LumpSum') {
-                    unit.val('');
-                    quantity.val('');
-                }
-                unit.removeClass('hide');
-                quantity.removeClass('hide');
-                unitLabel.removeClass('hide');
-                quantityLabel.removeClass('hide');
-                unitVer.removeClass('hide');
-                quantityVer.removeClass('hide');
-                unitPriceLabel.text('Unit Price')
-            }
-        }
-        $('#basicCollapse').click(function () {
-            $(this).find('span').toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
-        });
-
-        $('#extensiveCollapse').click(function () {
-            $(this).find('span').toggleClass("glyphicon-remove").toggleClass("glyphicon-ok");
-        });
-
-        $('#extensiveCollapse').click(function (e) {
-            if ($('#collapseOne').hasClass('in')) {
-                if (confirm('The fields will be cleared. Are you sure?')) {
-                    $('#collapseOne').find('input, select, textarea').val('');
-                    $('#collapseOne > .chosen-select').val('').trigger('chosen:updated');
-                    $.each($('.contentRow'), function () {
-                        console.log(this);
-                        $(this).find('.deleteRow').click();
-                    });
-                } else {
-                    e.preventDefault(); // to stop the page jump to the anchor target.
-                    e.stopPropagation();
-                }
-            }
-        });
+      
     </script>
 }

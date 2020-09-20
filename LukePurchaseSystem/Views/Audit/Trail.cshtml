@@ -1,0 +1,34 @@
+﻿@model IEnumerable<LukeApps.Common.Models.AuditEvent>
+@section CustomStyles {
+    @Styles.Render("~/Content/timeline")
+}
+@{
+    ViewBag.Title = "Audit Trail";
+    Layout = "~/Views/Shared/_AppLayout.cshtml";
+}
+
+<h2 class="text-center">Audit Trail</h2>
+
+<div class="timeline">
+    <ul>
+
+        @foreach (var item in Model)
+        {
+            <li class="auditEvent">
+                @Html.DisplayFor(modelItem => item)
+            </li>
+        }
+    </ul>
+</div>
+
+<div>
+    <br /><a class="btn btn-default btn-sm" href="@ViewBag.ReturnUrl">Back to List</a>
+</div>
+
+
+@section Scripts{
+    <script>
+         var downloadUrl = '@Url.Action("Download")?key=';
+    </script>
+    @Scripts.Render("~/bundles/timeline")
+}

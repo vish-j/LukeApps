@@ -2,6 +2,7 @@
 using LukeApps.Authorization.Attributes;
 using LukeApps.Authorization.RoleMap;
 using LukeApps.EmployeeData;
+using LukeApps.FileHandling;
 using LukeApps.GeneralPurchase.DAL;
 using LukeApps.GeneralPurchase.Models;
 using LukeApps.GeneralPurchase.ViewModel;
@@ -27,25 +28,40 @@ namespace LukePurchaseSystem.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            IEnumerable<AlertNotification> alertLogs = GetAlertLogs.ForApp("MRSystem").ForUser(User.GetUserData().Username).Serialize();
+            IEnumerable<AlertNotification> alertLogs = GetAlertLogs.ForApp("ExpenseClaim").ForUser(User.GetUserData().Username).Serialize();
 
-            var expiringAgreements = repo.GetAll().Include(a => a.Company).Where(a => a.PurchaseOrderExpiryDate != null && !a.IsPurchaseOrderClosed).AsEnumerable().Where(a => DateTime.Now.AddDays(56).Date >= a.PurchaseOrderExpiryDate).ToList();
-
-            //var expiringinvoiceList = repo.Context.Invoices.Where(i => i.InvoicePaid == null).AsEnumerable().Where(i => i.IsActive && DateTime.Now.AddDays(10).Date >= i.InvoiceDue.Date).ToList();
+            var expiringAgreements = repo.GetAll().Include(a => a.Company).Where(a => a.PurchaseOrderExpiryDate != null).AsEnumerable().Where(a => DateTime.Now.AddDays(56).Date >= a.PurchaseOrderExpiryDate && !a.IsPurchaseOrderClosed && !a.IsPurchaseOrderCancelled).ToList();
 
             return View(new DashboardVM()
             {
                 MRAlerts = alertLogs,
                 TotalExpiringPurchaseOrders = expiringAgreements.Count,
-                TotalExpiringInvoices = 0,//expiringinvoiceList.Count,
+                TotalExpiringInvoices = 0,
                 ExpiringPurchaseOrders = expiringAgreements.ToList(),
-                //ExpiringInvoices = expiringinvoiceList
             });
         }
 
         [HttpPost]
         [AuthorizeRoles(Role.Dev, Role.MRProcurementAdmin, Role.MRFinance)]
         public int DismissAlert(string key) => AlertOperations.ForKey(key).ByUser(User.Identity.Name.Substring(6)).Acknowledge();
+
+        public JsonResult UploadFile()
+        {
+            return Json(new
+            {
+                Files = Filer.SetUsername(User.Identity.Name)
+                .SetCurrentFolder("WipeOut")
+                .AddFiles(Request.Files)
+                .Upload()
+                .GetFilesInformation(),
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public FileResult DownloadFile(string key)
+        {
+            var file = Filer.SetFileKey(key).Download();
+            return File(file.FileContent, file.ContentType, file.FileName);
+        }
 
         protected override void Dispose(bool disposing)
         {

@@ -1,7 +1,8 @@
 ﻿@model LukeApps.GeneralPurchase.Models.Enquiry
 @section CustomStyles {
     @Styles.Render("~/Content/bdp")
-	@Styles.Render("~/Content/bootstrap-dropdown")
+    @Styles.Render("~/Content/bootstrap-dropdown")
+    @Styles.Render("~/Content/File-Upload")
 }
 @{
     ViewBag.Title = "Create";
@@ -9,108 +10,99 @@
 
 <h2>Create</h2>
 
-
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-<div class="form-horizontal">
-    <h4>Enquiry</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.SubjectOfEnquiry, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.SubjectOfEnquiry, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.SubjectOfEnquiry, "", new { @class = "text-danger" })
+    <div class="form-horizontal">
+        <h4>Enquiry</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Budget, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.BudgetID, null, "-Select One-", htmlAttributes: new { @class = "form-control chosen-select" })
+                @Html.ValidationMessageFor(model => model.BudgetID, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.ScopeOfWork, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.ScopeOfWork, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.ScopeOfWork, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.SubjectOfEnquiry, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SubjectOfEnquiry, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SubjectOfEnquiry, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Budget, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.BudgetID, null, "-Select One-", htmlAttributes: new { @class = "form-control chosen-select" })
-            @Html.ValidationMessageFor(model => model.BudgetID, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.VendorEnquiries, "Vendors To Enquire", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.ListBoxFor(model => model.VendorEnquiriesList, (MultiSelectList)ViewBag.Companies, htmlAttributes: new { @class = "form-control chosen-select", @multiple = "multiple" })
+                @Html.ValidationMessageFor(model => model.VendorEnquiries, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-
-        @Html.LabelFor(model => model.Originator, htmlAttributes: new { @class = "control-label col-md-2" })
-
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.OriginatorID, (SelectList)ViewBag.EmployeeList, "-Select Originator-", htmlAttributes: new { @class = "form-control chosen-select" })
-            @Html.ValidationMessageFor(model => model.OriginatorID, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.ScopeOfWork, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ScopeOfWork, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ScopeOfWork, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
+        <div class="form-group">
 
-        @Html.LabelFor(model => model.Reviewer, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Originator, htmlAttributes: new { @class = "control-label col-md-2" })
 
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.ReviewerID, (SelectList)ViewBag.EmployeeList, "-Select Reviewer-", htmlAttributes: new { @class = "form-control chosen-select" })
-            @Html.ValidationMessageFor(model => model.ReviewerID, "", new { @class = "text-danger" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.OriginatorID, (SelectList)ViewBag.Employees, "-Select Originator-", htmlAttributes: new { @class = "form-control chosen-select" })
+                @Html.ValidationMessageFor(model => model.OriginatorID, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
+        <div class="form-group">
 
-        @Html.LabelFor(model => model.Approver, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Reviewer, htmlAttributes: new { @class = "control-label col-md-2" })
 
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.ApproverID, (SelectList)ViewBag.EmployeeList, "-Select Approver-", htmlAttributes: new { @class = "form-control chosen-select" })
-            @Html.ValidationMessageFor(model => model.ApproverID, "", new { @class = "text-danger" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.ReviewerID, (SelectList)ViewBag.Employees, "-Select Reviewer-", htmlAttributes: new { @class = "form-control chosen-select" })
+                @Html.ValidationMessageFor(model => model.ReviewerID, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
 
+        <div class="form-group">
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.TechnicalEvaluator, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-6">
-            @Html.DropDownListFor(model => model.TechnicalEvaluatorID, (SelectList)ViewBag.EmployeeList, "-Select Technical Evaluator-", htmlAttributes: new { @class = "form-control chosen-select" })
-            @Html.ValidationMessageFor(model => model.TechnicalEvaluatorID, "", new { @class = "text-danger" })
+            @Html.LabelFor(model => model.Approver, htmlAttributes: new { @class = "control-label col-md-2" })
+
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.ApproverID, (SelectList)ViewBag.Employees, "-Select Approver-", htmlAttributes: new { @class = "form-control chosen-select" })
+                @Html.ValidationMessageFor(model => model.ApproverID, "", new { @class = "text-danger" })
+            </div>
         </div>
-        <div class="col-md-4">
-            <b>Quick Select: </b>
-            <div class="btn-group btn-group-xs" role="group">
-                <div class="btn btn-default" role="group" onclick="technicalEvaluatorSelect('@User.Identity.Name')">Me</div>
-                <div class="btn btn-default btn-danger" role="group" onclick="technicalEvaluatorSelect(null)">Empty</div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TechnicalEvaluator, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.TechnicalEvaluatorID, (SelectList)ViewBag.Employees, "-Select Technical Evaluator-", htmlAttributes: new { @class = "form-control chosen-select" })
+                @Html.ValidationMessageFor(model => model.TechnicalEvaluatorID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SupportingDocuments, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.SupportingDocuments, "MultiFileControl", new { htmlAttributes = new { @data_upload_url = Url.Action("UploadFile", "Dashboard", null), @data_download_url = Url.Action("DownloadFile", "Dashboard", null) } })
+                @Html.ValidationMessageFor(model => model.SupportingDocuments, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.SupportingDocuments, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.SupportingDocuments, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.SupportingDocuments, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.VendorEnquiries, "Vendors To Enquire", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.ListBoxFor(model => model.VendorEnquiriesList, (MultiSelectList)ViewBag.Companies, htmlAttributes: new { @class = "form-control chosen-select", @multiple = "multiple" })
-            @Html.ValidationMessageFor(model => model.VendorEnquiries, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
-        </div>
-    </div>
-</div>
 }
 
 <div>
@@ -119,36 +111,37 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-	@Scripts.Render("~/bundles/bootstrap-dp")
-	@Scripts.Render("~/bundles/bootstrap-dropdown")
-	<script>
-		$(".chosen-select").chosen({
+    @Scripts.Render("~/bundles/bootstrap-dp")
+    @Scripts.Render("~/bundles/bootstrap-dropdown")
+    @Scripts.Render("~/bundles/File-Upload")
+    <script>
+        $(".chosen-select").chosen({
             search_contains: true,
         })
 
-	    $('.dp').datepicker({
-        format: "yyyy-mm-dd",
-        endDate: "+0d",
-        todayBtn: "linked",
-        orientation: "bottom auto",
-        daysOfWeekDisabled: "5,6"
-    });
-
-    $(function () {
-
-        $('input:submit').click(function () {
-            var $button = this;
-            var oldValue = $button.value;
-            setTimeout(function () {
-                $button.disabled = true;
-                $button.value = 'Creating...';
-                setTimeout(function () {
-                    $button.disabled = false;
-                    $button.value = oldValue;
-                }, 500);
-            }, 0);
+        $('.dp').datepicker({
+            format: "yyyy-mm-dd",
+            endDate: "+0d",
+            todayBtn: "linked",
+            orientation: "bottom auto",
+            daysOfWeekDisabled: "5,6"
         });
 
-    });
-</script>
+        $(function () {
+
+            $('input:submit').click(function () {
+                var $button = this;
+                var oldValue = $button.value;
+                setTimeout(function () {
+                    $button.disabled = true;
+                    $button.value = 'Creating...';
+                    setTimeout(function () {
+                        $button.disabled = false;
+                        $button.value = oldValue;
+                    }, 500);
+                }, 0);
+            });
+
+        });
+    </script>
 }

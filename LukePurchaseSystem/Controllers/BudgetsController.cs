@@ -42,7 +42,8 @@ namespace LukePurchaseSystem.Controllers
             {
                 BudgetID = b.BudgetID,
                 BudgetName = b.BudgetName,
-                BudgetAmount = b.BudgetAmount,
+                BudgetAmount = b.BudgetAmount.ToString(),
+                Balance = b.Balance.ToString(),
                 AuditDetail_CreatedDate = b.AuditDetail.CreatedDate.ToShortDateISO(),
                 AuditDetail_CreatedEntryUser = b.AuditDetail.CreatedEntryUserDisplayName,
                 AuditDetail_LastModifiedDate = b.AuditDetail.LastModifiedDate?.ToShortDateISO(),

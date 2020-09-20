@@ -20,10 +20,8 @@ namespace LukeApps.CurrencyRates
             PriceDate = DateTime.Now;
         }
 
-        [SkipTracking]
-        [NotMapped]
-        [JsonIgnore]
-        public DateTime PriceDate { get; set; }
+
+        public DateTime PriceDate { get; set; } = DateTime.Now;
 
         [Display(Name = "Currency Code")]
         public CurrencyCode CurrencyCode { get; set; } = CurrencyCode.OMR;
@@ -33,7 +31,7 @@ namespace LukeApps.CurrencyRates
         [NotMapped]
         [JsonIgnore]
         [SkipTracking]
-        public double ValueEuro => Math.Round(CurrencyProvider.GetCurrencyProvider().GetDefaultCurrencyRate(CurrencyCode, PriceDate) * Value, 2);
+        public double DefaultCurrencyValue => Math.Round(CurrencyProvider.GetCurrencyProvider().GetDefaultCurrencyRate(CurrencyCode, PriceDate) * Value, 2);
 
         [NotMapped]
         [JsonIgnore]

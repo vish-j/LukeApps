@@ -139,6 +139,10 @@ namespace LukeApps.FileHandling
         public static ICanDownloadMultiple SetFileKeys(string Keys)
         {
             var GuidList = new List<Guid>();
+
+            if(Keys == null)
+                return new Filer(GuidList);
+
             try
             {
                 var guids = Keys.Split(',');
@@ -150,9 +154,9 @@ namespace LukeApps.FileHandling
                 }
             }
             catch
-            {
-                GuidList = new List<Guid>();
+            {              
             }
+
             return new Filer(GuidList);
         }
 

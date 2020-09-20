@@ -80,8 +80,6 @@
             <text>|</text> @Html.ActionLink("Edit", "Edit", new { id = Model.EnquiryID }, new { @class = "btn btn-sm btn-default" })
         }
 
-        <text>|</text><a href="@Url.Action("Index", "Requisitions", new { id = Model.PurchaseRequisitionID })" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-arrow-left"></span> Go To Requisition Form</a>
-
         @if (Model.RecommendedOfferID != null)
         {
             <text>|</text> <button class="btn btn-sm btn-default" onclick="javascript:downloadBidSummary(@Model.EnquiryID, rootURL)">Download Bid Summary</button>
@@ -101,7 +99,7 @@
             }
             if (Model.IsOfferAwarded)
             {
-                <text>|</text><a href="@Url.Action("Index", "Agreements", new { id = Model.RecommededOffer.PurchaseOrder.PurchaseOrderID })" class="btn btn-sm btn-default">Go To Purchase Order <span class="glyphicon glyphicon-arrow-right"></span></a>
+                <text>|</text><a href="@Url.Action("Index", "Agreements", new { id = Model.RecommendedOffer.PurchaseOrder.PurchaseOrderID })" class="btn btn-sm btn-default">Go To Purchase Order <span class="glyphicon glyphicon-arrow-right"></span></a>
             }
         }
         else if (Model.IsSingleOffer)
@@ -286,7 +284,7 @@
                                         @item.Value <br />
                                         @if (Model.Offers.All(o => o.VendorResponse == LukeApps.GeneralPurchase.Enums.VendorResponse.NoResponse))
                                         {
-                                            <a href="/SmallOrders/Enquiries/EditOffer/@item.Key" class="btn btn-xs btn-warning">Add Offer</a><br />
+                                            <a href="/Enquiries/EditOffer/@item.Key" class="btn btn-xs btn-warning">Add Offer</a><br />
                                             @Html.Raw(@"<p><a href=" + Url.Action("SendNotificationToVendor", new { id = @item.Key }) + @" class=""btn btn-xs btn-warning"">Send Notification To Vendor</a></p>");<br /><br />
                                         }
                                     </li>
@@ -489,16 +487,16 @@
                             @Html.DisplayFor(modelItem => item.DeliveryTerms)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.CreatedDate)
+                            @Html.DisplayFor(modelItem => item.AuditDetail.CreatedDate)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.CreatedEntryUser)
+                            @Html.DisplayFor(modelItem => item.AuditDetail.CreatedEntryUserDisplayName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.LastModifiedDate)
+                            @Html.DisplayFor(modelItem => item.AuditDetail.LastModifiedDate)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.LastModifiedEntryUser)
+                            @Html.DisplayFor(modelItem => item.AuditDetail.LastModifiedEntryUserDisplayName)
                         </td>
                     </tr>
                     trClass = "";

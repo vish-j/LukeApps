@@ -42,19 +42,16 @@
                 @Html.DisplayNameFor(model => model.PurchaseOrderID)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BudgetID)
+                @Html.DisplayNameFor(model => model.Budget)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OriginatorID)
+                @Html.DisplayNameFor(model => model.Originator)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ReviewerID)
+                @Html.DisplayNameFor(model => model.Reviewer)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ApproverID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApprovedDocuments)
+                @Html.DisplayNameFor(model => model.Approver)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PurchaseOrderExpiryDate)
@@ -80,19 +77,16 @@
                 @Html.DisplayNameFor(model => model.PurchaseOrderID)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BudgetID)
+                @Html.DisplayNameFor(model => model.Budget)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OriginatorID)
+                @Html.DisplayNameFor(model => model.Originator)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ReviewerID)
+                @Html.DisplayNameFor(model => model.Reviewer)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ApproverID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApprovedDocuments)
+                @Html.DisplayNameFor(model => model.Approver)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PurchaseOrderExpiryDate)
@@ -157,14 +151,13 @@
         var rootURL = '@Url.Action("/")';
         IndexConfig.dtConfig.ajax = rootURL + 'GetJSON';
         IndexConfig.dtConfig.columns = [
-								{ "data": "PurchaseOrderID" },
-									{ "data": "BudgetID" },
-									{ "data": "OriginatorID" },
-									{ "data": "ReviewerID" },
-									{ "data": "ApproverID" },
-									{ "data": "ApprovedDocuments" },
-									{ "data": "PurchaseOrderExpiryDate" },
-								{ "data": "AuditDetail_CreatedDate" },
+				{ "data": "PurchaseOrderID" },
+					{ "data": "BudgetID" },
+					{ "data": "OriginatorID" },
+					{ "data": "ReviewerID" },
+					{ "data": "ApproverID" },
+					{ "data": "PurchaseOrderExpiryDate" },
+				{ "data": "AuditDetail_CreatedDate" },
                 { "data": "AuditDetail_CreatedEntryUser" },
                 { "data": "AuditDetail_LastModifiedDate" },
                 { "data": "AuditDetail_LastModifiedEntryUser" },

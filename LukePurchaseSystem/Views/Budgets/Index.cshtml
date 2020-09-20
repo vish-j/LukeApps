@@ -22,6 +22,9 @@
                 @Html.DisplayNameFor(model => model.BudgetAmount)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Balance)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.AuditDetail.CreatedDate)
             </th>
             <th>
@@ -46,6 +49,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.BudgetAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Balance)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AuditDetail.CreatedDate)
@@ -109,7 +115,8 @@
         IndexConfig.dtConfig.columns = [
 				{ "data": "BudgetID" },
 				{ "data": "BudgetName" },
-				{ "data": "BudgetAmount" },
+            { "data": "BudgetAmount" },
+            { "data": "Balance" },
 				{ "data": "AuditDetail_CreatedDate" },
                 { "data": "AuditDetail_CreatedEntryUser" },
                 { "data": "AuditDetail_LastModifiedDate" },

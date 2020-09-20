@@ -42,7 +42,7 @@
                     @item.Order
                     @if ((bool?)ViewBag.CanInvalidate == true && item.ApproverDecision != PhilApprovalFlow.Enum.DecisionType.Invalidated)
                     {
-                        <a class="btn btn-danger btn-xs" href="@Url.Action("Invalidate", new { id = item.GetParentID(), username = item.Approver?.Username })">Invalidate <span class="glyphicon glyphicon-remove"></span></a>
+                        <a class="btn btn-danger btn-xs" href="@Url.Action("Invalidate", new { id = item.GetID(), username = item.Approver?.Username })">Invalidate <span class="glyphicon glyphicon-remove"></span></a>
                     }
                 </td>
                 <td>@{var name = item.Approver?.Summary;} @name</td>

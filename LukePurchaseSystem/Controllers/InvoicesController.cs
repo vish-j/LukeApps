@@ -103,12 +103,16 @@ namespace LukePurchaseSystem.Controllers
         }
 
         private void viewBagBudgetID() => ViewBag.BudgetID = new SelectList(repo.Context.Budgets, "BudgetID", "BudgetName");
+        public void viewBagApproveList() =>
+            ViewBag.Employees = new SelectList(EmployeeProvider.GetEmployeeProvider().Users, nameof(Employee.Username), "displayName");
+
 
         // GET: Invoices/Create
         [HttpGet]
         [AuthorizeRoles(Role.Dev)]
         public ActionResult Create()
         {
+            viewBagApproveList();
             viewBagBudgetID();
             return View(new Invoice()
             {
@@ -133,7 +137,7 @@ namespace LukePurchaseSystem.Controllers
             }
 
             viewBagBudgetID();
-
+            viewBagApproveList();
             return View(inv);
         }
 
@@ -152,6 +156,7 @@ namespace LukePurchaseSystem.Controllers
                 return RedirectToAction("Index", new { ErrorMessage = "Bad ID" });
             }
             viewBagBudgetID();
+            viewBagApproveList();
             return View(invoice);
         }
 
@@ -178,7 +183,7 @@ namespace LukePurchaseSystem.Controllers
                 return RedirectToAction("Index", new { id = preInvoice.InvoiceID });
             }
             viewBagBudgetID();
-
+            viewBagApproveList();
             return View(inv);
         }
 
@@ -298,7 +303,7 @@ namespace LukePurchaseSystem.Controllers
             var approval = invoice.GetApprovalFlow()
                 .SetUserName(currentemployee);
 
-            ProcessApprovals(decision, invoice, currentemployee.Username, approval);
+            ProcessApprovals(invoice, currentemployee.Username, approval, decision.Comments);
 
             repo.Edit(invoice);
             await repo.SaveChangesAsync();

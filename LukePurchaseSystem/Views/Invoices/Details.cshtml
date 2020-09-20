@@ -25,8 +25,8 @@
                 <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.Budget.BudgetName)</b> </div>
                 <div class="col-sm-1"><b>:</b></div>
                 <div class="col-sm-3">@Html.DisplayFor(model => model.Budget.BudgetName)</div>
-            </div>       
-        </div>  
+            </div>
+        </div>
 
 
         <div class="list-group-item">
@@ -34,52 +34,49 @@
                 <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.InvoiceID)</b> </div>
                 <div class="col-sm-1"><b>:</b></div>
                 <div class="col-sm-3">@Html.DisplayFor(model => model.InvoiceID)</div>
-            </div>       
-        </div>  
+            </div>
+        </div>
+
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.Originator)</b> </div>
+                <div class="col-sm-1"><b>:</b></div>
+                <div class="col-sm-3">@Html.DisplayFor(model => model.Originator.Summary)</div>
+            </div>
+        </div>
+
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.Reviewer)</b> </div>
+                <div class="col-sm-1"><b>:</b></div>
+                <div class="col-sm-3">@Html.DisplayFor(model => model.Reviewer.Summary)</div>
+            </div>
+        </div>
+
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.Approver)</b> </div>
+                <div class="col-sm-1"><b>:</b></div>
+                <div class="col-sm-3">@Html.DisplayFor(model => model.Approver.Summary)</div>
+            </div>
+        </div>
 
 
         <div class="list-group-item">
             <div class="row">
-                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.OriginatorID)</b> </div>
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.Transitions)</b> </div>
                 <div class="col-sm-1"><b>:</b></div>
-                <div class="col-sm-3">@Html.DisplayFor(model => model.OriginatorID)</div>
-            </div>       
-        </div>  
+                <div class="col-sm-3">@Html.DisplayFor(model => model.Transitions, "ApprovalStatus")</div>
+            </div>
+        </div>
 
 
         <div class="list-group-item">
             <div class="row">
-                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.ReviewerID)</b> </div>
-                <div class="col-sm-1"><b>:</b></div>
-                <div class="col-sm-3">@Html.DisplayFor(model => model.ReviewerID)</div>
-            </div>       
-        </div>  
-
-
-        <div class="list-group-item">
-            <div class="row">
-                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.ApproverID)</b> </div>
-                <div class="col-sm-1"><b>:</b></div>
-                <div class="col-sm-3">@Html.DisplayFor(model => model.ApproverID)</div>
-            </div>       
-        </div>  
-
-
-        <div class="list-group-item">
-            <div class="row">
-                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.Documents)</b> </div>
-                <div class="col-sm-1"><b>:</b></div>
-                <div class="col-sm-3">@Html.DisplayFor(model => model.Documents)</div>
-            </div>       
-        </div>  
-
-
-        <div class="list-group-item">
-		    <div class="row">
                 <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.AuditDetail.CreatedEntryUser)</b></div>
                 <div class="col-sm-1"><b>:</b></div>
                 <div class="col-sm-3">@Model.AuditDetail.CreatedEntryUserDisplayName, on @Model.AuditDetail.CreatedDate.ToString("dd/MM/yyyy")</div>
-            </div>  
+            </div>
         </div>
 
         @if (Model.AuditDetail.LastModifiedEntryUserID != null)

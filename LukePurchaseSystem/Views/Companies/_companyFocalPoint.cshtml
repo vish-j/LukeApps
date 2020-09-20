@@ -79,6 +79,14 @@
         </div>
     </div>
 
+    <div class="form-group col-md-2">
+        <div class="checkbox">
+            @Html.EditorFor(model => model.IsDefault)
+            @Html.LabelFor(model => model.IsDefault, htmlAttributes: new { @class = "control-label" })
+            @Html.ValidationMessageFor(model => model.IsDefault, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
     <a hre id="deleteRow" class="btn btn-xs btn-danger deleteRow"><span class="glyphicon glyphicon-trash"></span></a>
     <br />
     <hr />

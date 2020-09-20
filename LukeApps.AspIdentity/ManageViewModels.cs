@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace LukeApps.AspIdentity.ViewModel
 {
@@ -78,5 +78,8 @@ namespace LukeApps.AspIdentity.ViewModel
         public string PhoneNumber { get; set; }
     }
 
-  
+    public class AddESignatureViewModel
+    {
+        public string ESignature { get; set; }
+    }
 }

@@ -34,18 +34,6 @@
                 @Html.DisplayNameFor(model => model.Comments)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BlockStartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BlockEndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BlockBlacklistReason)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DepartmentNumber)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.AuditDetail.CreatedDate)
             </th>
             <th>
@@ -82,18 +70,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Comments)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BlockStartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BlockEndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BlockBlacklistReason)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DepartmentNumber)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AuditDetail.CreatedDate)
@@ -155,18 +131,14 @@
         var rootURL = '@Url.Action("/")';
         IndexConfig.dtConfig.ajax = rootURL + 'GetJSON';
         IndexConfig.dtConfig.columns = [
-								{ "data": "CompanyID" },
-									{ "data": "CompanyName" },
-									{ "data": "CompanyRegistration" },
-									{ "data": "CommodityDescription" },
-									{ "data": "WebSite" },
-									{ "data": "Address" },
-									{ "data": "Comments" },
-									{ "data": "BlockStartDate" },
-									{ "data": "BlockEndDate" },
-									{ "data": "BlockBlacklistReason" },
-									{ "data": "DepartmentNumber" },
-								{ "data": "AuditDetail_CreatedDate" },
+				{ "data": "CompanyID" },
+				{ "data": "CompanyName" },
+				{ "data": "CompanyRegistration" },
+				{ "data": "CommodityDescription" },
+				{ "data": "WebSite" },
+				{ "data": "Address" },
+				{ "data": "Comments" },
+				{ "data": "AuditDetail_CreatedDate" },
                 { "data": "AuditDetail_CreatedEntryUser" },
                 { "data": "AuditDetail_LastModifiedDate" },
                 { "data": "AuditDetail_LastModifiedEntryUser" },

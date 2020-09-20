@@ -8,6 +8,8 @@ namespace LukeApps.CurrencyRates
 {
     public class CurrencyHandler
     {
+        public const CurrencyCode defaultCurrencyCode = CurrencyCode.OMR;
+
         public CurrencyHandler(List<Currency> CurrencyList)
         {
             SetCurrency(CurrencyList);
@@ -60,7 +62,7 @@ namespace LukeApps.CurrencyRates
             var fromRate = _currencyListTransactionTime.Where(c => c.CurrencyCode == From).FirstOrDefault().Rate;
             var toRate = _currencyListTransactionTime.Where(c => c.CurrencyCode == To).FirstOrDefault().Rate;
 
-            if (From == CurrencyCode.EUR)
+            if (From == defaultCurrencyCode)
                 return toRate;
             else
                 return toRate / fromRate;

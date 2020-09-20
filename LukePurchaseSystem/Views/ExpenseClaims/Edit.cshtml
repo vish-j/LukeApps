@@ -3,6 +3,25 @@
     @Styles.Render("~/Content/bdp")
     @Styles.Render("~/Content/bootstrap-dropdown")
     @Styles.Render("~/Content/File-Upload")
+    <style>
+        .form-inline > .form-group {
+            margin-right: 0;
+            margin-left: 0;
+        }
+
+            .form-inline > .form-group > .row {
+                margin-right: 0;
+                margin-left: 0;
+            }
+
+        .form-inline > .deleteRow {
+            vertical-align: bottom;
+        }
+
+        .input-default-narrow {
+            max-width: 80px;
+        }
+    </style>
 }
 @{
     ViewBag.Title = "Edit";
@@ -22,51 +41,11 @@
 
         <div class="form-group">
 
-            @Html.LabelFor(model => model.RequestDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.BudgetID, htmlAttributes: new { @class = "control-label col-md-2" })
 
             <div class="col-md-10">
-                @Html.EditorFor(model => model.RequestDate, new { htmlAttributes = new { @class = "form-control dp" } })
-                @Html.ValidationMessageFor(model => model.RequestDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-
-            @Html.LabelFor(model => model.BankAccountNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.BankAccountNumber, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BankAccountNumber, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-
-            @Html.LabelFor(model => model.OriginatorID, htmlAttributes: new { @class = "control-label col-md-2" })
-
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.OriginatorID, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.OriginatorID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-
-            @Html.LabelFor(model => model.ReviewerID, htmlAttributes: new { @class = "control-label col-md-2" })
-
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ReviewerID, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ReviewerID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-
-            @Html.LabelFor(model => model.ApproverID, htmlAttributes: new { @class = "control-label col-md-2" })
-
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ApproverID, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ApproverID, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(model => model.BudgetID, null, "-Select One-", htmlAttributes: new { @class = "form-control chosen-select" })
+                @Html.ValidationMessageFor(model => model.BudgetID, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -80,12 +59,50 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group hide" id="BankControl">
 
-            @Html.LabelFor(model => model.SupportingDocuments, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.BankAccountNumber, htmlAttributes: new { @class = "control-label col-md-2" })
 
             <div class="col-md-10">
-                @Html.EditorFor(model => model.SupportingDocuments, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.BankAccountNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BankAccountNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            @Html.LabelFor(model => model.Originator, htmlAttributes: new { @class = "control-label col-md-2" })
+
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.OriginatorID, (SelectList)ViewBag.Employees, "-Select Originator-", htmlAttributes: new { @class = "form-control chosen-select" })
+                @Html.ValidationMessageFor(model => model.OriginatorID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            @Html.LabelFor(model => model.Reviewer, htmlAttributes: new { @class = "control-label col-md-2" })
+
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.ReviewerID, (SelectList)ViewBag.Employees, "-Select Reviewer-", htmlAttributes: new { @class = "form-control chosen-select" })
+                @Html.ValidationMessageFor(model => model.ReviewerID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            @Html.LabelFor(model => model.Approver, htmlAttributes: new { @class = "control-label col-md-2" })
+
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.ApproverID, (SelectList)ViewBag.Employees, "-Select Approver-", htmlAttributes: new { @class = "form-control chosen-select" })
+                @Html.ValidationMessageFor(model => model.ApproverID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SupportingDocuments, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.SupportingDocuments, "MultiFileControl", new { htmlAttributes = new { @data_upload_url = Url.Action("UploadFile", "Dashboard", null), @data_download_url = Url.Action("DownloadFile", "Dashboard", null) } })
                 @Html.ValidationMessageFor(model => model.SupportingDocuments, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -125,10 +142,19 @@
     @Scripts.Render("~/bundles/bootstrap-dropdown")
     @Scripts.Render("~/bundles/collectionItems")
     @Scripts.Render("~/bundles/File-Upload")
+    @Scripts.Render("~/bundles/lumpsum")
     <script>
+
+        $("#PaymentMethod").change(function () {
+            if ($("#PaymentMethod").val() === '1')
+                $("#BankControl").removeClass('hide');
+            else
+                $("#BankControl").hide();
+        });
+
         $(".chosen-select").chosen({
             search_contains: true,
-        })
+        });
 
         $('.dp').datepicker({
             format: "yyyy-mm-dd",
