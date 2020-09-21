@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<LukeApps.GeneralPurchase.ViewModel.PurchaseOrderVM>
 @section CustomStyles {
-    @Styles.Render("~/Content/dt-basic")    
-    @Styles.Render("~/Content/bdpr")
+    @Styles.Render("~/Content/dt-basic")
+    @Styles.Render("~/Content/bdp")
 
     <style type="text/css">
         .modal-body {
@@ -31,28 +31,18 @@
 <h2>Commitments and Payment Report</h2>
 
 <div class="row">
-    <div class="col-md-3">
-        <h4>Agreement Type</h4>
-        <div>
-            @Html.DropDownList("AgreementType", ViewBag.AgreementType as SelectList, new { @class = "form-control"})
+        <div class="col-md-3">
+            <b>Start Date</b>
+            <input id="startdate" class="form-control dp" value="@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")" />
         </div>
-    </div>
-    <div class="col-md-3">
-        <div>
-            <h4>Date Range <i class="glyphicon glyphicon-calendar fa fa-calendar"></i></h4>
-            <input type="text" id="reportrange" class="form-control">
+        <div class="col-md-3">
+            <b>End Date</b>
+            <input id="enddate" class="form-control dp" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
         </div>
-    </div>
-    <div class="col-md-3">
-        <h4>Commitment Origin</h4>
-        <div>
-            @Html.DropDownList("CommitmentOrigin", null, new { @class = "form-control" })
+        <div class="col-md-6">
+            <br />
+            <a class="btn btn-sm btn-info" onclick="loadReport()">Run</a>
         </div>
-    </div>
-    <div class="col-md-3">
-        <h4>&nbsp;</h4>
-        <button class="btn btn-info" onclick="javascript: reloadTable();">Run</button>
-    </div>
 </div>
 <br />
 <div class="row">
@@ -60,37 +50,31 @@
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.CompanyName)
+                    @Html.DisplayNameFor(model => model.VendorName)
                 </th>
                 <th>
                     Purchase Orders
                 </th>
                 <th>
-                    Contracts
+                    Invoice Received
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.InvoiceReceivedDisplay)
+                    Invoice Approved
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.InvoiceApprovedDisplay)
+                    Invoice Paid
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.InvoicePaidDisplay)
+                    Committed Value
                 </th>
                 <th>
-                    Currency
+                    Invoice Total Amount
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TotalCommittedValue)
+                    Invoice Paid Total
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.InvoiceTotalAmountDisplay)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.InvoicePaidTotalAmountDisplay)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Balance)
+                    Balance
                 </th>
             </tr>
         </thead>
@@ -98,37 +82,31 @@
         <tfoot>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.CompanyName)
+                    @Html.DisplayNameFor(model => model.VendorName)
                 </th>
                 <th>
                     Purchase Orders
                 </th>
                 <th>
-                    Contracts
+                    Invoice Received
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.InvoiceReceivedDisplay)
+                    Invoice Approved
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.InvoiceApprovedDisplay)
+                    Invoice Paid
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.InvoicePaidDisplay)
+                    Committed Value
                 </th>
                 <th>
-                    Currency
+                    Invoice Total Amount
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TotalCommittedValue)
+                    Invoice Paid Total
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.InvoiceTotalAmountDisplay)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.InvoicePaidTotalAmountDisplay)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Balance)
+                    Balance
                 </th>
             </tr>
         </tfoot>
@@ -159,10 +137,11 @@
 
 @section Scripts{
     @Scripts.Render("~/bundles/datatables")
-   
+
     @Scripts.Render("~/bundles/indexHelper")
-    @Scripts.Render("~/bundles/bootstrap-dpr")
-    @Scripts.Render("~/bundles/scrollpanel")
+
+    @Scripts.Render("~/bundles/bootstrap-dp")
+
     @if (ViewBag.ModalID != null)
     {
         <script type="text/javascript">
@@ -180,70 +159,55 @@
     }
 
     <script type="text/javascript">
-        //console.log(document.getElementById("agreementType"))
 
         var rootURL = '@Url.Action("/")';
 
-        //$('#reportrange').on('apply.daterangepicker', function () {
-        //    table.ajax.reload();
-        //});
 
-        var startDate = moment().subtract(13, 'days');
-        var endDate = moment();
-
-        function cb(start, end) {
-            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-            console.log("Set range value");
-        }
-
-        $('#reportrange').daterangepicker({
-            "alwaysShowCalendars": true,
-            "linkedCalendars": false,
-            startDate: startDate,
-            endDate: endDate,
-            showDropdowns: true,
-            "opens": "left",
-            ranges: {
-                'Today': [moment(), moment()],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 14 Days': [moment().subtract(13, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-                'Last 3 Months': [moment().subtract(3, 'month'), moment()],
-                'Next 3 Months': [moment(), moment().add(3, 'month')],
-            },
-            "locale": {
-                "format": "YYYY-MM-DD",
-                "separator": " : "
-            }
-        }, cb); console.log("Initialize date range picker");
-
-        cb(startDate, endDate);
-
-        IndexConfig.dtConfig.ajax = rootURL + '/getcommitmentreport?range=' + $('#reportrange').val() + '&agreementType=' + $('#AgreementType').val() + '&commitmentOrigin=' + $('#CommitmentOrigin').val();
+        IndexConfig.dtConfig.ajax = rootURL + '/getcommitmentreport';
         IndexConfig.dtConfig.columns = [
                     { "data": "CompanyName" },
                     { "data": "PurchaseOrders" },
-                    { "data": "Contracts" },
                     { "data": "InvoiceReceivedTotal" },
                     { "data": "InvoiceApprovedTotal" },
                     { "data": "InvoicePaidTotal" },
-                    { "data": "CurrencyTraded" },
                     { "data": "TotalValue" },
                     { "data": "InvoiceTotalAmount" },
                     { "data": "InvoiceTotalAmountPaid" },
                     { "data": "TotalBalance" },
         ];
+
         IndexConfig.dtConfig.columnDefs = null;
+
         function reloadTable() {
-            table.ajax.url(rootURL + '/getcommitmentreport?range=' + $('#reportrange').val() + '&agreementType=' + $('#AgreementType').val() + '&commitmentOrigin=' + $('#CommitmentOrigin').val()).load();
+            table.ajax.url(rootURL + '/getcommitmentreport');
         }
 
         //Define Table
         var table = $('#dtTable').DataTable(IndexConfig.dtConfig);
 
         ////
+    </script>
+
+    <script>
+        var reportTemplate = rootURL + 'GetCommitmentReport?startDate={startdate}&endDate={enddate}';
+
+        $('.dp').datepicker({
+            format: "yyyy-mm-dd",
+            endDate: "+0d",
+            todayBtn: "linked",
+            orientation: "bottom auto"
+        });
+
+        function loadReport() {
+            var st = moment($('#startdate').val()).format('YYYY-MM-DD');
+            var ed = moment($('#enddate').val()).format('YYYY-MM-DD');
+            var rptUrl = reportTemplate.replace("{startdate}", st).replace("{enddate}", ed);
+
+            table.ajax.url(rptUrl).load(function () {
+                th.applyFilter(table, th.colsToAdd);
+                table.columns().search('').draw();
+            });
+        }
     </script>
 
     @Scripts.Render("~/bundles/dt-button")

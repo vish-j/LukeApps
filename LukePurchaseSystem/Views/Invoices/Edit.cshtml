@@ -105,6 +105,8 @@
     @Scripts.Render("~/bundles/bootstrap-dropdown")
     @Scripts.Render("~/bundles/collectionItems")
     @Scripts.Render("~/bundles/File-Upload")
+    @Scripts.Render("~/bundles/lumpsum")
+
     <script>
         $(".chosen-select").chosen({
             search_contains: true,
@@ -124,6 +126,7 @@
             $(".chosen-select").chosen({
                 search_contains: true,
             });
+            addLumpsumEvent();
         });
 
         $(function () {

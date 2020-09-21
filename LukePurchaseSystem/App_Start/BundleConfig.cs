@@ -11,7 +11,10 @@ namespace LukePurchaseSystem
                         "~/Scripts/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.validate*"));
+                        "~/Scripts/jquery.validate*",
+                        "~/Scripts/validation.extend.js",
+                        "~/Scripts/labelRequired.js"
+                        ));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at https://modernizr.com to pick only the tests you need.
@@ -35,6 +38,14 @@ namespace LukePurchaseSystem
                       "~/Content/site.css"
                       ));
 
+            bundles.Add(new StyleBundle("~/Content/animation").Include(
+          "~/Content/animate.css"
+          ));
+
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap-notify").Include(
+    "~/Scripts/bootstrap-notify/bootstrap-notify.js",
+    "~/Scripts/bootstrap-notify/notify-defaults.js"
+    ));
             bundles.Add(new ScriptBundle("~/bundles/auditTrail").Include(
                "~/Scripts/Helpers/auditTrail.js"
                ));
@@ -47,10 +58,14 @@ namespace LukePurchaseSystem
                 "~/Scripts/Helpers/lumpsum.js"
                 ));
 
-
             bundles.Add(new ScriptBundle("~/bundles/moment").Include(
                 "~/Scripts/moment.js",
                 "~/Scripts/momentConfig/config.js"
+                ));
+
+            bundles.Add(new ScriptBundle("~/bundles/pdfmake").Include(
+                "~/Scripts/pdfmake/pdfmake.js",
+                "~/Scripts/pdfmake/vfs_fonts.js"
                 ));
 
             bundles.Add(new Bundle("~/bundles/datatables")
@@ -136,6 +151,9 @@ namespace LukePurchaseSystem
                 "~/Scripts/pdfDefinitions/expenseClaim.js"
                 ));
 
+            bundles.Add(new ScriptBundle("~/bundles/bidSummary").Include(
+                "~/Scripts/pdfDefinitions/bidSummary.js"
+                ));
             bundles.Add(new ScriptBundle("~/bundles/timeline").Include(
                 "~/Scripts/timeline/timeline.js"
                 ));

@@ -2,9 +2,13 @@
     action(this);
 });
 
-$('.LumpSumCheck').change(function () {
-    action(this);
-});
+addLumpsumEvent();
+function addLumpsumEvent() {
+    $('.LumpSumCheck').change(function () {
+        action(this);
+    });
+}
+
 
 function action(ctx) {
     var value = $(ctx).prop('checked');

@@ -79,7 +79,7 @@
         <h4>Alerts</h4>
         <div id="Alerts">
             <div class="well">
-                <b>MR System</b>
+                <b>Purchase System</b>
                 <ul class="list-group" id="MRAlerts">
                     @foreach (var item in Model.MRAlerts)
                     {
@@ -138,60 +138,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-        
-        <br /><br />
-
-            <h4>Expiring Invoices ( #@Model.TotalExpiringInvoices )</h4>
-            <div id="ExpiringInvoices">
-                <div class="well">
-                    <table class="table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th>
-                                    Invoice Number
-                                </th>
-                                <th>
-                                    Payment Status
-                                </th>
-                                <th>
-                                    Company Name
-                                </th>
-                                <th>
-                                    Amount
-                                </th>
-                                <th>
-                                    Invoice Due
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody style="background-color:white">
-
-                            @*@foreach (var i in Model.ExpiringInvoices)
-                            {
-                                <tr>
-                                    <td>
-                                        <a href="@Url.Action("Index", "Invoices", new { id = i.InvoiceID })">@i.InvoiceNumber</a>
-                                    </td>
-                                    <td>
-                                        @i.PaymentStatus.GetDisplay()
-                                    </td>
-                                    <td>
-                                        @i.CompanyName
-                                    </td>
-                                    <td>
-                                        @i.Amount.ToString()
-                                    </td>
-                                    <td>
-                                        @i.InvoiceDue
-                                    </td>
-                                </tr>
-                            }*@
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        
+            </div>        
     </div>
 </div>
 

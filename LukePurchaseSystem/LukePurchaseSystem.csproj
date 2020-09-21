@@ -196,6 +196,8 @@
     <Compile Include="ViewModel\ManageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\animate.css" />
+    <Content Include="Content\animate.min.css" />
     <Content Include="Content\bootstrap-chosen\bootstrap-chosen.css" />
     <Content Include="Content\bootstrap-chosen\chosen-sprite%402x.png" />
     <Content Include="Content\bootstrap-chosen\chosen-sprite.png" />
@@ -328,6 +330,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Helpers\lumpsum.js" />
+    <Content Include="Scripts\labelRequired.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
@@ -337,8 +340,13 @@
     <Content Include="Scripts\pdfDefinitions\bidSummary.js" />
     <Content Include="Scripts\pdfDefinitions\expenseClaim.js" />
     <Content Include="Scripts\pdfDefinitions\purchaseOrder.js" />
+    <Content Include="Scripts\pdfmake\pdfmake.js" />
+    <Content Include="Scripts\pdfmake\pdfmake.min.js" />
+    <Content Include="Scripts\pdfmake\vfs_fonts.js" />
     <Content Include="Scripts\SignaturePad\app.js" />
     <Content Include="Scripts\SignaturePad\signature_pad.umd.js" />
+    <Content Include="Scripts\timeline\timeline.js" />
+    <Content Include="Scripts\validation.extend.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -457,6 +465,9 @@
     <Content Include="Views\Enquiries\_scopeItem.cshtml" />
     <Content Include="Scripts\moment.min.js.map" />
     <Content Include="Scripts\moment-with-locales.min.js.map" />
+    <Content Include="Scripts\pdfmake\pdfmake.js.map" />
+    <Content Include="Scripts\pdfmake\pdfmake.min.js.map" />
+    <Content Include="Views\Shared\DisplayTemplates\MultiFileControl.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

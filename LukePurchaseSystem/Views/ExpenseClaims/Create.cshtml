@@ -3,25 +3,6 @@
     @Styles.Render("~/Content/bdp")
     @Styles.Render("~/Content/bootstrap-dropdown")
     @Styles.Render("~/Content/File-Upload")
-    <style>
-        .form-inline > .form-group {
-            margin-right: 0;
-            margin-left: 0;
-        }
-
-            .form-inline > .form-group > .row {
-                margin-right: 0;
-                margin-left: 0;
-            }
-
-        .form-inline > .deleteRow {
-            vertical-align: bottom;
-        }
-
-        .input-default-narrow {
-            max-width: 80px;
-        }
-    </style>
 }
 @{
     ViewBag.Title = "Create";
@@ -169,6 +150,7 @@
             $(".chosen-select").chosen({
                 search_contains: true,
             });
+            addLumpsumEvent();
         });
 
         $(function () {

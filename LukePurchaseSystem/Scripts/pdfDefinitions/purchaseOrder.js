@@ -223,7 +223,7 @@
             },
             {//9
                 columns: [
-                    { text: 'For Tebodin & Partner LLC', "fontSize": 10, bold: true },
+                    { text: 'For Oman Meat', "fontSize": 10, bold: true },
                     {},
                     {},
                     {},

@@ -83,7 +83,7 @@ namespace LukeApps.GeneralPurchase.Models
         public AuditDetail AuditDetail { get; set; } = new AuditDetail();
         public bool IsDeleted { get; set; }
 
-        [Display(Name = "Work Flow")]
+        [Display(Name = "Workflow")]
         public virtual ICollection<EnquiryTransition> Transitions { get; set; }
 
         [NotMapped]
@@ -98,6 +98,7 @@ namespace LukeApps.GeneralPurchase.Models
         }
 
         [NotMapped]
+        [Display(Name = "Vendors Enquired")]
         public List<KeyValuePair<long, string>> VendorsEnquired => Offers.Where(o => o.IsNew == true).Select(c => new KeyValuePair<long, string>(c.OfferID, c.Company.CompanyName)).ToList();
 
         public virtual ICollection<Offer> Offers { get; set; }

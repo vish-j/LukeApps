@@ -39,22 +39,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.InvoiceID)
+                @Html.DisplayNameFor(model => model.InvoiceNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BudgetID)
+                @Html.DisplayNameFor(model => model.Budget)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OriginatorID)
+                @Html.DisplayNameFor(model => model.Originator)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ReviewerID)
+                @Html.DisplayNameFor(model => model.Reviewer)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ApproverID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Documents)
+                @Html.DisplayNameFor(model => model.Approver)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AuditDetail.CreatedDate)
@@ -87,9 +84,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ApproverID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Documents)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AuditDetail.CreatedDate)
@@ -156,7 +150,6 @@
 				{ "data": "OriginatorID" },
 				{ "data": "ReviewerID" },
 				{ "data": "ApproverID" },
-				{ "data": "Documents" },
 				{ "data": "AuditDetail_CreatedDate" },
                 { "data": "AuditDetail_CreatedEntryUser" },
                 { "data": "AuditDetail_LastModifiedDate" },

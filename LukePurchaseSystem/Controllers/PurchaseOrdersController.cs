@@ -114,7 +114,7 @@ namespace LukePurchaseSystem.Controllers
         {
             return AddNewChild(new PurchaseOrderItem(), r => r.PurchaseOrderID, id);
         }
-
+        private void viewBagCompanyID() => ViewBag.CompanyID = new SelectList(repo.Context.Companies, "CompanyID", "CompanyName");
         private void viewBagBudgetID() => ViewBag.BudgetID = new SelectList(repo.Context.Budgets, "BudgetID", "BudgetName");
 
         public void viewBagApproveList() =>
@@ -127,6 +127,7 @@ namespace LukePurchaseSystem.Controllers
         {
             viewBagBudgetID();
             viewBagApproveList();
+            viewBagCompanyID();
             return View(new PurchaseOrder()
             {
                 PurchaseOrderItems = new List<PurchaseOrderItem> {
@@ -151,6 +152,7 @@ namespace LukePurchaseSystem.Controllers
 
             viewBagBudgetID();
             viewBagApproveList();
+            viewBagCompanyID();
             return View(po);
         }
 
@@ -170,6 +172,7 @@ namespace LukePurchaseSystem.Controllers
             }
             viewBagBudgetID();
             viewBagApproveList();
+            viewBagCompanyID();
             return View(purchaseOrder);
         }
 
@@ -201,6 +204,7 @@ namespace LukePurchaseSystem.Controllers
             }
             viewBagBudgetID();
             viewBagApproveList();
+            viewBagCompanyID();
             return View(po);
         }
 

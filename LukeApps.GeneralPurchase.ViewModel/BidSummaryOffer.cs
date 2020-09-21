@@ -31,6 +31,7 @@ namespace LukeApps.GeneralPurchase.ViewModel
             TotalPriceQuoted = offer.Total;
             ScopeItems = offer.ScopeItems.Where(s => s.ScopeItemType == ScopeItemType.Main || s.ScopeItemType == ScopeItemType.Additional).OrderBy(s => s.Order).ToList();
             IsNew = offer.IsNew;
+            AdditionalTable = new List<List<object>>();
             initializeMainTable();
         }
 

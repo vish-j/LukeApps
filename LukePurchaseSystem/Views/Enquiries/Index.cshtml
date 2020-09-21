@@ -39,7 +39,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.EnquiryID)
+                @Html.DisplayNameFor(model => model.EnquiryNumber)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.EnquiryDate)
@@ -48,28 +48,25 @@
                 @Html.DisplayNameFor(model => model.SubjectOfEnquiry)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BudgetID)
+                @Html.DisplayNameFor(model => model.Budget)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OriginatorID)
+                @Html.DisplayNameFor(model => model.Originator)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TechnicalEvaluatorID)
+                @Html.DisplayNameFor(model => model.TechnicalEvaluator)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ReviewerID)
+                @Html.DisplayNameFor(model => model.Reviewer)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ApproverID)
+                @Html.DisplayNameFor(model => model.Approver)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RecommendedOfferID)
+                @Html.DisplayNameFor(model => model.RecommendedOffer)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.RecommendationReason)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SupportingDocuments)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AuditDetail.CreatedDate)
@@ -89,7 +86,7 @@
     <tfoot>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.EnquiryID)
+                @Html.DisplayNameFor(model => model.EnquiryNumber)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.EnquiryDate)
@@ -98,28 +95,25 @@
                 @Html.DisplayNameFor(model => model.SubjectOfEnquiry)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BudgetID)
+                @Html.DisplayNameFor(model => model.Budget)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OriginatorID)
+                @Html.DisplayNameFor(model => model.Originator)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TechnicalEvaluatorID)
+                @Html.DisplayNameFor(model => model.TechnicalEvaluator)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ReviewerID)
+                @Html.DisplayNameFor(model => model.Reviewer)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ApproverID)
+                @Html.DisplayNameFor(model => model.Approver)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RecommendedOfferID)
+                @Html.DisplayNameFor(model => model.RecommendedOffer)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.RecommendationReason)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SupportingDocuments)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AuditDetail.CreatedDate)
@@ -157,8 +151,9 @@
 
 @section Scripts{
     @Scripts.Render("~/bundles/datatables")
-
     @Scripts.Render("~/bundles/indexHelper")
+    @Scripts.Render("~/bundles/pdfmake")
+    @Scripts.Render("~/bundles/bidsummary")
 
     @if (@ViewBag.ModalID != null)
     {
@@ -191,7 +186,6 @@
 				{ "data": "ApproverID" },
 				{ "data": "RecommendedOfferID" },
 				{ "data": "RecommendationReason" },
-				{ "data": "SupportingDocuments" },
 				{ "data": "AuditDetail_CreatedDate" },
                 { "data": "AuditDetail_CreatedEntryUser" },
                 { "data": "AuditDetail_LastModifiedDate" },

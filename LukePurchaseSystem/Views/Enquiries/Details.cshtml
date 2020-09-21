@@ -10,7 +10,6 @@
 
 <h2>Details</h2>
 
-
 @helper addLink(long id, bool IsQuotation, string bttnName, bool IsExpired)
 {
     var IsAnyApproved = Model.Transitions.IsAnyApproved();
@@ -50,8 +49,6 @@
     }
 
 }
-
-
 
 @helper addAcceptedLink(long id, bool IsQuotation, string bttnName)
 {
@@ -112,18 +109,6 @@
     <p>
         <b>Scope Of Work :</b>  @Model.ScopeOfWork
     </p>
-    @if (!Model.SupportingDocuments.IsAnyFilePresent)
-    {
-        <p>
-            <h4>
-                Scope Of Work Documents
-            </h4>
-            @foreach (var item in Model.SupportingDocuments.GetFilesInformation())
-            {
-                <text>|</text> <a class="btn btn-xs btn-default" href="@Url.Action("Download")/@item.FileCode"><span class="glyphicon glyphicon-cloud-download"></span> @item.FileName</a>
-            }
-        </p>
-    }
 
     <hr />
     <p class="text-right">
@@ -141,7 +126,6 @@
 
             <div class="list-group">
 
-
                 <div class="list-group-item">
                     <div class="row">
                         <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.EnquiryID)</b> </div>
@@ -158,9 +142,6 @@
                     </div>
                 </div>
 
-
-
-
                 <div class="list-group-item">
                     <div class="row">
                         <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.SubjectOfEnquiry)</b> </div>
@@ -168,7 +149,6 @@
                         <div class="col-sm-3">@Html.DisplayFor(model => model.SubjectOfEnquiry)</div>
                     </div>
                 </div>
-
 
                 <div class="list-group-item">
                     <div class="row">
@@ -178,7 +158,6 @@
                     </div>
                 </div>
 
-
                 <div class="list-group-item">
                     <div class="row">
                         <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.TechnicalEvaluator)</b> </div>
@@ -186,7 +165,6 @@
                         <div class="col-sm-3">@Html.DisplayFor(model => model.TechnicalEvaluator.Summary)</div>
                     </div>
                 </div>
-
 
                 <div class="list-group-item">
                     <div class="row">
@@ -196,7 +174,6 @@
                     </div>
                 </div>
 
-
                 <div class="list-group-item">
                     <div class="row">
                         <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.Approver)</b> </div>
@@ -204,7 +181,6 @@
                         <div class="col-sm-3">@Html.DisplayFor(model => model.Approver.Summary)</div>
                     </div>
                 </div>
-
 
                 @if (@Model.RecommendedOffer != null)
                 {
@@ -214,7 +190,10 @@
                             <div class="col-sm-1"><b>:</b></div>
                             <div class="col-sm-3">
                                 <p>
-                                    <b>Company:</b> @Html.DisplayFor(model => model.RecommendedOffer)
+                                    <b>Offer Number:</b> @Html.DisplayFor(model => model.RecommendedOffer.OfferNumber)
+                                </p>
+                                <p>
+                                    <b>Company:</b> @Html.DisplayFor(model => model.RecommendedOffer.Company.CompanyName)
                                 </p>
                                 <p>
                                     <b>Reason:</b> @Html.DisplayFor(model => model.RecommendationReason)
@@ -224,15 +203,13 @@
                     </div>
                 }
 
-
                 <div class="list-group-item">
                     <div class="row">
                         <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.SupportingDocuments)</b> </div>
                         <div class="col-sm-1"><b>:</b></div>
-                        <div class="col-sm-3">@Html.DisplayFor(model => model.SupportingDocuments)</div>
+                        <div class="col-sm-3">@Html.DisplayFor(model => model.SupportingDocuments, "MultiFileControl")</div>
                     </div>
                 </div>
-
 
                 <div class="list-group-item">
                     <div class="row">
@@ -307,13 +284,9 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-
 </div>
-
-
 
 <hr />
 
@@ -328,7 +301,7 @@
     <hr />
 }
 
-@if (!(Model.Offers.All(o => o.VendorResponse ==  LukeApps.GeneralPurchase.Enums.VendorResponse.NoResponse)))
+@if (!(Model.Offers.All(o => o.VendorResponse == LukeApps.GeneralPurchase.Enums.VendorResponse.NoResponse)))
 {
     <h3>Offers</h3>
 
@@ -447,12 +420,12 @@
                                             <th>
                                                 <b>@cntr<text>.</text></b>
                                                 @*@if (!IsAnyApproved)
-                                                {
-                                                    <p>
-                                                        <a href="@Url.Action("AdjustOrder", new { id = m.ID, a = BApps.Areas.SmallOrders.Controllers.EnquiriesController.OrderAction.Up})" style="color:darkgoldenrod"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a><br />
-                                                        <a href="@Url.Action("AdjustOrder", new { id = m.ID, a = BApps.Areas.SmallOrders.Controllers.EnquiriesController.OrderAction.Down})" style="color:darkgoldenrod"><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a>
-                                                    </p>
-                                                }*@
+                                                    {
+                                                        <p>
+                                                            <a href="@Url.Action("AdjustOrder", new { id = m.ID, a = BApps.Areas.SmallOrders.Controllers.EnquiriesController.OrderAction.Up})" style="color:darkgoldenrod"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a><br />
+                                                            <a href="@Url.Action("AdjustOrder", new { id = m.ID, a = BApps.Areas.SmallOrders.Controllers.EnquiriesController.OrderAction.Down})" style="color:darkgoldenrod"><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a>
+                                                        </p>
+                                                    }*@
                                             </th>
                                             <td>
                                                 @m.Description
@@ -505,5 +478,3 @@
         </table>
     </div>
 }
-<hr />
-</div>

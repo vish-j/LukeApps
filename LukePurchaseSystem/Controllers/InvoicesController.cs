@@ -46,11 +46,10 @@ namespace LukePurchaseSystem.Controllers
             var detailCollection = invoices.Select(i => new
             {
                 InvoiceID = i.InvoiceID,
-                BudgetID = i.BudgetID,
-                OriginatorID = i.OriginatorID,
-                ReviewerID = i.ReviewerID,
-                ApproverID = i.ApproverID,
-                Documents = i.Documents,
+                BudgetID = i.Budget.BudgetName,
+                OriginatorID = i.Originator.DisplayName,
+                ReviewerID = i.Reviewer.DisplayName,
+                ApproverID = i.Approver.DisplayName,
                 AuditDetail_CreatedDate = i.AuditDetail.CreatedDate.ToShortDateISO(),
                 AuditDetail_CreatedEntryUser = i.AuditDetail.CreatedEntryUserDisplayName,
                 AuditDetail_LastModifiedDate = i.AuditDetail.LastModifiedDate?.ToShortDateISO(),
@@ -101,7 +100,7 @@ namespace LukePurchaseSystem.Controllers
         {
             return AddNewChild(new InvoiceItem(), r => r.InvoiceID, id);
         }
-
+        private void viewBagPurchaseOrderID() => ViewBag.PurchaseOrderID = new SelectList(repo.Context.PurchaseOrders.Include(p => p.Company).ToList(), "PurchaseOrderID", "Summary");
         private void viewBagBudgetID() => ViewBag.BudgetID = new SelectList(repo.Context.Budgets, "BudgetID", "BudgetName");
         public void viewBagApproveList() =>
             ViewBag.Employees = new SelectList(EmployeeProvider.GetEmployeeProvider().Users, nameof(Employee.Username), "displayName");
@@ -114,6 +113,7 @@ namespace LukePurchaseSystem.Controllers
         {
             viewBagApproveList();
             viewBagBudgetID();
+            viewBagPurchaseOrderID();
             return View(new Invoice()
             {
                 InvoiceItems = new List<InvoiceItem> {
@@ -131,6 +131,16 @@ namespace LukePurchaseSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (inv.LinkedPOList.Any())
+                {
+                    var idarray = inv.LinkedPOList;
+                    var pos = repo.Context.PurchaseOrders.Where(p => idarray.Contains(p.PurchaseOrderID)).ToList();
+                    foreach (var poID in inv.LinkedPOList)
+                    {
+                        inv.PurchaseOrders.Add(pos.First(p => p.PurchaseOrderID == poID));
+                    }
+                }
+
                 repo.Add(inv);
                 await repo.SaveChangesAsync();
                 return RedirectToAction("Index", new { id = inv.InvoiceID });
@@ -138,6 +148,7 @@ namespace LukePurchaseSystem.Controllers
 
             viewBagBudgetID();
             viewBagApproveList();
+            viewBagPurchaseOrderID();
             return View(inv);
         }
 
@@ -157,6 +168,8 @@ namespace LukePurchaseSystem.Controllers
             }
             viewBagBudgetID();
             viewBagApproveList();
+            invoice.Documents.SetFileNames();
+
             return View(invoice);
         }
 
@@ -184,6 +197,7 @@ namespace LukePurchaseSystem.Controllers
             }
             viewBagBudgetID();
             viewBagApproveList();
+            viewBagPurchaseOrderID(); 
             return View(inv);
         }
 

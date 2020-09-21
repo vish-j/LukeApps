@@ -1,0 +1,16 @@
+﻿@model LukeApps.FileHandling.MultipleFilesHandle
+
+@if (Model.IsAnyFilePresent)
+{
+    var files = Model.GetFilesInformation();
+    foreach (var item in files)
+    {
+        <p>
+            <a class="btn btn-info btn-xs" href="@Url.Action("DownloadFile", "Dashboard", new { key = item.FileCode })">Download @item.FileName <span class="glyphicon glyphicon-download-alt"></span></a>
+        </p>
+    }
+}
+else
+{
+    <text> No files Uploaded</text>
+}

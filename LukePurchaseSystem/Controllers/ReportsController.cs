@@ -32,51 +32,31 @@ namespace LukePurchaseSystem.Controllers
             return View();
         }
 
-        //public JsonResult GetCommitmentReport(string range)
-        //{
-        //    if (range != null)
-        //    {
-        //        string[] Dates = range.Split(':');
-
-        //        var startDate = DateTime.ParseExact(Dates[0].Trim(), "yyyy-MM-dd", CultureInfo.InvariantCulture);
-        //        var endDate = DateTime.ParseExact(Dates[1].Trim(), "yyyy-MM-dd", CultureInfo.InvariantCulture);
-        //        var agreements = db.PurchaseOrders.Include(a => a.Offer)
-        //                                      .Include(a => a.Invoices)
-        //                                      .Include("Offer.Enquiry")
-        //                                      .Where(t => t.PurchaseOrderDate > startDate && t.PurchaseOrderDate < endDate);
-
-        //        var detailCollection = agreements.AsEnumerable().Select(a => new PurchaseOrderVM(a)).GroupBy(a =>
-        //        a.VendorID).Select(m => new
-        //        {
-        //            CompanyName = m.Key,
-        //            PurchaseOrders = m.Count(),
-        //            InvoiceReceivedTotal = m.Sum(s => s.InvoiceReceivedTotal),
-        //            InvoiceApprovedTotal = m.Sum(s => s.InvoiceApprovedTotal),
-        //            InvoicePaidTotal = m.Sum(s => s.InvoicePaidTotal),
-        //            TotalValue = (m.Sum(s => s.TotalValue.Value)).ToString("n"),
-        //            TotalBalance = (m.Sum(s => s.TotalBalance.Value)).ToString("n"),
-        //            InvoiceTotalAmount = (m.Sum(s => s.InvoiceTotalAmount)).ToString("n"),
-        //            InvoiceTotalAmountPaid = (m.Sum(s => s.InvoicePaidTotalAmount)).ToString("n")
-        //        }).ToList();
-        //        var TotalRecords = detailCollection.Count();
-        //        return Json(new
-        //        {
-        //            iTotalRecords = TotalRecords,
-        //            iTotalDisplayRecords = TotalRecords,
-        //            aaData = detailCollection
-        //        },
-        //        JsonRequestBehavior.AllowGet);
-        //    }
-        //    else
-        //    {
-        //        return Json(new
-        //        {
-        //            data = new List<string[]>() { new string[] { "Error" } },
-        //            columns = new List<object>() { new { title = "Status" } },
-        //            totalColumns = 1
-        //        }, JsonRequestBehavior.AllowGet);
-        //    }
-        //}
+        public JsonResult GetCommitmentReport(DateTime? startDate, DateTime? endDate)
+        {
+            if (startDate != null && endDate != null)
+            {
+                var detailCollection = new List<CommitmentLineVM>() { };
+                return Json(new
+                {
+                    iTotalRecords = detailCollection.Count,
+                    iTotalDisplayRecords = detailCollection.Count,
+                    aaData = detailCollection
+                },
+            JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var detailCollection = new List<CommitmentLineVM>() { };
+                return Json(new
+                {
+                    iTotalRecords = detailCollection.Count,
+                    iTotalDisplayRecords = detailCollection.Count,
+                    aaData = detailCollection
+                },
+            JsonRequestBehavior.AllowGet);
+            }
+        }
 
         public string cleanText(string txt)
         {

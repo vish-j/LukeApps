@@ -49,9 +49,9 @@ namespace LukePurchaseSystem.Controllers
                 ExpenseClaimNumber = e.ExpenseClaimNumber,
                 RequestDate = e.RequestDate.ToShortDateISO(),
                 Budget = e.Budget.BudgetName,
-                OriginatorID = e.Originator.Summary,
-                ReviewerID = e.Reviewer.Summary,
-                ApproverID = e.Approver.Summary,
+                OriginatorID = e.Originator.DisplayName,
+                ReviewerID = e.Reviewer.DisplayName,
+                ApproverID = e.Approver.DisplayName,
                 PaymentMethod = e.PaymentMethod.GetDisplay(),
                 Status = e.Transitions.Any() ? "Started" : "Not Started",
                 Total = e.Total.ToString(),
@@ -195,6 +195,7 @@ namespace LukePurchaseSystem.Controllers
             }
             viewBagApproveList();
             viewBagBudgetID();
+            expenseClaim.SupportingDocuments.SetFileNames();
             return View(expenseClaim);
         }
 

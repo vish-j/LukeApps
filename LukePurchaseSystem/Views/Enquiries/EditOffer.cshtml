@@ -14,188 +14,207 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>Offer</h4>
-        @Html.HiddenFor(model => model.OfferID)
-        @Html.HiddenFor(model => model.EnquiryID)
-        @Html.HiddenFor(model => model.IsNew)
-
-        <hr />
+<div class="form-horizontal">
+    <h4>Offer</h4>
+    @Html.HiddenFor(model => model.OfferID)
+    @Html.HiddenFor(model => model.EnquiryID)
+    @Html.HiddenFor(model => model.IsNew)
+    @Html.HiddenFor(model => model.TotalOfferValue.CurrencyCode)
+    @Html.HiddenFor(model => model.TotalOfferValue.Value)
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <hr />
+    <div class="col-md-12">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <hr />
-        <div class="col-md-12">
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingTwo">
-                    <h4 class="panel-title">
-                        <a id="basicCollapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                            Basic Section
-                            <span class="glyphicon glyphicon-chevron-up"></span>
-                        </a>
-                    </h4>
-                    <p>List of essential fields needed to register an offer</p>
-                </div>
-                <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
-                    <div class="panel-body">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                    @Html.HiddenFor(model => model.CompanyID)
-                                </div>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingTwo">
+                <h4 class="panel-title">
+                    <a id="basicCollapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                        Basic Section
+                        <span class="glyphicon glyphicon-chevron-up"></span>
+                    </a>
+                </h4>
+                <p>Enter Offer Header Information</p>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+                <div class="panel-body">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                @Html.HiddenFor(model => model.CompanyID)
                             </div>
-
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.VendorResponse, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.EnumDropDownListFor(model => model.VendorResponse, htmlAttributes: new { @class = "form-control chosen-select" })
-                                    @Html.ValidationMessageFor(model => model.VendorResponse, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group" id="Reason">
-                                @Html.LabelFor(model => model.GoodsBriefDescription, "Reason", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-9">
-                                    @Html.EditorFor(model => model.GoodsBriefDescription, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.GoodsBriefDescription, "", new { @class = "text-danger" })
-                                    @Html.HiddenFor(model => model.TotalOfferValue)
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.Quotation, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-4">
-                                    @Html.EditorFor(model => model.Quotation, "MultiFileControl", new { htmlAttributes = new { @data_upload_url = Url.Action("UploadFile", "Dashboard", null), @data_download_url = Url.Action("DownloadFile", "Dashboard", null) } })
-                                    @Html.ValidationMessageFor(model => model.Quotation, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <hr />
-                            <div class="form-group collectionControl">
-                                <h4>@Html.LabelFor(model => model.ScopeItems, htmlAttributes: new { @class = "control-label col-md-2" })</h4>
-                                <div class="collectionGroup col-md-10">
-                                    @Html.EditorFor(model => model.ScopeItems, "CollectionTemplate")
-                                </div>
-                                <div class="col-md-2">
-                                    @Html.ValidationMessageFor(model => model.ScopeItems, "", new { @class = "text-danger" })
-                                </div>
-                                <div class="col-md-10">
-                                    <br />
-                                    <a class="btn btn-sm btn-default addCollectionItem" data-ajax-url="@Url.Action("AddNewScopeItem", new { id = Model.OfferID })">
-                                        <span class="glyphicon glyphicon-plus"></span> Add an item
-                                    </a>
-                                </div>
-                            </div>
-
                         </div>
-                        <div class="col-md-6">
 
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.AgreedPaymentTerms, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-9">
-                                    @Html.EditorFor(model => model.AgreedPaymentTerms.Term, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.AgreedPaymentTerms.Term, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.VendorResponse, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EnumDropDownListFor(model => model.VendorResponse, htmlAttributes: new { @class = "form-control chosen-select" })
+                                @Html.ValidationMessageFor(model => model.VendorResponse, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="Reason">
+                            @Html.LabelFor(model => model.GoodsBriefDescription, "Reason", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.GoodsBriefDescription, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.GoodsBriefDescription, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ReferenceNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.ReferenceNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ReferenceNumber, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Quotation, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-6">
+                                @Html.EditorFor(model => model.Quotation, "MultiFileControl", new { htmlAttributes = new { @data_upload_url = Url.Action("UploadFile", "Dashboard", null), @data_download_url = Url.Action("DownloadFile", "Dashboard", null) } })
+                                @Html.ValidationMessageFor(model => model.Quotation, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.DeliveryDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.DeliveryDate, new { htmlAttributes = new { @class = "form-control dpF" } })
+                                @Html.ValidationMessageFor(model => model.DeliveryDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.DeliveryTerms, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.DeliveryTerms, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.DeliveryTerms, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.AgreedPaymentTerms, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.AgreedPaymentTerms.Term, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.AgreedPaymentTerms.Term, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.BidReceivedDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.BidReceivedDate, new { htmlAttributes = new { @class = "form-control dp" } })
+                                @Html.ValidationMessageFor(model => model.BidReceivedDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ExpiryDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.ExpiryDate, new { htmlAttributes = new { @class = "form-control dpF" } })
+                                @Html.ValidationMessageFor(model => model.ExpiryDate, "", new { @class = "text-danger" })<br />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                <input class="form-control " data-val-regex="Please Enter a Number of Days" data-val-regex-pattern="^[0-9]*$" id="NumberDays" name="NumberDays" type="text" value="">
+                            </div>
+                            <div class="col-md-9">
+                                @Html.Label("Validity (Days)")
+                                @Html.ValidationMessage("NumberDays", new { @class = "text-danger" })<br />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.IsTermsConditionsAgreed, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-9">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.IsTermsConditionsAgreed, "NullableBooleanPending")
+                                    @Html.ValidationMessageFor(model => model.IsTermsConditionsAgreed, "", new { @class = "text-danger" })
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.BidReceivedDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.BidReceivedDate, new { htmlAttributes = new { @class = "form-control dp" } })
-                                    @Html.ValidationMessageFor(model => model.BidReceivedDate, "", new { @class = "text-danger" })
-                                </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.IsCommerciallyAcceptable, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.IsCommerciallyAcceptable, "NullableBooleanPending")
+                                @Html.ValidationMessageFor(model => model.IsCommerciallyAcceptable, "", new { @class = "text-danger" })
                             </div>
+                        </div>
 
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.ReferenceNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-9">
-                                    @Html.EditorFor(model => model.ReferenceNumber, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.ReferenceNumber, "", new { @class = "text-danger" })
-                                </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.IsTechnicallyAcceptable, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.IsTechnicallyAcceptable, "NullableBooleanPending")
+                                @Html.ValidationMessageFor(model => model.IsTechnicallyAcceptable, "", new { @class = "text-danger" })
                             </div>
+                        </div>
 
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.ExpiryDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-9">
-                                    @Html.EditorFor(model => model.ExpiryDate, new { htmlAttributes = new { @class = "form-control dpF" } })
-                                    @Html.ValidationMessageFor(model => model.ExpiryDate, "", new { @class = "text-danger" })<br />
-                                </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.TechnicalComments, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.TechnicalComments, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.TechnicalComments, "", new { @class = "text-danger" })
                             </div>
+                        </div>
 
-                            <div class="form-group">
-                                <div class="col-md-2">
-                                    <input class="form-control " data-val-regex="Please Enter a Number of Days" data-val-regex-pattern="^[0-9]*$" id="NumberDays" name="NumberDays" type="text" value="">
-                                </div>
-                                <div class="col-md-9">
-                                    @Html.Label("Validity (Days)")
-                                    @Html.ValidationMessage("NumberDays", new { @class = "text-danger" })<br />
-                                </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingThree">
+                <h4 class="panel-title">
+                    <a id="basicCollapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                        Line Items Section
+                        <span class="glyphicon glyphicon-chevron-up"></span>
+                    </a>
+                </h4>
+                <p>Enter Offer Line Items Below</p>
+            </div>
+            <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+                <div class="panel-body">
+                    <div class="col-md-12">
+                        <div class="form-group collectionControl">
+                            <h4>@Html.LabelFor(model => model.ScopeItems, htmlAttributes: new { @class = "control-label col-md-2" })</h4>
+                            <div class="collectionGroup col-md-10">
+                                @Html.EditorFor(model => model.ScopeItems, "CollectionTemplate")
                             </div>
-
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.IsTermsConditionsAgreed, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-9">
-                                    <div class="checkbox">
-                                        @Html.EditorFor(model => model.IsTermsConditionsAgreed, "NullableBooleanPending")
-                                        @Html.ValidationMessageFor(model => model.IsTermsConditionsAgreed, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
+                            <div class="col-md-2">
+                                @Html.ValidationMessageFor(model => model.ScopeItems, "", new { @class = "text-danger" })
                             </div>
-
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.IsCommerciallyAcceptable, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.IsCommerciallyAcceptable, "NullableBooleanPending")
-                                    @Html.ValidationMessageFor(model => model.IsCommerciallyAcceptable, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.IsTechnicallyAcceptable, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.IsTechnicallyAcceptable, "NullableBooleanPending")
-                                    @Html.ValidationMessageFor(model => model.IsTechnicallyAcceptable, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.TechnicalComments, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.TechnicalComments, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.TechnicalComments, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.DeliveryDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.DeliveryDate, new { htmlAttributes = new { @class = "form-control dpF" } })
-                                    @Html.ValidationMessageFor(model => model.DeliveryDate, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.DeliveryTerms, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.DeliveryTerms, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.DeliveryTerms, "", new { @class = "text-danger" })
-                                </div>
+                            <div class="col-md-10">
+                                <br />
+                                <a class="btn btn-sm btn-default addCollectionItem" data-ajax-url="@Url.Action("AddNewScopeItem", new { id = Model.OfferID })">
+                                    <span class="glyphicon glyphicon-plus"></span> Add an item
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="col-md-12">
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-12">
-                    <input type="submit" value="Save" class="btn btn-lg btn-primary" />
-                </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-12">
+                <input type="submit" value="Save" class="btn btn-lg btn-primary" />
             </div>
         </div>
     </div>
+</div>
 
 }
 
@@ -219,12 +238,15 @@ else
     @Scripts.Render("~/bundles/moment")
     @Scripts.Render("~/bundles/collectionItems")
     @Scripts.Render("~/bundles/File-Upload")
+    @Scripts.Render("~/bundles/lumpsum")
     <script>
 
         $(document).ready(function () {
             $(".chosen-select").chosen({
                 search_contains: true,
             });
+
+            $('#Quotation').InitFileUploader();
 
             var dp = dpDefaults;
             dp.daysOfWeekDisabled = null;
@@ -264,6 +286,7 @@ else
             $(".chosen-select").chosen({
                 search_contains: true,
             });
+            addLumpsumEvent();
         });
 
 
@@ -295,6 +318,6 @@ else
 
         });
 
-      
+
     </script>
 }

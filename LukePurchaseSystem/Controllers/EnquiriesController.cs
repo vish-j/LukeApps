@@ -52,21 +52,20 @@ namespace LukePurchaseSystem.Controllers
         [AuthorizeRoles(Role.Dev)]
         public async Task<JsonResult> GetJSON()
         {
-            var enquiries = await repo.GetAll().Include(e => e.Budget).ToListAsync();
+            var enquiries = await repo.GetAll(nameof(Enquiry.Budget), "Offers.Company").ToListAsync();
 
             var detailCollection = enquiries.Select(e => new
             {
                 EnquiryID = e.EnquiryID,
                 EnquiryDate = e.EnquiryDate.ToShortDateISO(),
                 SubjectOfEnquiry = e.SubjectOfEnquiry,
-                BudgetID = e.BudgetID,
-                OriginatorID = e.OriginatorID,
-                TechnicalEvaluatorID = e.TechnicalEvaluatorID,
-                ReviewerID = e.ReviewerID,
-                ApproverID = e.ApproverID,
-                RecommendedOfferID = e.RecommendedOfferID,
+                BudgetID = e.Budget.BudgetName,
+                OriginatorID = e.Originator.DisplayName,
+                TechnicalEvaluatorID = e.TechnicalEvaluator.DisplayName,
+                ReviewerID = e.Reviewer.DisplayName,
+                ApproverID = e.Approver.DisplayName,
+                RecommendedOfferID = e.RecommendedOffer == null ? null :  $"Offer {e.RecommendedOffer.OfferNumber} - {e.RecommendedOffer.Company.CompanyName}",
                 RecommendationReason = e.RecommendationReason,
-                SupportingDocuments = e.SupportingDocuments,
                 AuditDetail_CreatedDate = e.AuditDetail.CreatedDate.ToShortDateISO(),
                 AuditDetail_CreatedEntryUser = e.AuditDetail.CreatedEntryUserDisplayName,
                 AuditDetail_LastModifiedDate = e.AuditDetail.LastModifiedDate?.ToShortDateISO(),
@@ -92,7 +91,7 @@ namespace LukePurchaseSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Enquiry enquiry = await repo.FindByAsync(e => e.EnquiryID == id);
+            Enquiry enquiry = await repo.FindByAsync(e => e.EnquiryID == id, nameof(Enquiry.Transitions), "Offers.Company");
 
             if (enquiry == null)
             {
@@ -199,6 +198,7 @@ namespace LukePurchaseSystem.Controllers
             viewBagBudgetID();
             viewBagApproveList();
             viewBagCompanies();
+            enquiry.SupportingDocuments.SetFileNames();
             return View(enquiry);
         }
 
@@ -230,6 +230,84 @@ namespace LukePurchaseSystem.Controllers
             viewBagApproveList();
             viewBagCompanies();
             return View(eq);
+        }
+
+        // GET: SmallOrders/Enquiries/SendForApproval/5
+        public async Task<ActionResult> SendForApproval(long? id)
+        {
+            if (modelID.check(id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Enquiry enquiry = await repo.FindByAsync(e => e.EnquiryID == id);
+            if (enquiry == null)
+            {
+                return HttpNotFound();
+            }
+            return View(enquiry);
+        }
+
+        // POST: SmallOrders/Enquiries/SendForApproval/5
+        /// <summary>
+        /// Workflow for Bid summary approval start at "approval request" where it informs Technical Evaluator, Prepared By and Manager. Auto-Approves the user.
+        /// </summary>
+        /// <param name="id">EnquiryID</param>
+        /// <returns></returns>
+        [HttpPost, ActionName("SendForApproval")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SendForApprovalConfirmed(long id)
+        {
+            Enquiry enquiry = await repo.GetAll(nameof(Enquiry.Transitions)).FirstOrDefaultAsync(e => e.EnquiryID == id);
+
+            assignRecommendedOfferIDIfOneOffer(enquiry, out bool isValid);
+
+            if (!isValid)
+                return RedirectToAction("Index", new { ErrorMessage = validationErrormessage });
+
+            Employee currentUser = User.GetUserData();
+            var approval = enquiry.GetApprovalFlow()
+                .SetUserName(currentUser);
+
+            var preparedBy = currentUser;
+
+            approval.RequestApproval(enquiry.TechnicalEvaluator, $"Technical Evaluator to review enquiry created  on {enquiry.AuditDetail.CreatedDate.ToString("yyyy/MM/dd hh:mm:ss")} by {enquiry.AuditDetail.CreatedEntryUserDisplayName}")
+            .RequestApproval(preparedBy, $"Bid Summary prepared by {preparedBy.DisplayName} for enquiry created  on {enquiry.AuditDetail.CreatedDate.ToString("yyyy/MM/dd hh:mm:ss")} by {enquiry.AuditDetail.CreatedEntryUserDisplayName}")
+            .Approve()
+            .RequestApproval(enquiry.Reviewer, "Bid Summary from Enquiry Number " + enquiry.EnquiryNumber + " is up for approval. Offer from " + enquiry.Offers.FirstOrDefault(o => o.OfferID == enquiry.RecommendedOfferID).Company.CompanyName + " is Recommended with the following reason:  " + enquiry.RecommendationReason);
+
+            if (preparedBy == enquiry.TechnicalEvaluator)
+            {
+                approval.LoadNotification(preparedBy, new List<Employee> { enquiry.Originator, enquiry.TechnicalEvaluator });
+            }
+            else
+            {
+                approval.LoadNotification(preparedBy, new List<Employee> { enquiry.Originator, enquiry.TechnicalEvaluator })
+                  .LoadNotification(enquiry.TechnicalEvaluator, new List<Employee> { enquiry.Originator, preparedBy });
+            }
+
+            approval.LoadNotification(enquiry.Reviewer, new List<Employee> { enquiry.Originator, enquiry.TechnicalEvaluator });
+
+            repo.Edit(enquiry);
+            await repo.SaveChangesAsync();
+
+            approval.FireNotifications();
+
+            return RedirectToAction("Index", new { id = enquiry.EnquiryID });
+        }
+
+        private void assignRecommendedOfferIDIfOneOffer(Enquiry enquiry, out bool isValid)
+        {
+            Offer recOffer = enquiry.RecommendedOffer;
+            if (recOffer == null)
+            {
+                var offers = enquiry.Offers.Where(o => o.IsNew);
+                if (offers.Count() == 1)
+                {
+                    recOffer = offers.FirstOrDefault();
+                    enquiry.RecommendedOfferID = recOffer.OfferID;
+                }
+            }
+            isValid = checkValidity(enquiry, recOffer);
         }
 
         // GET: Enquiries/Delete/5
@@ -394,6 +472,8 @@ namespace LukePurchaseSystem.Controllers
             if (!offer.IsNew)
                 viewBagLatestid(offer);
 
+            offer.Quotation.SetFileNames();
+
             return View(new OfferVM(offer));
         }
 
@@ -425,9 +505,9 @@ namespace LukePurchaseSystem.Controllers
 
                 preOffer.ReferenceNumber = ofr.ReferenceNumber;
 
-                repo.Context.Entry(preOffer).State = EntityState.Modified;
+                repo.UpdateChildCollection(p => p.ScopeItems, preOffer, new Offer { OfferID = ofr.OfferID, ScopeItems = ofr.ScopeItems.ToList() });
 
-                repo.UpdateChildCollection(p => p.ScopeItems, preOffer, new Offer { ScopeItems = ofr.ScopeItems });
+                repo.Context.Entry(preOffer).State = EntityState.Modified;
 
                 await repo.SaveChangesAsync();
 
@@ -510,9 +590,7 @@ namespace LukePurchaseSystem.Controllers
                 return RedirectToAction("Index", new { ErrorMessage = "Invalid ID" });
             }
             Offer offer = await repo.Context.Offers.Include(e => e.Enquiry)
-                .Include("Enquiry.PurchaseRequisition")
                 .Include("Enquiry.Transitions")
-                .Include("Enquiry.PurchaseRequisition.Transitions")
                 .FirstOrDefaultAsync(e => e.OfferID == id);
             if (offer == null)
             {
@@ -916,13 +994,13 @@ namespace LukePurchaseSystem.Controllers
             agreement.CompanySection = offer.Company.CompanyName + ",\n" + offer.Company.Address.ToString();
             agreement.CompanyContactName = offer.Company.DefaultFocalPoint.ContactName;
             agreement.OfferReference = offer.ReferenceNumber ?? "-";
-            agreement.ShippingSection = "Tebodin & Partner LLC.,\n" + new Address
+            agreement.ShippingSection = "Oman Meat,\n" + new Address
             {
-                Line1 = "2nd Floor, Azaiba Plaza, Bldg. No.187",
-                Line2 = "Way 61, Al-Ma'aridh St, Ghala",
-                POBox = 716,
-                PostalCode = 130,
-                Street = "Al-Azaibah",
+                Line1 = "Address 1",
+                Line2 = "Address 2",
+                POBox = 0,
+                PostalCode = 0,
+                Street = "Street",
                 City = "Muscat",
                 Country = 0
             }.ToString();
@@ -937,10 +1015,10 @@ namespace LukePurchaseSystem.Controllers
             agreement.PaymentTerms = offer.AgreedPaymentTerms;
             agreement.ReviewerID = offer.Enquiry.Reviewer.Username;
             agreement.ReviewerName = offer.Enquiry.Reviewer.DisplayName;
-            agreement.ReviewerPosition = $"{offer.Enquiry.Reviewer.JobTitle} - Tebodin Oman";
+            agreement.ReviewerPosition = $"{offer.Enquiry.Reviewer.JobTitle} - Oman Meat";
             agreement.ApproverID = offer.Enquiry.Approver.Username;
             agreement.ApproverName = offer.Enquiry.Approver.DisplayName;
-            agreement.ApproverPosition = $"{offer.Enquiry.Approver.JobTitle} - Tebodin Oman";
+            agreement.ApproverPosition = $"{offer.Enquiry.Approver.JobTitle} - Oman Meat";
             agreement.PurchaseOrderItems = offer.ScopeItems.Select(s => new PurchaseOrderItem
             {
                 Description = s.Description,

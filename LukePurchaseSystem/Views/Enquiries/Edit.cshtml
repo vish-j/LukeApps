@@ -2,6 +2,7 @@
 @section CustomStyles {
     @Styles.Render("~/Content/bdp")
     @Styles.Render("~/Content/bootstrap-dropdown")
+    @Styles.Render("~/Content/File-Upload")
 }
 @{
     ViewBag.Title = "Edit";
@@ -113,6 +114,7 @@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap-dp")
     @Scripts.Render("~/bundles/bootstrap-dropdown")
+    @Scripts.Render("~/bundles/File-Upload")
     <script>
         $(".chosen-select").chosen({
             search_contains: true,
@@ -125,6 +127,8 @@
             orientation: "bottom auto",
             daysOfWeekDisabled: "5,6"
         });
+
+        $('#SupportingDocuments').InitFileUploader();
 
         $(function () {
 

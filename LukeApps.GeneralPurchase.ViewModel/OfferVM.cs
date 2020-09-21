@@ -23,7 +23,7 @@ namespace LukeApps.GeneralPurchase.ViewModel
             Revision = 0;
             ScopeItems = new List<ScopeItem>();
             VendorResponse = VendorResponse.NoResponse;
-
+            TotalOfferValue = new Price(CurrencyRates.Enums.CurrencyCode.OMR, 0);
             Companies = companies;
         }
 
@@ -119,7 +119,7 @@ namespace LukeApps.GeneralPurchase.ViewModel
         [Display(Name = "Total Offer Value")]
         public Price TotalOfferValue { get; set; }
 
-        public List<ScopeItem> ScopeItems { get; set; }
+        public IEnumerable<ScopeItem> ScopeItems { get; set; }
 
         [Display(Name = "Company Name")]
         public string CompanyName { get; set; }

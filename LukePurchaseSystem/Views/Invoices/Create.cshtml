@@ -28,6 +28,14 @@
             @Html.ValidationMessageFor(model => model.BudgetID, "", new { @class = "text-danger" })
         </div>
     </div>
+    
+    <div class="form-group">
+        @Html.LabelFor(model => model.LinkedPO, "Link PO", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.ListBoxFor(model => model.LinkedPOList, (MultiSelectList)ViewBag.PurchaseOrderID, htmlAttributes: new { @class = "form-control chosen-select", @multiple = "multiple" })
+            @Html.ValidationMessageFor(model => model.LinkedPO, "", new { @class = "text-danger" })
+        </div>
+    </div>
 
     <div class="form-group">
 
@@ -104,6 +112,8 @@
     @Scripts.Render("~/bundles/bootstrap-dropdown")
     @Scripts.Render("~/bundles/collectionItems")
     @Scripts.Render("~/bundles/File-Upload")
+    @Scripts.Render("~/bundles/lumpsum")
+
     <script>
         $(".chosen-select").chosen({
             search_contains: true,
@@ -124,6 +134,7 @@
             $(".chosen-select").chosen({
                 search_contains: true,
             });
+            addLumpsumEvent();
         });
 
         $(function () {

@@ -9,6 +9,8 @@ using PhilApprovalFlow;
 using PhilApprovalFlow.Attributes;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace LukeApps.GeneralPurchase.Models
 {
@@ -54,6 +56,18 @@ namespace LukeApps.GeneralPurchase.Models
         [Display(Name = "Workflow")]
         public virtual ICollection<InvoiceTransition> Transitions { get; set; }
 
+        [NotMapped]
+        [Display(Name = "Linked Purchase Orders")]
+        public string LinkedPO { get; set; }
+
+        [NotMapped]
+        public long[] LinkedPOList
+        {
+            get => (LinkedPO != null) ? LinkedPO.Split(',').Select(s => long.Parse(s)).ToArray() : new long[] { };
+            set => LinkedPO = string.Join(",", value);
+        }
+
+        [Display(Name = "Purchase Orders")]
         public virtual ICollection<PurchaseOrder> PurchaseOrders { get; set; }
 
         [Display(Name = "Line Items")]

@@ -15,73 +15,151 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>PurchaseOrder</h4>
+        <h4>Purchase Order</h4>
         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
 
-            @Html.LabelFor(model => model.BudgetID, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-12">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingTwo">
+                    <h4 class="panel-title">
+                        <a id="basicCollapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                            Basic Section
+                            <span class="glyphicon glyphicon-chevron-up"></span>
+                        </a>
+                    </h4>
+                    <p>Enter PO Header Information</p>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+                    <div class="panel-body">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Company, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownListFor(model => model.CompanyID, null, "-Select One-", htmlAttributes: new { @class = "form-control chosen-select" })
+                                    @Html.ValidationMessageFor(model => model.CompanyID, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
 
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.BudgetID, null, "-Select One-", htmlAttributes: new { @class = "form-control chosen-select" })
-                @Html.ValidationMessageFor(model => model.BudgetID, "", new { @class = "text-danger" })
+                            <div class="form-group">
+
+                                @Html.LabelFor(model => model.BudgetID, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                                <div class="col-md-10">
+                                    @Html.DropDownListFor(model => model.BudgetID, null, "-Select One-", htmlAttributes: new { @class = "form-control chosen-select" })
+                                    @Html.ValidationMessageFor(model => model.BudgetID, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                @Html.LabelFor(model => model.Originator, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                                <div class="col-md-10">
+                                    @Html.DropDownListFor(model => model.OriginatorID, (SelectList)ViewBag.Employees, "-Select Originator-", htmlAttributes: new { @class = "form-control chosen-select" })
+                                    @Html.ValidationMessageFor(model => model.OriginatorID, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                @Html.LabelFor(model => model.Reviewer, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                                <div class="col-md-10">
+                                    @Html.DropDownListFor(model => model.ReviewerID, (SelectList)ViewBag.Employees, "-Select Reviewer-", htmlAttributes: new { @class = "form-control chosen-select" })
+                                    @Html.ValidationMessageFor(model => model.ReviewerID, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                @Html.LabelFor(model => model.Approver, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                                <div class="col-md-10">
+                                    @Html.DropDownListFor(model => model.ApproverID, (SelectList)ViewBag.Employees, "-Select Approver-", htmlAttributes: new { @class = "form-control chosen-select" })
+                                    @Html.ValidationMessageFor(model => model.ApproverID, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.PaymentTerms, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.PaymentTerms.Term, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.PaymentTerms.Term, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.PurchaseOrderExpiryDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.PurchaseOrderExpiryDate, new { htmlAttributes = new { @class = "form-control dpF" } })
+                                    @Html.ValidationMessageFor(model => model.PurchaseOrderExpiryDate, "", new { @class = "text-danger" })<br />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-2">
+                                    <input class="form-control " data-val-regex="Please Enter a Number of Days" data-val-regex-pattern="^[0-9]*$" id="NumberDays" name="NumberDays" type="text" value="">
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.Label("Validity (Days)")
+                                    @Html.ValidationMessage("NumberDays", new { @class = "text-danger" })<br />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.DeliveryDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.DeliveryDate, new { htmlAttributes = new { @class = "form-control dpF" } })
+                                    @Html.ValidationMessageFor(model => model.DeliveryDate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.DeliveryTerms, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.DeliveryTerms, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.DeliveryTerms, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-
-            @Html.LabelFor(model => model.Originator, htmlAttributes: new { @class = "control-label col-md-2" })
-
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.OriginatorID, (SelectList)ViewBag.Employees, "-Select Originator-", htmlAttributes: new { @class = "form-control chosen-select" })
-                @Html.ValidationMessageFor(model => model.OriginatorID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-
-            @Html.LabelFor(model => model.Reviewer, htmlAttributes: new { @class = "control-label col-md-2" })
-
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.ReviewerID, (SelectList)ViewBag.Employees, "-Select Reviewer-", htmlAttributes: new { @class = "form-control chosen-select" })
-                @Html.ValidationMessageFor(model => model.ReviewerID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-
-            @Html.LabelFor(model => model.Approver, htmlAttributes: new { @class = "control-label col-md-2" })
-
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.ApproverID, (SelectList)ViewBag.Employees, "-Select Approver-", htmlAttributes: new { @class = "form-control chosen-select" })
-                @Html.ValidationMessageFor(model => model.ApproverID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-
-            @Html.LabelFor(model => model.PurchaseOrderExpiryDate, htmlAttributes: new { @class = "control-label col-md-2" })
-
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PurchaseOrderExpiryDate, new { htmlAttributes = new { @class = "form-control dp" } })
-                @Html.ValidationMessageFor(model => model.PurchaseOrderExpiryDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <hr />
-        <div class="form-group collectionControl">
-            <h4>@Html.LabelFor(model => model.PurchaseOrderItems, htmlAttributes: new { @class = "control-label col-md-2" })</h4>
-            <div class="collectionGroup col-md-10">
-                @Html.EditorFor(model => model.PurchaseOrderItems, "CollectionTemplate")
-            </div>
-            <div class="col-md-2">
-                @Html.ValidationMessageFor(model => model.PurchaseOrderItems, "", new { @class = "text-danger" })
-            </div>
-            <div class="col-md-10">
-                <br />
-                <a class="btn btn-sm btn-default addCollectionItem" data-ajax-url="@Url.Action("AddNewPurchaseOrderItem", new { id = Model.PurchaseOrderID })">
-                    <span class="glyphicon glyphicon-plus"></span> Add an item
-                </a>
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingThree">
+                    <h4 class="panel-title">
+                        <a id="basicCollapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                            Line Items Section
+                            <span class="glyphicon glyphicon-chevron-up"></span>
+                        </a>
+                    </h4>
+                    <p>Enter Purchase Order Line Items Below</p>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="panel-body">
+                        <div class="col-md-12">
+                            <div class="form-group collectionControl">
+                                <h4>@Html.LabelFor(model => model.PurchaseOrderItems, htmlAttributes: new { @class = "control-label col-md-2" })</h4>
+                                <div class="collectionGroup col-md-10">
+                                    @Html.EditorFor(model => model.PurchaseOrderItems, "CollectionTemplate")
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.ValidationMessageFor(model => model.PurchaseOrderItems, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-10">
+                                    <br />
+                                    <a class="btn btn-sm btn-default addCollectionItem" data-ajax-url="@Url.Action("AddNewPurchaseOrderItem", new { id = Model.PurchaseOrderID })">
+                                        <span class="glyphicon glyphicon-plus"></span> Add an item
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -91,6 +169,7 @@
             </div>
         </div>
     </div>
+
 }
 
 <div>
@@ -103,6 +182,7 @@
     @Scripts.Render("~/bundles/bootstrap-dropdown")
     @Scripts.Render("~/bundles/collectionItems")
     @Scripts.Render("~/bundles/File-Upload")
+    @Scripts.Render("~/bundles/lumpsum")
 
     <script>
         $(".chosen-select").chosen({
@@ -123,6 +203,7 @@
             $(".chosen-select").chosen({
                 search_contains: true,
             });
+            addLumpsumEvent();
         });
 
         $(function () {

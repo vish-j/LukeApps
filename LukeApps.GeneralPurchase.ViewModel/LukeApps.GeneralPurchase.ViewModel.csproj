@@ -72,6 +72,7 @@
     <Compile Include="BidSummary.cs" />
     <Compile Include="BidSummaryCompany.cs" />
     <Compile Include="BidSummaryOffer.cs" />
+    <Compile Include="CommitmentLineVM.cs" />
     <Compile Include="CurrencyDetailsVM.cs" />
     <Compile Include="DashboardVM.cs" />
     <Compile Include="EnquireNewVendorVM.cs" />

@@ -54,3 +54,22 @@ textarea {
         right: -20px;
     }
 }
+
+
+.form-inline > .form-group {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+    .form-inline > .form-group > .row {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+.form-inline > .deleteRow {
+    vertical-align: bottom;
+}
+
+.input-default-narrow {
+    max-width: 80px;
+}

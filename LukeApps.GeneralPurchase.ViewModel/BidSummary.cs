@@ -89,9 +89,9 @@ namespace LukeApps.GeneralPurchase.ViewModel
         {
             List<List<object>> table = new List<List<object>>
             {
-                new List<object>() { "", "Tebodin & Partners LLC" },
-                new List<object>() { "", "2nd Floor, Azaiba Plaza, Building no:187, Way 61, Al-Ma'aridh St. Ghala" },
-                new List<object>() { "", "P.O. Box 716, Postal Code 130, Al- Azaibah" },
+                new List<object>() { "", "Oman Meat" },
+                new List<object>() { "", "Address 1" },
+                new List<object>() { "", "Address 2" },
                 new List<object>() { "", "Sultanate of Oman" },
                 new List<object>() { "" },
                 new List<object>() { "" },
@@ -145,7 +145,7 @@ namespace LukeApps.GeneralPurchase.ViewModel
 
                         if (offer.AdditionalTable.Count != 0)
                         {
-                            temptable.Add(new List<object> { "", "Additional (if required by Tebodin & Partners)", "", "" });
+                            temptable.Add(new List<object> { "", "Additional (if required by Oman Meat)", "", "" });
                             temptable.AddRange(offer.AdditionalTable);
                         }
 

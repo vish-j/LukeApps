@@ -19,6 +19,6 @@ namespace LukeApps.GeneralPurchase.Models
         public AuditDetail AuditDetail { get; set; } = new AuditDetail();
         public bool IsDeleted { get; set; }
 
-        public object GetID() => OfferID;
+        public object GetID() => ScopeItemID;
     }
 }

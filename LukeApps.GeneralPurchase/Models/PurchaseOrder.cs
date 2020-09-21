@@ -20,6 +20,7 @@ namespace LukeApps.GeneralPurchase.Models
     {
         public PurchaseOrder()
         {
+            ApprovedDocuments = new MultipleFilesHandle();
             AuditDetail = new AuditDetail();
             PurchaseOrderItems = new HashSet<PurchaseOrderItem>();
             Invoices = new HashSet<Invoice>();
@@ -35,6 +36,8 @@ namespace LukeApps.GeneralPurchase.Models
 
         [Display(Name = "PurchaseOrder Number")]
         public string PurchaseOrderNumber => PurchaseOrderID.ToString("000000");
+
+        public string Summary => $"PO:{PurchaseOrderNumber} - { Company.CompanyName}";
 
         public long BudgetID { get; set; }
         public virtual Budget Budget { get; set; }
@@ -56,8 +59,6 @@ namespace LukeApps.GeneralPurchase.Models
         [Display(Name = "Approved Documents")]
         public MultipleFilesHandle ApprovedDocuments { get; set; }
 
-
-
         [Display(Name = "Purchase Order Expiry Date")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? PurchaseOrderExpiryDate { get; set; }
@@ -74,6 +75,7 @@ namespace LukeApps.GeneralPurchase.Models
 
         [Display(Name = "Workflow")]
         public virtual ICollection<PurchaseOrderTransition> Transitions { get; set; }
+
         public int Revision { get; set; }
 
         [Display(Name = "Sequence Number")]
@@ -141,6 +143,7 @@ namespace LukeApps.GeneralPurchase.Models
 
         [Display(Name = "Is Purchase Order Cancelled?")]
         public bool IsPurchaseOrderCancelled => CancelDate != null;
+
         public object GetID() => PurchaseOrderID;
 
         public override IEnumerable<IScopeItem> GetScopeItems() => PurchaseOrderItems;

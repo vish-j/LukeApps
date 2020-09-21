@@ -6,19 +6,26 @@
 
 <h2>Details</h2>
 
-
 <div>
     <h4>Invoice</h4>
-	<hr />
-	<p>   
-		@Html.ActionLink("Edit", "Edit", new { id = Model.GetID() }, new { @class = "btn btn-sm btn-default" }) <text>|</text>
-		@Html.ActionLink("Delete", "Delete", new { id = Model.GetID() }, new { @class = "btn btn-sm btn-default" }) <text>|</text>
-	</p>
-	<p class="pull-right text-right">
+    <hr />
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.GetID() }, new { @class = "btn btn-sm btn-default" }) <text>|</text>
+        @Html.ActionLink("Delete", "Delete", new { id = Model.GetID() }, new { @class = "btn btn-sm btn-default" }) <text>|</text>
+    </p>
+    <p class="pull-right text-right">
         <a class="btn btn-sm btn-default" onclick="gotoAuditTrail()">Audit Trail</a>
     </p>
     <hr />
     <div class="list-group">
+
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.InvoiceNumber)</b> </div>
+                <div class="col-sm-1"><b>:</b></div>
+                <div class="col-sm-3">@Html.DisplayFor(model => model.InvoiceNumber)</div>
+            </div>
+        </div>
 
         <div class="list-group-item">
             <div class="row">
@@ -28,12 +35,11 @@
             </div>
         </div>
 
-
         <div class="list-group-item">
             <div class="row">
-                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.InvoiceID)</b> </div>
+                <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.Documents)</b> </div>
                 <div class="col-sm-1"><b>:</b></div>
-                <div class="col-sm-3">@Html.DisplayFor(model => model.InvoiceID)</div>
+                <div class="col-sm-3">@Html.DisplayFor(model => model.Documents, "MultiFileControl")</div>
             </div>
         </div>
 
@@ -61,7 +67,6 @@
             </div>
         </div>
 
-
         <div class="list-group-item">
             <div class="row">
                 <div class="col-sm-3"><b>@Html.DisplayNameFor(model => model.Transitions)</b> </div>
@@ -69,7 +74,6 @@
                 <div class="col-sm-3">@Html.DisplayFor(model => model.Transitions, "ApprovalStatus")</div>
             </div>
         </div>
-
 
         <div class="list-group-item">
             <div class="row">
@@ -90,7 +94,4 @@
             </div>
         }
     </div>
-
 </div>
-
-
