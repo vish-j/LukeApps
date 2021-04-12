@@ -25,7 +25,7 @@ namespace LukeApps.ApprovalProcess
 
         public static ICanAction RequestApproval(this ICanAction approvalFlow, Employee employee)
         {
-            return approvalFlow.RequestApproval(employee.Username);
+            return approvalFlow.RequestApproval(employee.Username, "General");
         }
 
         public static ICanAction RequestApproval(this ICanAction approvalFlow, Employee employee, string comments)
