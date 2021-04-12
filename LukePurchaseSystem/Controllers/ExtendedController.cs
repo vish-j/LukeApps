@@ -51,23 +51,23 @@ namespace LukePurchaseSystem.Controllers
         {
             if (username == entity.OriginatorID)
             {
-                approval.RequestApproval(entity.OriginatorID);
+                approval.RequestApproval(entity.OriginatorID, "Originator");
                 if (entity.ReviewerID != null)
                 {
-                    approval.RequestApproval(entity.ReviewerID).LoadNotification(username, new string[] { entity.OriginatorID });
+                    approval.RequestApproval(entity.ReviewerID, "Reviewer").LoadNotification(username, new string[] { entity.OriginatorID });
                 }
                 else
                 {
-                    approval.RequestApproval(entity.ApproverID).LoadNotification(username, new string[] { entity.OriginatorID });
+                    approval.RequestApproval(entity.ApproverID, "Approver").LoadNotification(username, new string[] { entity.OriginatorID });
                 }
             }
             else if (username == entity.ReviewerID)
             {
-                approval.RequestApproval(entity.ApproverID).LoadNotification(username, new string[] { entity.OriginatorID });
+                approval.RequestApproval(entity.ApproverID, "Approver").LoadNotification(username, new string[] { entity.OriginatorID });
             }
             else
             {
-                approval.RequestApproval(entity.OriginatorID);
+                approval.RequestApproval(entity.OriginatorID, "Originator");
             }
 
             approval.Approve(comments)

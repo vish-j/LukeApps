@@ -46,7 +46,7 @@ namespace LukePurchaseSystem.Controllers
                 CompanyRegistration = c.CompanyRegistration,
                 CommodityDescription = c.CommodityDescription,
                 WebSite = c.WebSite,
-                Address = c.Address,
+                Address = c.Address.ToString(),
                 Comments = c.Comments,
                 AuditDetail_CreatedDate = c.AuditDetail.CreatedDate.ToShortDateISO(),
                 AuditDetail_CreatedEntryUser = c.AuditDetail.CreatedEntryUserDisplayName,

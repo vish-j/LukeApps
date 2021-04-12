@@ -48,11 +48,10 @@ namespace LukePurchaseSystem.Controllers
             var detailCollection = purchaseOrders.Select(p => new
             {
                 PurchaseOrderID = p.PurchaseOrderID,
-                BudgetID = p.BudgetID,
-                OriginatorID = p.OriginatorID,
-                ReviewerID = p.ReviewerID,
-                ApproverID = p.ApproverID,
-                ApprovedDocuments = p.ApprovedDocuments,
+                BudgetID = p.Budget.BudgetName,
+                OriginatorID = p.Originator.DisplayName,
+                ReviewerID = p.Reviewer.DisplayName,
+                ApproverID = p.Approver.DisplayName,
                 IsPurchaseOrderClosed = (p.IsPurchaseOrderCancelled ? "Yes" : "No"),
                 PurchaseOrderExpiryDate = p.PurchaseOrderExpiryDate?.ToShortDateISO(),
                 AuditDetail_CreatedDate = p.AuditDetail.CreatedDate.ToShortDateISO(),
