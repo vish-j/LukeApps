@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -15,7 +16,7 @@ namespace LukeApps.AspIdentity
             // Add custom user claims here
             return userIdentity;
         }
-
+        public string ProfilePhoto { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
@@ -25,6 +26,10 @@ namespace LukeApps.AspIdentity
         public string LDAPReference { get; set; }
         public string JobTitle { get; set; }
         public string TelephoneNumber { get; set; }
+
+        public string CreatedBy { get; set; }
+
+        public DateTime CreatedOn { get; set; }
     }
 
     public class ApplicationRole : IdentityRole
