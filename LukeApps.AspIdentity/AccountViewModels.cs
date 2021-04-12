@@ -56,6 +56,11 @@ namespace LukeApps.AspIdentity.ViewModel
     public class RegisterViewModel
     {
         [Required]
+        [Display(Name = "Username")]
+        [RegularExpression("^[a-zA-Z0-9]{4,15}$", ErrorMessage = "Invalid Username")]
+        public string Username { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -70,7 +75,38 @@ namespace LukeApps.AspIdentity.ViewModel
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "User Roles")]
+        public string UserRoles { get; set; }
     }
+
+
+    public class EditUserViewModel
+    {
+        public string UserName { get; set; }
+
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Display(Name = "Email Confirmed?")]
+        public bool EmailConfirmed { get; set; }
+
+        [Display(Name = "Phone Number")]
+        public string PhoneNumber { get; set; }
+
+        [Display(Name = "Phone Number Confirmed?")]
+        public bool PhoneNumberConfirmed { get; set; }
+
+        [Display(Name = "Is Two-Factor Enabled?")]
+        public bool TwoFactorEnabled { get; set; }
+
+        [Display(Name = "User Roles")]
+        public string[] UserRoles { get; set; }
+    }
+
 
     public class ResetPasswordViewModel
     {
