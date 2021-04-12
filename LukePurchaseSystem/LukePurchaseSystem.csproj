@@ -487,11 +487,11 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BeginCollectionItem.Tests\LukeApps.BeginCollectionItem.Tests.csproj">
+    <ProjectReference Include="..\LukeApps.BeginCollectionItem.Tests\LukeApps.BeginCollectionItem.Tests.csproj">
       <Project>{4eb8623b-a836-42d1-b90c-00886750101b}</Project>
       <Name>LukeApps.BeginCollectionItem.Tests</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BeginCollectionItem\LukeApps.BeginCollectionItem.csproj">
+    <ProjectReference Include="..\LukeApps.BeginCollectionItem\LukeApps.BeginCollectionItem.csproj">
       <Project>{cf17966c-80c2-4abe-bd0b-f58aef0ddb05}</Project>
       <Name>LukeApps.BeginCollectionItem</Name>
     </ProjectReference>
@@ -559,19 +559,19 @@
       <Project>{fabf8841-798f-4f4f-868a-5a6dbf4787a7}</Project>
       <Name>LukeApps.TrackingExtended</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TrackerEnabledDbContext.Common.Testing\LukeApps.TrackerEnabledDbContext.Common.Testing.csproj">
+    <ProjectReference Include="..\LukeApps.TrackerEnabledDbContext.Common.Testing\LukeApps.TrackerEnabledDbContext.Common.Testing.csproj">
       <Project>{d56578a4-4642-4fce-b7f7-993d815dd2fd}</Project>
       <Name>LukeApps.TrackerEnabledDbContext.Common.Testing</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TrackerEnabledDbContext.Common\LukeApps.TrackerEnabledDbContext.Common.csproj">
+    <ProjectReference Include="..\LukeApps.TrackerEnabledDbContext.Common\LukeApps.TrackerEnabledDbContext.Common.csproj">
       <Project>{ac9808cc-8932-40ae-8f26-3fba558a5549}</Project>
       <Name>LukeApps.TrackerEnabledDbContext.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TrackerEnabledDbContext.IntegrationTests\LukeApps.TrackerEnabledDbContext.IntegrationTests.csproj">
+    <ProjectReference Include="..\LukeApps.TrackerEnabledDbContext.IntegrationTests\LukeApps.TrackerEnabledDbContext.IntegrationTests.csproj">
       <Project>{3ea1b657-cabf-4a33-84d6-28f5e1893743}</Project>
       <Name>LukeApps.TrackerEnabledDbContext.IntegrationTests</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TrackerEnabledDbContext\LukeApps.TrackerEnabledDbContext.csproj">
+    <ProjectReference Include="..\LukeApps.TrackerEnabledDbContext\LukeApps.TrackerEnabledDbContext.csproj">
       <Project>{bde8feb8-3a4f-491d-9aad-426c355aac76}</Project>
       <Name>LukeApps.TrackerEnabledDbContext</Name>
     </ProjectReference>

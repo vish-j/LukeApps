@@ -5,13 +5,13 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LukeApps.GeneralPurchase", "LukeApps.GeneralPurchase\LukeApps.GeneralPurchase.csproj", "{8151311E-C4A2-4292-B30D-97243C955D9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LukeApps.BeginCollectionItem", "BeginCollectionItem\LukeApps.BeginCollectionItem.csproj", "{CF17966C-80C2-4ABE-BD0B-F58AEF0DDB05}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LukeApps.BeginCollectionItem", "LukeApps.BeginCollectionItem\LukeApps.BeginCollectionItem.csproj", "{CF17966C-80C2-4ABE-BD0B-F58AEF0DDB05}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LukeApps.AccountingDocumentor", "LukeApps.AccountingDocumentor\LukeApps.AccountingDocumentor.csproj", "{4C3761DF-4843-49FA-B405-573FA2A8F3AE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LukeApps.AlertHandling", "LukeApps.AlertHandling\LukeApps.AlertHandling.csproj", "{BF7455DC-F767-46FE-9261-2A2F191E67E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LukeApps.BeginCollectionItem.Tests", "BeginCollectionItem.Tests\LukeApps.BeginCollectionItem.Tests.csproj", "{4EB8623B-A836-42D1-B90C-00886750101B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LukeApps.BeginCollectionItem.Tests", "LukeApps.BeginCollectionItem.Tests\LukeApps.BeginCollectionItem.Tests.csproj", "{4EB8623B-A836-42D1-B90C-00886750101B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LukeApps.ApprovalProcess", "LukeApps.ApprovalProcess\LukeApps.ApprovalProcess.csproj", "{68B118F5-6FC4-4D1F-A37E-5909609EC314}"
 EndProject
@@ -37,13 +37,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LukeApps.GeneralPurchase.Vi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LukeApps.EmployeeData", "LukeApps.EmployeeData\LukeApps.EmployeeData.csproj", "{17F1D166-B41A-411D-9E3A-F370EF12CC9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LukeApps.TrackerEnabledDbContext", "TrackerEnabledDbContext\LukeApps.TrackerEnabledDbContext.csproj", "{BDE8FEB8-3A4F-491D-9AAD-426C355AAC76}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LukeApps.TrackerEnabledDbContext", "LukeApps.TrackerEnabledDbContext\LukeApps.TrackerEnabledDbContext.csproj", "{BDE8FEB8-3A4F-491D-9AAD-426C355AAC76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LukeApps.TrackerEnabledDbContext.Common", "TrackerEnabledDbContext.Common\LukeApps.TrackerEnabledDbContext.Common.csproj", "{AC9808CC-8932-40AE-8F26-3FBA558A5549}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LukeApps.TrackerEnabledDbContext.Common", "LukeApps.TrackerEnabledDbContext.Common\LukeApps.TrackerEnabledDbContext.Common.csproj", "{AC9808CC-8932-40AE-8F26-3FBA558A5549}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LukeApps.TrackerEnabledDbContext.Common.Testing", "TrackerEnabledDbContext.Common.Testing\LukeApps.TrackerEnabledDbContext.Common.Testing.csproj", "{D56578A4-4642-4FCE-B7F7-993D815DD2FD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LukeApps.TrackerEnabledDbContext.Common.Testing", "LukeApps.TrackerEnabledDbContext.Common.Testing\LukeApps.TrackerEnabledDbContext.Common.Testing.csproj", "{D56578A4-4642-4FCE-B7F7-993D815DD2FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LukeApps.TrackerEnabledDbContext.IntegrationTests", "TrackerEnabledDbContext.IntegrationTests\LukeApps.TrackerEnabledDbContext.IntegrationTests.csproj", "{3EA1B657-CABF-4A33-84D6-28F5E1893743}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LukeApps.TrackerEnabledDbContext.IntegrationTests", "LukeApps.TrackerEnabledDbContext.IntegrationTests\LukeApps.TrackerEnabledDbContext.IntegrationTests.csproj", "{3EA1B657-CABF-4A33-84D6-28F5E1893743}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LukePurchaseSystem", "LukePurchaseSystem\LukePurchaseSystem.csproj", "{D0BFF6B4-02D4-434E-B025-0885AF9B4B02}"
 EndProject

@@ -69,11 +69,11 @@
       <Project>{6F447961-C449-47D1-9A48-8F1A6E9EE365}</Project>
       <Name>LukeApps.AspIdentity</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TrackerEnabledDbContext.Common\LukeApps.TrackerEnabledDbContext.Common.csproj">
+    <ProjectReference Include="..\LukeApps.TrackerEnabledDbContext.Common\LukeApps.TrackerEnabledDbContext.Common.csproj">
       <Project>{ac9808cc-8932-40ae-8f26-3fba558a5549}</Project>
       <Name>LukeApps.TrackerEnabledDbContext.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TrackerEnabledDbContext\LukeApps.TrackerEnabledDbContext.csproj">
+    <ProjectReference Include="..\LukeApps.TrackerEnabledDbContext\LukeApps.TrackerEnabledDbContext.csproj">
       <Project>{bde8feb8-3a4f-491d-9aad-426c355aac76}</Project>
       <Name>LukeApps.TrackerEnabledDbContext</Name>
     </ProjectReference>

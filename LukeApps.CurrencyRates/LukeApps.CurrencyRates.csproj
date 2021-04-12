@@ -68,11 +68,11 @@
       <Project>{fabf8841-798f-4f4f-868a-5a6dbf4787a7}</Project>
       <Name>LukeApps.TrackingExtended</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TrackerEnabledDbContext.Common\LukeApps.TrackerEnabledDbContext.Common.csproj">
+    <ProjectReference Include="..\LukeApps.TrackerEnabledDbContext.Common\LukeApps.TrackerEnabledDbContext.Common.csproj">
       <Project>{ac9808cc-8932-40ae-8f26-3fba558a5549}</Project>
       <Name>LukeApps.TrackerEnabledDbContext.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TrackerEnabledDbContext\LukeApps.TrackerEnabledDbContext.csproj">
+    <ProjectReference Include="..\LukeApps.TrackerEnabledDbContext\LukeApps.TrackerEnabledDbContext.csproj">
       <Project>{BDE8FEB8-3A4F-491D-9AAD-426C355AAC76}</Project>
       <Name>LukeApps.TrackerEnabledDbContext</Name>
     </ProjectReference>
