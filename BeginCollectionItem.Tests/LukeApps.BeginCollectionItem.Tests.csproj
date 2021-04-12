@@ -103,9 +103,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BeginCollectionItem\BeginCollectionItem.csproj">
+    <ProjectReference Include="..\BeginCollectionItem\LukeApps.BeginCollectionItem.csproj">
       <Project>{cf17966c-80c2-4abe-bd0b-f58aef0ddb05}</Project>
-      <Name>BeginCollectionItem</Name>
+      <Name>LukeApps.BeginCollectionItem</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

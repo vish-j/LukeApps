@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PhilApprovalFlow, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\PhilApprovalFlow.1.0.8-beta\lib\netstandard2.0\PhilApprovalFlow.dll</HintPath>
+    <Reference Include="PhilApprovalFlow, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PhilApprovalFlow.1.1.1\lib\netstandard2.0\PhilApprovalFlow.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -82,7 +82,7 @@
     </ProjectReference>
     <ProjectReference Include="..\LukeApps.EmployeeData\LukeApps.EmployeeData.csproj">
       <Project>{17f1d166-b41a-411d-9e3a-f370ef12cc9f}</Project>
-      <Name>NSCPurchaseSystem.NSCData.DAL</Name>
+      <Name>LukeApps.EmployeeData</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
